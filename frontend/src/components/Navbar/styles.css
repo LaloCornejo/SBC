@@ -145,6 +145,18 @@
   border-radius: 50%;
 }
 
+.logout-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.logout-btn:hover {
+  color: #dc2626;
+  background: #fef2f2;
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .navbar {

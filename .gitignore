@@ -1,1 +1,12 @@
-node_modules
+# Prerequisites
+*.txt
+
+*/node_modules/
+
+*/__pycache__/
+
+nul
+
+AGENTS.md
+
+project.md

@@ -1,9 +1,17 @@
-import { Link, useLocation } from 'react-router-dom'
-import { Home, BookOpen, Users, User, Code2 } from 'lucide-react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Home, BookOpen, Users, User, Code2, LogOut } from 'lucide-react'
 import './styles.css'
 
 export function Navbar() {
   const location = useLocation()
+  const navigate = useNavigate()
+  const token = localStorage.getItem('t')
+
+  const handleLogout = () => {
+    localStorage.removeItem('t')
+    localStorage.removeItem('u')
+    navigate('/login')
+  }
 
   const navItems = [
     { path: '/', label: 'Inicio', icon: Home },
@@ -15,31 +23,28 @@ export function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        {/* Logos Section */}
         <div className="navbar-logos">
           <div className="logo-icbi">
-            <img 
-              src="/icbi.png" 
-              alt="ICBI - Instituto de Ciencias Básicas e Ingeniería" 
+            <img
+              src="/icbi.png"
+              alt="ICBI"
               className="logo-img icbi"
             />
           </div>
           <div className="logo-uaeh">
-            <img 
-              src="/uaeh.png" 
-              alt="UAEH - Universidad Autónoma del Estado de Hidalgo" 
+            <img
+              src="/uaeh.png"
+              alt="UAEH"
               className="logo-img uaeh"
             />
           </div>
         </div>
 
-        {/* Project Name */}
         <Link to="/" className="navbar-brand">
           <Code2 className="brand-icon" size={28} />
           <span className="brand-text">Aprender<span className="brand-plus">++</span></span>
         </Link>
 
-        {/* Navigation Links */}
         <ul className="navbar-nav">
           {navItems.map((item) => {
             const Icon = item.icon
@@ -56,6 +61,14 @@ export function Navbar() {
               </li>
             )
           })}
+          {token && (
+            <li className="nav-item">
+              <button onClick={handleLogout} className="nav-link logout-btn">
+                <LogOut size={20} />
+                <span>Salir</span>
+              </button>
+            </li>
+          )}
         </ul>
       </div>
     </nav>
