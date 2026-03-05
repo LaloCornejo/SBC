@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Home, BookOpen, Users, User, Code2, LogOut } from 'lucide-react'
+import { Home, BookOpen, Users, User, Code2, LogOut, ClipboardList } from 'lucide-react'
 import './styles.css'
 
 export function Navbar() {
@@ -15,6 +15,7 @@ export function Navbar() {
 
   const navItems = [
     { path: '/', label: 'Inicio', icon: Home },
+    { path: '/diagnostico', label: 'Diagnóstico', icon: ClipboardList },
     { path: '/aprender', label: 'Aprender', icon: BookOpen },
     { path: '/acerca', label: 'Acerca de', icon: Users },
     { path: '/perfil', label: 'Perfil', icon: User },

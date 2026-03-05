@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import hashlib
 from typing import Optional
+
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -60,6 +61,12 @@ async def register(data: RegisterReq):
     raise HTTPException(
         status_code=status.HTTP_409_CONFLICT, detail="Usuario ya existe"
     )
+
+
+@app.get("/api/v1/questions")
+async def get_questions():
+    db = get_db()
+    return {"success": True, "data": db.get_questions()}
 
 
 @app.get("/api/v1/hc")

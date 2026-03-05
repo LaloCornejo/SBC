@@ -75,7 +75,294 @@ class b2:
                 created REAL DEFAULT (unixepoch())
             )
         """)
+        self.conn.execute("""
+            CREATE TABLE IF NOT EXISTS questions (
+                id INTEGER PRIMARY KEY,
+                number INTEGER UNIQUE NOT NULL,
+                text TEXT NOT NULL,
+                language TEXT NOT NULL,
+                yes_next INTEGER,
+                no_next INTEGER
+            )
+        """)
+        self._seed_questions()
         self.conn.commit()
+
+    def _seed_questions(self):
+        count = self.conn.execute("SELECT COUNT(*) FROM questions").fetchone()[0]
+        if count > 0:
+            return
+        questions = [
+            (
+                1,
+                '¿Te gustaría crear programas que puedan "aprender" o tomar decisiones inteligentes?',
+                "Python",
+                2,
+                7,
+            ),
+            (
+                2,
+                "¿Te llama la atención trabajar analizando grandes cantidades de datos?",
+                "Python",
+                3,
+                19,
+            ),
+            (
+                3,
+                "¿Te gustaría desarrollar sistemas que puedan predecir resultados futuros?",
+                "Python",
+                4,
+                27,
+            ),
+            (
+                4,
+                "¿Te interesa automatizar tareas para ahorrar tiempo?",
+                "Python",
+                5,
+                26,
+            ),
+            (
+                5,
+                "¿Prefieres ver resultados funcionales en poco tiempo cuando programas?",
+                "Python",
+                6,
+                21,
+            ),
+            (
+                6,
+                "¿Te gusta crear pequeños programas o scripts para resolver problemas específicos?",
+                "Python",
+                33,
+                20,
+            ),
+            (
+                7,
+                "¿Te gustaría participar en el desarrollo de videojuegos?",
+                "C++",
+                8,
+                13,
+            ),
+            (
+                8,
+                "¿Te interesa programar cosas que estén muy cerca del funcionamiento del hardware?",
+                "C++",
+                9,
+                24,
+            ),
+            (
+                9,
+                "¿Te llama la atención cómo funcionan los sistemas operativos por dentro?",
+                "C++",
+                10,
+                32,
+            ),
+            (
+                10,
+                "¿Te gusta mejorar programas para que funcionen más rápido y consuman menos recursos?",
+                "C++",
+                11,
+                17,
+            ),
+            (
+                11,
+                "¿Estarías dispuesto a trabajar gestionando manualmente la memoria de un programa?",
+                "C++",
+                12,
+                16,
+            ),
+            (12, "¿Te motivan los retos técnicos difíciles?", "C++", 38, 25),
+            (
+                13,
+                "¿Te gustaría desarrollar software para empresas grandes?",
+                "Java",
+                14,
+                19,
+            ),
+            (
+                14,
+                '¿Te interesa trabajar en la parte "detrás" de las aplicaciones web (backend)?',
+                "Java",
+                15,
+                26,
+            ),
+            (
+                15,
+                "¿Te gustaría crear APIs que conecten diferentes sistemas?",
+                "Java",
+                16,
+                21,
+            ),
+            (
+                16,
+                "¿Te gusta organizar programas usando clases y objetos?",
+                "Java",
+                17,
+                22,
+            ),
+            (
+                17,
+                "¿Te atraen los proyectos grandes que requieren estructura y organización?",
+                "Java",
+                18,
+                20,
+            ),
+            (18, "¿Te gustaría desarrollar aplicaciones para Android?", "Java", 36, 19),
+            (19, "¿Disfrutas las matemáticas avanzadas?", "C++,Python", 20, 23),
+            (
+                20,
+                "¿Te sientes cómodo resolviendo problemas de lógica abstracta?",
+                "C++",
+                24,
+                33,
+            ),
+            (
+                21,
+                "¿Prefieres que un lenguaje sea sencillo aunque tenga menos control interno?",
+                "Python",
+                34,
+                22,
+            ),
+            (
+                22,
+                "¿Prefieres tener control total del programa aunque sea más complejo?",
+                "C++",
+                28,
+                25,
+            ),
+            (23, "¿Te desesperan los errores difíciles de entender?", "Python", 34, 24),
+            (
+                24,
+                "¿Te interesa entender cómo funciona una computadora internamente?",
+                "C++",
+                28,
+                29,
+            ),
+            (
+                25,
+                "¿Te gusta seguir reglas y estructuras bien definidas al programar?",
+                "Java",
+                30,
+                33,
+            ),
+            (
+                26,
+                "¿Te interesa crear aplicaciones web de manera rápida?",
+                "Python",
+                27,
+                31,
+            ),
+            (
+                27,
+                "¿Te gustaría desarrollar herramientas para investigación científica?",
+                "Python",
+                35,
+                28,
+            ),
+            (
+                28,
+                "¿Te interesan los dispositivos electrónicos pequeños (como microcontroladores)?",
+                "C++",
+                37,
+                29,
+            ),
+            (
+                29,
+                "¿Te gustaría desarrollar software para bancos o sistemas financieros?",
+                "Java",
+                30,
+                32,
+            ),
+            (
+                30,
+                "¿Te interesa trabajar con servidores e infraestructura?",
+                "Java",
+                31,
+                38,
+            ),
+            (
+                31,
+                "¿Te gustaría crear aplicaciones que funcionen en múltiples plataformas?",
+                "Java",
+                39,
+                32,
+            ),
+            (
+                32,
+                "¿Te interesa que tus programas tengan el máximo rendimiento posible?",
+                "C++",
+                37,
+                33,
+            ),
+            (33, "¿Estás comenzando tu camino en la programación?", "Python", 34, 36),
+            (
+                34,
+                "¿Prefieres un lenguaje con sintaxis clara y fácil de leer?",
+                "Python",
+                35,
+                40,
+            ),
+            (
+                35,
+                "¿Te interesa aprender un lenguaje muy utilizado en ciencia de datos?",
+                "Python",
+                40,
+                36,
+            ),
+            (
+                36,
+                "¿Te gustaría aprender un lenguaje muy usado en empresas grandes?",
+                "Java",
+                39,
+                37,
+            ),
+            (
+                37,
+                "¿Te gustaría trabajar en estudios profesionales de videojuegos?",
+                "C++",
+                38,
+                40,
+            ),
+            (
+                38,
+                "¿Te interesa trabajar en proyectos donde la eficiencia sea crítica?",
+                "C++",
+                -1,
+                39,
+            ),
+            (
+                39,
+                "¿Te gustaría desarrollar aplicaciones de escritorio completas y complejas?",
+                "Java",
+                40,
+                40,
+            ),
+            (
+                40,
+                "¿Te importa que el lenguaje tenga una comunidad grande y muchos recursos de aprendizaje?",
+                "Python",
+                -1,
+                -1,
+            ),
+        ]
+        self.conn.executemany(
+            "INSERT INTO questions (number, text, language, yes_next, no_next) VALUES (?, ?, ?, ?, ?)",
+            questions,
+        )
+
+    def get_questions(self):
+        rows = self.conn.execute(
+            "SELECT number, text, language, yes_next, no_next FROM questions ORDER BY number"
+        ).fetchall()
+        return [
+            {
+                "number": r[0],
+                "text": r[1],
+                "language": r[2],
+                "yes_next": r[3],
+                "no_next": r[4],
+            }
+            for r in rows
+        ]
 
     def add(self, username, password):
         try:
