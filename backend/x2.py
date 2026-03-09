@@ -85,6 +85,18 @@ class b2:
                 no_next INTEGER
             )
         """)
+        self.conn.execute("""
+            CREATE TABLE IF NOT EXISTS diagnostic_results (
+                id INTEGER PRIMARY KEY,
+                username TEXT NOT NULL,
+                result TEXT NOT NULL,
+                python_score INTEGER NOT NULL,
+                cpp_score INTEGER NOT NULL,
+                java_score INTEGER NOT NULL,
+                created REAL DEFAULT (unixepoch()),
+                FOREIGN KEY (username) REFERENCES users(username)
+            )
+        """)
         self._seed_questions()
         self.conn.commit()
 
@@ -399,6 +411,40 @@ class b2:
         if user:
             return b1.v1(password, user["password"])
         return False
+
+    def save_diagnostic_result(
+        self,
+        username: str,
+        result: str,
+        python_score: int,
+        cpp_score: int,
+        java_score: int,
+    ) -> bool:
+        try:
+            self.conn.execute(
+                "INSERT INTO diagnostic_results (username, result, python_score, cpp_score, java_score) VALUES (?, ?, ?, ?, ?)",
+                (username, result, python_score, cpp_score, java_score),
+            )
+            self.conn.commit()
+            return True
+        except Exception:
+            return False
+
+    def get_diagnostic_results(self, username: str):
+        rows = self.conn.execute(
+            "SELECT result, python_score, cpp_score, java_score, created FROM diagnostic_results WHERE username = ? ORDER BY created DESC",
+            (username,),
+        ).fetchall()
+        return [
+            {
+                "result": r[0],
+                "python_score": r[1],
+                "cpp_score": r[2],
+                "java_score": r[3],
+                "created": r[4],
+            }
+            for r in rows
+        ]
 
 
 _db_instance = None

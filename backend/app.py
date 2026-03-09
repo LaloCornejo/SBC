@@ -28,6 +28,14 @@ class RegisterReq(BaseModel):
     password: str
 
 
+class DiagnosticResultReq(BaseModel):
+    username: str
+    result: str
+    python_score: int
+    cpp_score: int
+    java_score: int
+
+
 class Response(BaseModel):
     success: bool
     token: Optional[str] = None
@@ -67,6 +75,26 @@ async def register(data: RegisterReq):
 async def get_questions():
     db = get_db()
     return {"success": True, "data": db.get_questions()}
+
+
+@app.post("/api/v1/diagnostic-result", response_model=Response)
+async def save_diagnostic_result(data: DiagnosticResultReq):
+    db = get_db()
+    if db.save_diagnostic_result(
+        data.username, data.result, data.python_score, data.cpp_score, data.java_score
+    ):
+        return Response(success=True, data={"username": data.username})
+    raise HTTPException(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        detail="Error al guardar resultado",
+    )
+
+
+@app.get("/api/v1/diagnostic-results/{username}", response_model=Response)
+async def get_diagnostic_results(username: str):
+    db = get_db()
+    results = db.get_diagnostic_results(username)
+    return Response(success=True, data=results)
 
 
 @app.get("/api/v1/hc")

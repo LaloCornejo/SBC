@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { diagnosticApi } from '../../services/api'
 import './styles.css'
 
 const QUESTIONS: Record<number, string> = {
@@ -211,7 +212,25 @@ export function Diagnostico() {
     return 'java'
   }
 
+  const saveResult = async () => {
+    const username = localStorage.getItem('u')
+    if (!username) return
+
+    const winner = getWinner()
+    try {
+      await diagnosticApi.saveResult(username, {
+        result: winner,
+        python_score: scores.python,
+        cpp_score: scores.cpp,
+        java_score: scores.java,
+      })
+    } catch (error) {
+      console.error('Failed to save diagnostic result:', error)
+    }
+  }
+
   if (finished) {
+    saveResult()
     const winner = getWinner()
     const info   = RESULT_INFO[winner]
 

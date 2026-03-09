@@ -136,4 +136,38 @@ export const exercisesApi = {
   },
 };
 
+// Diagnostic API
+export type DiagnosticResult = {
+  result: 'python' | 'cpp' | 'java';
+  python_score: number;
+  cpp_score: number;
+  java_score: number;
+};
+
+export const diagnosticApi = {
+  saveResult: async (
+    username: string,
+    result: DiagnosticResult
+  ) => {
+    const response = await api.post<ApiResponse<{ username: string }>>(
+      "/v1/diagnostic-result",
+      {
+        username,
+        result: result.result,
+        python_score: result.python_score,
+        cpp_score: result.cpp_score,
+        java_score: result.java_score,
+      }
+    );
+    return response.data;
+  },
+
+  getResults: async (username: string) => {
+    const response = await api.get<ApiResponse<DiagnosticResult[]>>(
+      `/v1/diagnostic-results/${username}`
+    );
+    return response.data;
+  },
+};
+
 export default api;
