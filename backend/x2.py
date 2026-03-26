@@ -73,9 +73,17 @@ class b2:
                 id INTEGER PRIMARY KEY,
                 username TEXT UNIQUE NOT NULL,
                 password TEXT NOT NULL,
+                role TEXT DEFAULT 'student',
                 created REAL DEFAULT (unixepoch())
             )
         """)
+        # Migración: agregar columna role si no existe
+        try:
+            self.conn.execute(
+                "ALTER TABLE users ADD COLUMN role TEXT DEFAULT 'student'"
+            )
+        except Exception:
+            pass
         self.conn.execute("""
             CREATE TABLE IF NOT EXISTS questions (
                 id INTEGER PRIMARY KEY,
@@ -106,6 +114,20 @@ class b2:
         except Exception:
             pass
         self.conn.execute("""
+            CREATE TABLE IF NOT EXISTS expert_annotations (
+                id INTEGER PRIMARY KEY,
+                expert_username TEXT NOT NULL,
+                student_username TEXT NOT NULL,
+                diagnostic_id INTEGER,
+                annotation TEXT NOT NULL,
+                created REAL DEFAULT (unixepoch()),
+                updated REAL DEFAULT (unixepoch()),
+                FOREIGN KEY (expert_username) REFERENCES users(username),
+                FOREIGN KEY (student_username) REFERENCES users(username),
+                FOREIGN KEY (diagnostic_id) REFERENCES diagnostic_results(id)
+            )
+        """)
+        self.conn.execute("""
             CREATE TABLE IF NOT EXISTS temas (
                 id INTEGER PRIMARY KEY,
                 curso TEXT NOT NULL,
@@ -129,6 +151,7 @@ class b2:
         """)
         self._seed_questions()
         self._seed_temas()
+        self._seed_expert_user()
         self.conn.commit()
 
     def _seed_questions(self):
@@ -429,6 +452,25 @@ class b2:
                         ),
                     )
 
+    def _seed_expert_user(self):
+        expert_exists = self.conn.execute(
+            "SELECT COUNT(*) FROM users WHERE username = 'expert'"
+        ).fetchone()[0]
+        if expert_exists == 0:
+            hashed = b1.h1("root")
+            self.conn.execute(
+                "INSERT INTO users (username, password, role) VALUES (?, ?, ?)",
+                ("expert", hashed, "expert"),
+            )
+            if HAS_VEC:
+                try:
+                    self.conn.execute(
+                        "INSERT INTO vt_users (username, password) VALUES (?, ?)",
+                        ("expert", hashed),
+                    )
+                except:
+                    pass
+
     def get_temas_by_language(self, language: str):
         rows = self.conn.execute(
             "SELECT id, curso, nivel, id_capitulo, titulo_capitulo FROM temas WHERE curso = ? ORDER BY id_capitulo",
@@ -604,6 +646,118 @@ class b2:
             }
             for r in rows
         ]
+
+    def get_user_role(self, username: str):
+        row = self.conn.execute(
+            "SELECT role FROM users WHERE username = ?",
+            (username,),
+        ).fetchone()
+        return row[0] if row else None
+
+    def is_expert(self, username: str):
+        role = self.get_user_role(username)
+        return role in ("expert", "admin")
+
+    def get_all_students_with_diagnostics(self):
+        rows = self.conn.execute("""
+            SELECT DISTINCT u.username, u.created,
+                   COUNT(d.id) as diagnostic_count,
+                   MAX(d.created) as last_diagnostic
+            FROM users u
+            LEFT JOIN diagnostic_results d ON u.username = d.username
+            WHERE u.role = 'student'
+            GROUP BY u.username
+            ORDER BY last_diagnostic DESC NULLS LAST
+        """).fetchall()
+        return [
+            {
+                "username": r[0],
+                "created": r[1],
+                "diagnostic_count": r[2],
+                "last_diagnostic": r[3],
+            }
+            for r in rows
+        ]
+
+    def get_diagnostic_results_with_id(self, username: str):
+        rows = self.conn.execute(
+            "SELECT id, result, python_score, cpp_score, java_score, difficulty_responses, created FROM diagnostic_results WHERE username = ? ORDER BY created DESC",
+            (username,),
+        ).fetchall()
+        return [
+            {
+                "id": r[0],
+                "result": r[1],
+                "python_score": r[2],
+                "cpp_score": r[3],
+                "java_score": r[4],
+                "difficulty_responses": r[5],
+                "created": r[6],
+            }
+            for r in rows
+        ]
+
+    def save_annotation(
+        self,
+        expert_username: str,
+        student_username: str,
+        annotation: str,
+        diagnostic_id: int | None = None,
+    ):
+        try:
+            self.conn.execute(
+                "INSERT INTO expert_annotations (expert_username, student_username, diagnostic_id, annotation) VALUES (?, ?, ?, ?)",
+                (expert_username, student_username, diagnostic_id, annotation),
+            )
+            self.conn.commit()
+            return True
+        except Exception:
+            return False
+
+    def update_annotation(self, annotation_id: int, annotation: str):
+        try:
+            self.conn.execute(
+                "UPDATE expert_annotations SET annotation = ?, updated = unixepoch() WHERE id = ?",
+                (annotation, annotation_id),
+            )
+            self.conn.commit()
+            return True
+        except Exception:
+            return False
+
+    def get_annotations_for_student(self, student_username: str):
+        rows = self.conn.execute(
+            """
+            SELECT id, expert_username, student_username, diagnostic_id, annotation, created, updated
+            FROM expert_annotations
+            WHERE student_username = ?
+            ORDER BY updated DESC
+        """,
+            (student_username,),
+        ).fetchall()
+        return [
+            {
+                "id": r[0],
+                "expert_username": r[1],
+                "student_username": r[2],
+                "diagnostic_id": r[3],
+                "annotation": r[4],
+                "created": r[5],
+                "updated": r[6],
+            }
+            for r in rows
+        ]
+
+    def delete_annotation(self, annotation_id: int):
+        try:
+            self.conn.execute(
+                "DELETE FROM expert_annotations WHERE id = ?",
+                (annotation_id,),
+            )
+            self.conn.commit()
+            return True
+        except Exception:
+            return False
 
 
 _db_instance = None

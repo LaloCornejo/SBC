@@ -7,6 +7,7 @@ export interface User {
   xp: number;
   streak: number;
   joinDate: string;
+  role?: 'student' | 'expert' | 'admin';
 }
 
 export interface TeamMember {
@@ -70,4 +71,31 @@ export interface UserLearningContent {
   score: number;
   max_score: number;
   chapters: Tema[];
+}
+
+export interface StudentSummary {
+  username: string;
+  created: number;
+  diagnostic_count: number;
+  last_diagnostic: number | null;
+}
+
+export interface DiagnosticResultWithId {
+  id: number;
+  result: 'python' | 'cpp' | 'java';
+  python_score: number;
+  cpp_score: number;
+  java_score: number;
+  difficulty_responses: string;
+  created: number;
+}
+
+export interface ExpertAnnotation {
+  id: number;
+  expert_username: string;
+  student_username: string;
+  diagnostic_id: number | null;
+  annotation: string;
+  created: number;
+  updated: number;
 }

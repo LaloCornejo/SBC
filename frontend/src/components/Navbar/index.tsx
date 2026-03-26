@@ -1,25 +1,34 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Home, BookOpen, Users, User, Code2, LogOut, ClipboardList } from 'lucide-react'
+import { Home, BookOpen, Users, User, Code2, LogOut, ClipboardList, Stethoscope } from 'lucide-react'
 import './styles.css'
 
 export function Navbar() {
   const location = useLocation()
   const navigate = useNavigate()
   const token = localStorage.getItem('t')
+  const userRole = localStorage.getItem('role') || 'student'
+  const isExpert = userRole === 'expert' || userRole === 'admin'
 
   const handleLogout = () => {
     localStorage.removeItem('t')
     localStorage.removeItem('u')
+    localStorage.removeItem('role')
     navigate('/login')
   }
 
-  const navItems = [
-    { path: '/', label: 'Inicio', icon: Home },
-    { path: '/diagnostico', label: 'Diagnóstico', icon: ClipboardList },
-    { path: '/aprender', label: 'Aprender', icon: BookOpen },
-    { path: '/acerca', label: 'Acerca de', icon: Users },
-    { path: '/perfil', label: 'Perfil', icon: User },
-  ]
+  const navItems = isExpert
+    ? [
+        { path: '/', label: 'Inicio', icon: Home },
+        { path: '/experto', label: 'Experto', icon: Stethoscope },
+        { path: '/perfil', label: 'Perfil', icon: User },
+      ]
+    : [
+        { path: '/', label: 'Inicio', icon: Home },
+        { path: '/diagnostico', label: 'Diagnóstico', icon: ClipboardList },
+        { path: '/aprender', label: 'Aprender', icon: BookOpen },
+        { path: '/acerca', label: 'Acerca de', icon: Users },
+        { path: '/perfil', label: 'Perfil', icon: User },
+      ]
 
   return (
     <nav className="navbar">

@@ -6,7 +6,7 @@ import { Home } from "./pages/Home";
 import { About } from "./pages/About";
 import { Learning } from "./pages/Learning";
 import { Profile } from "./pages/Profile";
-import { Login, Diagnostico } from "./pages";
+import { Login, Diagnostico, ExpertAnnotations } from "./pages";
 import "./styles/app.css";
 
 function App() {
@@ -49,6 +49,10 @@ function App() {
           <Route
             path="/diagnostico"
             element={isLoggedIn ? <Diagnostico /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/experto"
+            element={isLoggedIn ? <ExpertAnnotations /> : <Navigate to="/login" />}
           />
           <Route
             path="/perfil"

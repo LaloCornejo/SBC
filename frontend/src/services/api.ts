@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { ApiResponse, User, Lesson, Exercise, Tema, UserLearningContent } from "../types";
+import type { ApiResponse, User, Lesson, Exercise, Tema, UserLearningContent, StudentSummary, DiagnosticResultWithId, ExpertAnnotation } from "../types";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8003";
 
@@ -191,6 +191,72 @@ export const contentApi = {
   getUserContent: async (username: string) => {
     const response = await api.get<ApiResponse<UserLearningContent>>(
       `/v1/content/user/${username}`
+    );
+    return response.data;
+  },
+};
+
+// Expert API
+export const expertApi = {
+  getStudents: async (expertUsername: string) => {
+    const response = await api.get<ApiResponse<StudentSummary[]>>(
+      `/v1/expert/students`,
+      { params: { expert_username: expertUsername } }
+    );
+    return response.data;
+  },
+
+  getStudentDiagnostics: async (studentUsername: string, expertUsername: string) => {
+    const response = await api.get<ApiResponse<DiagnosticResultWithId[]>>(
+      `/v1/expert/student/${studentUsername}/diagnostics`,
+      { params: { expert_username: expertUsername } }
+    );
+    return response.data;
+  },
+
+  createAnnotation: async (
+    expertUsername: string,
+    studentUsername: string,
+    annotation: string,
+    diagnosticId?: number
+  ) => {
+    const response = await api.post<ApiResponse<{ message: string }>>(
+      "/v1/expert/annotation",
+      {
+        expert_username: expertUsername,
+        student_username: studentUsername,
+        annotation,
+        diagnostic_id: diagnosticId,
+      }
+    );
+    return response.data;
+  },
+
+  updateAnnotation: async (
+    annotationId: number,
+    annotation: string,
+    expertUsername: string
+  ) => {
+    const response = await api.put<ApiResponse<{ message: string }>>(
+      `/v1/expert/annotation/${annotationId}`,
+      { annotation },
+      { params: { expert_username: expertUsername } }
+    );
+    return response.data;
+  },
+
+  getStudentAnnotations: async (studentUsername: string, expertUsername: string) => {
+    const response = await api.get<ApiResponse<ExpertAnnotation[]>>(
+      `/v1/expert/annotations/${studentUsername}`,
+      { params: { expert_username: expertUsername } }
+    );
+    return response.data;
+  },
+
+  deleteAnnotation: async (annotationId: number, expertUsername: string) => {
+    const response = await api.delete<ApiResponse<{ message: string }>>(
+      `/v1/expert/annotation/${annotationId}`,
+      { params: { expert_username: expertUsername } }
     );
     return response.data;
   },

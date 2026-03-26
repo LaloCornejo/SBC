@@ -11,12 +11,6 @@ interface A0 {
   password: string
 }
 
-interface B0 {
-  success: boolean
-  token?: string
-  error?: string
-}
-
 const s = `
 .x9 {
   min-height: 100vh;
@@ -313,11 +307,14 @@ export function X9() {
         body: JSON.stringify(d)
       })
 
-      const v: B0 = await w.json()
+      const v = await w.json()
 
       if (v.success && v.token) {
         localStorage.setItem('t', v.token)
         localStorage.setItem('u', u)
+        if (v.data?.role) {
+          localStorage.setItem('role', v.data.role)
+        }
         n('/')
       } else {
         setE(v.error || (r ? 'Error al registrar' : 'Credenciales inválidas'))

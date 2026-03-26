@@ -59,8 +59,11 @@ async def login(data: LoginReq):
         token = hashlib.sha256(
             f"{data.username}:{data.password}:SBCv2".encode()
         ).hexdigest()
+        role = db.get_user_role(data.username) or "student"
 
-        return Response(success=True, token=token, data={"username": data.username})
+        return Response(
+            success=True, token=token, data={"username": data.username, "role": role}
+        )
 
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED, detail="Credenciales invalidas"
@@ -72,7 +75,8 @@ async def register(data: RegisterReq):
     db = get_db()
 
     if db.add(data.username, data.password):
-        return Response(success=True, data={"username": data.username})
+        role = db.get_user_role(data.username) or "student"
+        return Response(success=True, data={"username": data.username, "role": role})
 
     raise HTTPException(
         status_code=status.HTTP_409_CONFLICT, detail="Usuario ya existe"
@@ -221,6 +225,141 @@ async def execute_code(data: ExecuteReq):
 @app.get("/api/v1/hc")
 async def health():
     return {"status": True}
+
+
+class AnnotationReq(BaseModel):
+    expert_username: str
+    student_username: str
+    annotation: str
+    diagnostic_id: Optional[int] = None
+
+
+class AnnotationUpdateReq(BaseModel):
+    annotation: str
+
+
+@app.get("/api/v1/expert/students")
+async def get_students(expert_username: str):
+    db = get_db()
+    if not db.is_expert(expert_username):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Acceso denegado: se requiere rol de experto",
+        )
+    students = db.get_all_students_with_diagnostics()
+    return {"success": True, "data": students}
+
+
+@app.get("/api/v1/expert/student/{username}/diagnostics")
+async def get_student_diagnostics(username: str, expert_username: str):
+    db = get_db()
+    if not db.is_expert(expert_username):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Acceso denegado: se requiere rol de experto",
+        )
+    diagnostics = db.get_diagnostic_results_with_id(username)
+    return {"success": True, "data": diagnostics}
+
+
+@app.post("/api/v1/expert/annotation", response_model=Response)
+async def create_annotation(data: AnnotationReq):
+    db = get_db()
+    if not db.is_expert(data.expert_username):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Acceso denegado: se requiere rol de experto",
+        )
+    if db.save_annotation(
+        data.expert_username,
+        data.student_username,
+        data.annotation,
+        data.diagnostic_id,
+    ):
+        return Response(success=True, data={"message": "Anotación guardada"})
+    raise HTTPException(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        detail="Error al guardar anotación",
+    )
+
+
+@app.put("/api/v1/expert/annotation/{annotation_id}", response_model=Response)
+async def update_annotation(
+    annotation_id: int, data: AnnotationUpdateReq, expert_username: str
+):
+    db = get_db()
+    if not db.is_expert(expert_username):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Acceso denegado: se requiere rol de experto",
+        )
+    if db.update_annotation(annotation_id, data.annotation):
+        return Response(success=True, data={"message": "Anotación actualizada"})
+    raise HTTPException(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        detail="Error al actualizar anotación",
+    )
+
+
+@app.get("/api/v1/expert/annotations/{student_username}")
+async def get_student_annotations(student_username: str, expert_username: str):
+    db = get_db()
+    if not db.is_expert(expert_username):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Acceso denegado: se requiere rol de experto",
+        )
+    annotations = db.get_annotations_for_student(student_username)
+    return {"success": True, "data": annotations}
+
+
+@app.delete("/api/v1/expert/annotation/{annotation_id}", response_model=Response)
+async def delete_annotation(annotation_id: int, expert_username: str):
+    db = get_db()
+    if not db.is_expert(expert_username):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Acceso denegado: se requiere rol de experto",
+        )
+    if db.delete_annotation(annotation_id):
+        return Response(success=True, data={"message": "Anotación eliminada"})
+    raise HTTPException(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        detail="Error al eliminar anotación",
+    )
+
+
+class PromoteReq(BaseModel):
+    admin_username: str
+    target_username: str
+    new_role: str
+
+
+@app.post("/api/v1/admin/promote", response_model=Response)
+async def promote_user(data: PromoteReq):
+    db = get_db()
+    if not db.is_expert(data.admin_username):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Acceso denegado: se requiere rol de admin",
+        )
+    try:
+        db.conn.execute(
+            "UPDATE users SET role = ? WHERE username = ?",
+            (data.new_role, data.target_username),
+        )
+        db.conn.commit()
+        return Response(
+            success=True,
+            data={
+                "message": f"Usuario {data.target_username} promovido a {data.new_role}"
+            },
+        )
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error al promover usuario",
+        )
 
 
 if __name__ == "__main__":
