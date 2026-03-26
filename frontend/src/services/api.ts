@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { ApiResponse, User, Lesson, Exercise } from "../types";
+import type { ApiResponse, User, Lesson, Exercise, Tema, UserLearningContent } from "../types";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8003";
 
@@ -121,7 +121,7 @@ export const exercisesApi = {
   execute: async (code: string, language: string = "python") => {
     const response = await api.post<
       ApiResponse<{ output: string; error?: string }>
-    >("/execute", {
+    >("/v1/execute", {
       code,
       language,
     });
@@ -142,6 +142,7 @@ export type DiagnosticResult = {
   python_score: number;
   cpp_score: number;
   java_score: number;
+  difficulty_responses?: string[];
 };
 
 export const diagnosticApi = {
@@ -157,6 +158,7 @@ export const diagnosticApi = {
         python_score: result.python_score,
         cpp_score: result.cpp_score,
         java_score: result.java_score,
+        difficulty_responses: result.difficulty_responses || [],
       }
     );
     return response.data;
@@ -165,6 +167,30 @@ export const diagnosticApi = {
   getResults: async (username: string) => {
     const response = await api.get<ApiResponse<DiagnosticResult[]>>(
       `/v1/diagnostic-results/${username}`
+    );
+    return response.data;
+  },
+};
+
+// Content API (Aprender module)
+export const contentApi = {
+  getByLanguage: async (language: string) => {
+    const response = await api.get<ApiResponse<Tema[]>>(
+      `/v1/content/${language}`
+    );
+    return response.data;
+  },
+
+  getByLanguageAndLevel: async (language: string, level: string) => {
+    const response = await api.get<ApiResponse<Tema[]>>(
+      `/v1/content/${language}/${level}`
+    );
+    return response.data;
+  },
+
+  getUserContent: async (username: string) => {
+    const response = await api.get<ApiResponse<UserLearningContent>>(
+      `/v1/content/user/${username}`
     );
     return response.data;
   },

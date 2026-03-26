@@ -1,0 +1,142 @@
+{
+  "curso": "Python",
+  "nivel": "Básico",
+  "total_capitulos": 5,
+  "capitulos": [
+    {
+      "num_capitulo": 1,
+      "titulo": "Introducción y Sintaxis",
+      "secciones": [
+        {
+          "id": 1,
+          "tipo": "contenido",
+          "titulo": "Hola Mundo e Identación",
+          "cuerpo": "Python es un lenguaje 'amigable' que se lee muy parecido al inglés. A diferencia de otros lenguajes que usan llaves {}, Python utiliza espacios al inicio de la línea (llamados identación) para saber qué instrucciones van dentro de otras. Si no respetas estos espacios, el programa se confundirá y no funcionará. ¡Es su forma de mantener el código ordenado!",
+          "codigo": "print(\"Hola, Python\")\n\nif True:\n    print(\"Este mensaje tiene 4 espacios de sangría\")"
+        },
+        {
+          "id": 2,
+          "tipo": "contenido",
+          "titulo": "Variables y Tipos Dinámicos",
+          "cuerpo": "Imagina que las variables son etiquetas que le pones a los datos. En Python no tienes que avisarle a la computadora si vas a guardar un número o un texto; él es lo suficientemente inteligente para darse cuenta solo. Puedes guardar un nombre (texto), una edad (número entero) o un precio (número con decimales) simplemente asignándoles un valor.",
+          "codigo": "nombre = \"Ana\"  # Python sabe que es texto\nedad = 25        # Sabe que es número\nprecio = 10.5   # Sabe que es decimal"
+        },
+        {
+          "id": 3,
+          "tipo": "contenido",
+          "titulo": "Entrada y Salida",
+          "cuerpo": "Para que tu programa interactúe contigo, usamos print() para mostrar mensajes en la pantalla y input() para hacer preguntas. Ten en cuenta un pequeño truco: todo lo que escribas en un input(), Python lo recibirá como si fuera texto, incluso si escribes un número.",
+          "codigo": "usuario = input(\"¿Cómo te llamas?: \")\nprint(f\"¡Qué gusto verte, {usuario}!\")"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 2,
+      "titulo": "Operadores y Control de Flujo",
+      "secciones": [
+        {
+          "id": 5,
+          "tipo": "contenido",
+          "titulo": "Operadores Aritméticos",
+          "cuerpo": "Python sabe hacer matemáticas básicas como sumar (+) o restar (-), pero también tiene superpoderes: el operador // te da el resultado de una división sin decimales (división entera) y el operador ** sirve para elevar un número a una potencia, como decir 2 al cubo.",
+          "codigo": "print(10 // 3)  # Da 3\nprint(2 ** 3)   # Da 8"
+        },
+        {
+          "id": 6,
+          "tipo": "contenido",
+          "titulo": "Condicionales (if, elif, else)",
+          "cuerpo": "Las condicionales son como caminos en un bosque. 'If' es tu primera opción; si no se cumple, puedes usar 'elif' para dar otra opción específica, y finalmente 'else' es lo que sucede si ninguna de las anteriores funcionó. Es como decidir: si hace sol voy al parque, si llueve voy al cine, y si no, me quedo en casa.",
+          "codigo": "if nota >= 9:\n    print(\"Excelente\")\nelif nota >= 7:\n    print(\"Aprobado\")\nelse:\n    print(\"Reprobado\")"
+        },
+        {
+          "id": 7,
+          "tipo": "contenido",
+          "titulo": "Operadores Lógicos",
+          "cuerpo": "Para tomar decisiones más complejas, usamos palabras en lugar de símbolos raros. 'and' significa que se deben cumplir las dos cosas; 'or' significa que con una que sea verdad es suficiente; y 'not' simplemente voltea el resultado (lo que era verdad lo hace falso). ¡Es muy natural de leer!",
+          "codigo": "if edad > 18 and tiene_ticket:\n    print(\"¡Puedes pasar!\")"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 3,
+      "titulo": "Bucles y Colecciones Básicas",
+      "secciones": [
+        {
+          "id": 9,
+          "tipo": "contenido",
+          "titulo": "Bucle For y range()",
+          "cuerpo": "El bucle 'for' sirve para repetir una acción varias veces. Usamos range() para decirle cuántas veces queremos repetir. Por ejemplo, range(5) creará una cuenta del 0 al 4. Es perfecto para cuando ya sabes de antemano cuántas vueltas quieres dar.",
+          "codigo": "for i in range(5):\n    print(f\"Vuelta número {i}\")"
+        },
+        {
+          "id": 10,
+          "tipo": "contenido",
+          "titulo": "Bucle While",
+          "cuerpo": "El bucle 'while' es como un guardia que te deja pasar mientras tengas permiso. Se repetirá 'mientras' la condición sea verdadera. ¡Ten cuidado! Debes asegurarte de que en algún momento la condición cambie a falso, o el programa se quedará repitiendo para siempre.",
+          "codigo": "while energia > 0:\n    print(\"Sigo caminando...\")\n    energia -= 1"
+        },
+        {
+          "id": 11,
+          "tipo": "contenido",
+          "titulo": "Listas (Introducción)",
+          "cuerpo": "Una lista es como una mochila donde puedes meter muchas cosas. Puedes guardar textos, números y mezclarlos si quieres. Lo mejor es que son 'mutables', lo que significa que puedes sacar cosas, meter nuevas con .append() o cambiar lo que ya está guardado.",
+          "codigo": "frutas = [\"manzana\", \"pera\"]\nfrutas.append(\"uva\") # Ahora hay 3 frutas"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 4,
+      "titulo": "Funciones y Modularidad",
+      "secciones": [
+        {
+          "id": 13,
+          "tipo": "contenido",
+          "titulo": "Definición de Funciones (def)",
+          "cuerpo": "Las funciones son como recetas que guardas para usar después. Usas la palabra 'def' para darle un nombre a tu receta. Así, en lugar de escribir 10 líneas de código cada vez, solo llamas al nombre de tu función y Python hará todo el trabajo por ti.",
+          "codigo": "def saludar(nombre):\n    print(f\"Hola {nombre}, ¿cómo va todo?\")"
+        },
+        {
+          "id": 14,
+          "tipo": "contenido",
+          "titulo": "Parámetros y Retorno",
+          "cuerpo": "A las funciones les puedes pasar ingredientes (parámetros) para que trabajen con ellos. Cuando terminan su trabajo, pueden usarse para 'devolver' un resultado con la palabra 'return'. Es como una licuadora: metes fruta y te devuelve jugo.",
+          "codigo": "def suma(a, b):\n    return a + b"
+        },
+        {
+          "id": 15,
+          "tipo": "contenido",
+          "titulo": "Scope (Ámbito de variables)",
+          "cuerpo": "No todas las variables se conocen entre sí. Una variable creada dentro de una función es 'local' (solo vive ahí dentro). Las que creas fuera son 'globales' y todos pueden verlas. Es como la diferencia entre un secreto de familia y una noticia en el periódico.",
+          "codigo": "x = 10 # Todos la ven\ndef mi_funcion():\n    y = 5 # Solo existe aquí adentro"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 5,
+      "titulo": "Estructuras de Datos Avanzadas",
+      "secciones": [
+        {
+          "id": 17,
+          "tipo": "contenido",
+          "titulo": "Tuplas",
+          "cuerpo": "Las tuplas son primas de las listas, pero con una regla de oro: son 'inmutables'. Una vez que las creas con sus paréntesis (), no puedes cambiar nada dentro de ellas. Son ideales para datos que deben quedarse fijos, como las coordenadas de un mapa o los meses del año.",
+          "codigo": "punto = (10, 20) # No se puede cambiar"
+        },
+        {
+          "id": 18,
+          "tipo": "contenido",
+          "titulo": "Diccionarios",
+          "cuerpo": "Un diccionario funciona igual que uno real: buscas una 'clave' (la palabra) para encontrar su 'valor' (la definición). Se usan llaves {} y son increíblemente rápidos para encontrar información sin tener que revisar toda la lista.",
+          "codigo": "capitales = {\"España\": \"Madrid\", \"México\": \"CDMX\"}"
+        },
+        {
+          "id": 19,
+          "tipo": "contenido",
+          "titulo": "Métodos de Strings",
+          "cuerpo": "En Python, los textos son muy poderosos. Tienen funciones integradas para transformarse: puedes poner todo en mayúsculas (.upper()), minúsculas (.lower()) o incluso separar una frase en palabras sueltas (.split()). ¡Es muy fácil manipular texto!",
+          "codigo": "texto = \"hola mundo\"\nprint(texto.capitalize()) # Imprime \"Hola mundo\""
+        }
+      ]
+    }
+  ]
+}

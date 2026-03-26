@@ -1,0 +1,142 @@
+{
+  "curso": "Java",
+  "nivel": "Avanzado",
+  "total_capitulos": 5,
+  "capitulos": [
+    {
+      "num_capitulo": 1,
+      "titulo": "Programación Funcional y Lambdas",
+      "secciones": [
+        {
+          "id": 41,
+          "tipo": "contenido",
+          "titulo": "Expresiones Lambda",
+          "cuerpo": "Las expresiones Lambda permiten tratar bloques de código como datos, facilitando el paso de comportamientos como argumentos. Internamente, Java utiliza 'invokedynamic' para ejecutar estas funciones sin la sobrecarga de crear una clase anónima tradicional. Esto promueve un estilo de programación más limpio y facilita el uso de APIs que requieren callbacks.",
+          "codigo": "List<String> lista = Arrays.asList(\"A\", \"B\");\nlista.forEach(n -> System.out.println(n));"
+        },
+        {
+          "id": 42,
+          "tipo": "contenido",
+          "titulo": "Interfaces Funcionales",
+          "cuerpo": "Una Interfaz Funcional es aquella que posee exactamente un método abstracto (SAM - Single Abstract Method). Java 8 introdujo la anotación @FunctionalInterface para garantizar esta regla en compilación. El paquete java.util.function incluye interfaces estándar como Predicate<T> (retorna booleano), Function<T,R> (transforma datos) y Consumer<T> (procesa datos sin retorno).",
+          "codigo": "@FunctionalInterface\npublic interface MiOperacion { int ejecutar(int x); }"
+        },
+        {
+          "id": 43,
+          "tipo": "contenido",
+          "titulo": "Referencias a Métodos",
+          "cuerpo": "Las referencias a métodos (::) son azúcar sintáctico para Lambdas que solo llaman a un método existente. Pueden referenciar métodos estáticos, métodos de instancia de un objeto particular o constructores. Esto no solo hace el código más corto, sino que mejora la legibilidad al enfocarse en el nombre del método que realiza la acción.",
+          "codigo": "lista.forEach(System.out::println); // Referencia a método de instancia"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 2,
+      "titulo": "Java Stream API",
+      "secciones": [
+        {
+          "id": 45,
+          "tipo": "contenido",
+          "titulo": "Introducción a Streams",
+          "cuerpo": "La Stream API no es una estructura de datos, sino un flujo de elementos que se procesan de forma declarativa. Permite realizar operaciones complejas sobre colecciones (como filtrado y transformación) sin necesidad de bucles manuales. Soporta procesamiento secuencial y paralelo, aprovechando automáticamente los núcleos de la CPU si se utiliza parallelStream().",
+          "codigo": "long count = lista.stream().filter(s -> s.startsWith(\"A\")).count();"
+        },
+        {
+          "id": 46,
+          "tipo": "contenido",
+          "titulo": "Operaciones Intermedias",
+          "cuerpo": "Las operaciones intermedias como filter(), map() y sorted() son 'perezosas' (lazy); no se ejecutan hasta que se invoca una operación terminal. Esto permite optimizaciones internas (loop fusion), donde el Stream recorre los datos una sola vez aplicando todas las transformaciones en cadena, mejorando drásticamente el rendimiento en colecciones masivas.",
+          "codigo": "stream.map(String::toUpperCase).distinct().sorted();"
+        },
+        {
+          "id": 47,
+          "tipo": "contenido",
+          "titulo": "Operaciones Terminales",
+          "cuerpo": "Una operación terminal cierra el flujo del Stream e inicia el procesamiento de los datos. Ejemplos comunes son collect() (para convertir el stream de vuelta a una lista o mapa), forEach() y reduce(). Una vez que una operación terminal se ejecuta, el Stream se consume y no puede volver a ser utilizado.",
+          "codigo": "List<String> resultado = s.collect(Collectors.toList());"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 3,
+      "titulo": "Generics Avanzado y Optional",
+      "secciones": [
+        {
+          "id": 49,
+          "tipo": "contenido",
+          "titulo": "Clases Genéricas",
+          "cuerpo": "Los Generics permiten que las clases y métodos operen sobre tipos parametrizados. El beneficio principal es el 'Type Safety': el compilador detecta errores de tipo en tiempo de compilación en lugar de lanzar un ClassCastException en tiempo de ejecución. Java utiliza 'Type Erasure' para mantener la compatibilidad hacia atrás, eliminando la información del tipo en el bytecode.",
+          "codigo": "public class Caja<T> { private T objeto; }"
+        },
+        {
+          "id": 50,
+          "tipo": "contenido",
+          "titulo": "Wildcards (?, extends, super)",
+          "cuerpo": "Los Wildcards permiten manejar la varianza en genéricos. <? extends T> (covarianza) permite leer elementos de una jerarquía de clases, mientras que <? super T> (contravarianza) facilita la escritura. Entender el principio PECS (Producer Extends, Consumer Super) es vital para diseñar APIs genéricas que sean flexibles y seguras.",
+          "codigo": "void procesar(List<? extends Persona> lista) { /* Solo lectura */ }"
+        },
+        {
+          "id": 51,
+          "tipo": "contenido",
+          "titulo": "Clase Optional",
+          "cuerpo": "Optional es un contenedor diseñado para representar explícitamente la posibilidad de que un valor sea nulo. Su objetivo no es reemplazar cada referencia nula, sino ser usado en el valor de retorno de métodos para obligar al programador a considerar el caso de 'valor ausente', reduciendo drásticamente los errores de tipo NullPointerException.",
+          "codigo": "Optional<String> nombre = Optional.ofNullable(obtenerNombre());"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 4,
+      "titulo": "Concurrencia y Multihilo",
+      "secciones": [
+        {
+          "id": 53,
+          "tipo": "contenido",
+          "titulo": "Threads y Runnable",
+          "cuerpo": "Java permite la ejecución paralela mediante hilos nativos administrados por el sistema operativo. Un hilo puede definirse implementando Runnable o extendiendo Thread. Sin embargo, la creación manual de hilos es costosa en recursos, por lo que en aplicaciones avanzadas se prefiere delegar esta gestión a abstracciones de mayor nivel.",
+          "codigo": "new Thread(() -> realizarCalculo()).start();"
+        },
+        {
+          "id": 54,
+          "tipo": "contenido",
+          "titulo": "Sincronización (synchronized)",
+          "cuerpo": "La palabra clave 'synchronized' garantiza que solo un hilo a la vez pueda acceder a un bloque de código o método crítico (mutual exclusion). Esto previene las 'Race Conditions' o condiciones de carrera, donde el estado de un objeto se corrompe porque varios hilos intentan modificarlo simultáneamente sin coordinación.",
+          "codigo": "public synchronized void incrementar() { contador++; }"
+        },
+        {
+          "id": 55,
+          "tipo": "contenido",
+          "titulo": "ExecutorService",
+          "cuerpo": "El framework de Ejecutores separa la creación de hilos de la ejecución de tareas. Utiliza Thread Pools (grupos de hilos reutilizables) para procesar múltiples tareas de forma eficiente, limitando el número de hilos activos para no saturar el sistema. Es la forma estándar de manejar concurrencia masiva en servidores y aplicaciones empresariales.",
+          "codigo": "ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 5,
+      "titulo": "Java Moderno: Records, Var y Sealed Classes",
+      "secciones": [
+        {
+          "id": 57,
+          "tipo": "contenido",
+          "titulo": "Inferencia de Tipos (var)",
+          "cuerpo": "La palabra clave 'var' permite al compilador inferir el tipo de una variable local basándose en su inicializador. Esto reduce la verbosidad del código sin perder el tipado fuerte. No se puede usar en atributos de clase o parámetros de método; su uso debe equilibrarse para no sacrificar la claridad del código ante tipos complejos.",
+          "codigo": "var mapa = new HashMap<String, List<Usuario>>();"
+        },
+        {
+          "id": 58,
+          "tipo": "contenido",
+          "titulo": "Records (Inmutabilidad)",
+          "cuerpo": "Los Records son clases de datos inmutables que reducen el código 'boilerplate'. Al definir un record, Java genera automáticamente los campos privados finales, el constructor, los métodos de acceso (getters), equals(), hashCode() y toString(). Son ideales para ser usados como DTOs (Data Transfer Objects) o para representar estados fijos.",
+          "codigo": "public record Punto(int x, int y) { }"
+        },
+        {
+          "id": 59,
+          "tipo": "contenido",
+          "titulo": "Sealed Classes",
+          "cuerpo": "Las clases selladas permiten a un desarrollador declarar qué otras clases o interfaces pueden extenderlas o implementarlas. Esto cierra la jerarquía de herencia a un conjunto conocido de subtipos, lo que permite al compilador realizar análisis exhaustivos (como en los bloques switch modernos) y mejora la seguridad del diseño de la API.",
+          "codigo": "public sealed class Forma permits Circulo, Triangulo { }"
+        }
+      ]
+    }
+  ]
+}

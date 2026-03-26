@@ -163,6 +163,43 @@
   background: var(--gray-800);
 }
 
+.self-assessment-card {
+  background: linear-gradient(135deg, #fef3c7, #fde68a) !important;
+  border: 2px solid #f59e0b !important;
+}
+
+.self-assessment-badge {
+  background: #f59e0b !important;
+  color: #fff !important;
+}
+
+.btn-easy {
+  background: #16a34a;
+  color: #fff;
+}
+
+.btn-easy:hover {
+  background: #15803d;
+}
+
+.btn-normal {
+  background: #f59e0b;
+  color: #fff;
+}
+
+.btn-normal:hover {
+  background: #d97706;
+}
+
+.btn-hard {
+  background: #dc2626;
+  color: #fff;
+}
+
+.btn-hard:hover {
+  background: #b91c1c;
+}
+
 .result-page {
   display: flex;
   align-items: center;

@@ -3,6 +3,7 @@
 Gestion de datos vectoriales
 """
 
+import json
 import sqlite3
 import hashlib
 import base64
@@ -93,11 +94,41 @@ class b2:
                 python_score INTEGER NOT NULL,
                 cpp_score INTEGER NOT NULL,
                 java_score INTEGER NOT NULL,
+                difficulty_responses TEXT DEFAULT '[]',
                 created REAL DEFAULT (unixepoch()),
                 FOREIGN KEY (username) REFERENCES users(username)
             )
         """)
+        try:
+            self.conn.execute(
+                "ALTER TABLE diagnostic_results ADD COLUMN difficulty_responses TEXT DEFAULT '[]'"
+            )
+        except Exception:
+            pass
+        self.conn.execute("""
+            CREATE TABLE IF NOT EXISTS temas (
+                id INTEGER PRIMARY KEY,
+                curso TEXT NOT NULL,
+                nivel TEXT NOT NULL,
+                id_capitulo INTEGER NOT NULL,
+                titulo_capitulo TEXT NOT NULL,
+                UNIQUE(curso, nivel, id_capitulo)
+            )
+        """)
+        self.conn.execute("""
+            CREATE TABLE IF NOT EXISTS secciones (
+                id INTEGER PRIMARY KEY,
+                tema_id INTEGER NOT NULL,
+                id_seccion INTEGER NOT NULL,
+                tipo TEXT NOT NULL,
+                titulo TEXT NOT NULL,
+                cuerpo TEXT NOT NULL,
+                codigo TEXT,
+                FOREIGN KEY (tema_id) REFERENCES temas(id)
+            )
+        """)
         self._seed_questions()
+        self._seed_temas()
         self.conn.commit()
 
     def _seed_questions(self):
@@ -361,6 +392,129 @@ class b2:
             questions,
         )
 
+    def _seed_temas(self):
+        count = self.conn.execute("SELECT COUNT(*) FROM temas").fetchone()[0]
+        if count > 0:
+            return
+        json_dir = Path(__file__).parent.parent
+        json_files = (
+            sorted(json_dir.glob("*_basico.json"))
+            + sorted(json_dir.glob("*_intermedio.json"))
+            + sorted(json_dir.glob("*_avanzado.json"))
+        )
+        for jf in json_files:
+            with open(jf, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            curso = data["curso"]
+            nivel = data["nivel"]
+            for cap in data["capitulos"]:
+                self.conn.execute(
+                    "INSERT INTO temas (curso, nivel, id_capitulo, titulo_capitulo) VALUES (?, ?, ?, ?)",
+                    (curso, nivel, cap["num_capitulo"], cap["titulo"]),
+                )
+                tema_id = self.conn.execute(
+                    "SELECT id FROM temas WHERE curso = ? AND nivel = ? AND id_capitulo = ?",
+                    (curso, nivel, cap["num_capitulo"]),
+                ).fetchone()[0]
+                for sec in cap["secciones"]:
+                    self.conn.execute(
+                        "INSERT INTO secciones (tema_id, id_seccion, tipo, titulo, cuerpo, codigo) VALUES (?, ?, ?, ?, ?, ?)",
+                        (
+                            tema_id,
+                            sec["id"],
+                            sec["tipo"],
+                            sec["titulo"],
+                            sec["cuerpo"],
+                            sec.get("codigo"),
+                        ),
+                    )
+
+    def get_temas_by_language(self, language: str):
+        rows = self.conn.execute(
+            "SELECT id, curso, nivel, id_capitulo, titulo_capitulo FROM temas WHERE curso = ? ORDER BY id_capitulo",
+            (language,),
+        ).fetchall()
+        result = []
+        for r in rows:
+            tema = {
+                "id": r[0],
+                "curso": r[1],
+                "nivel": r[2],
+                "id_capitulo": r[3],
+                "titulo_capitulo": r[4],
+                "secciones": self._get_secciones_for_tema(r[0]),
+            }
+            result.append(tema)
+        return result
+
+    def _get_secciones_for_tema(self, tema_id: int):
+        rows = self.conn.execute(
+            "SELECT id, id_seccion, tipo, titulo, cuerpo, codigo FROM secciones WHERE tema_id = ? ORDER BY id_seccion",
+            (tema_id,),
+        ).fetchall()
+        return [
+            {
+                "id": r[0],
+                "id_seccion": r[1],
+                "tipo": r[2],
+                "titulo": r[3],
+                "cuerpo": r[4],
+                "codigo": r[5],
+            }
+            for r in rows
+        ]
+
+    def get_secciones_by_language_and_level(self, language: str, level: str):
+        rows = self.conn.execute(
+            "SELECT id, curso, nivel, id_capitulo, titulo_capitulo FROM temas WHERE curso = ? AND nivel = ? ORDER BY id_capitulo",
+            (language, level),
+        ).fetchall()
+        result = []
+        for r in rows:
+            tema = {
+                "id": r[0],
+                "curso": r[1],
+                "nivel": r[2],
+                "id_capitulo": r[3],
+                "titulo_capitulo": r[4],
+                "secciones": self._get_secciones_for_tema(r[0]),
+            }
+            result.append(tema)
+        return result
+
+    def get_user_learning_content(self, username: str):
+        diag = self.get_diagnostic_results(username)
+        if not diag:
+            return None
+        latest = diag[0]
+        language_key = latest["result"]
+        lang_map = {"python": "Python", "cpp": "C++", "java": "Java"}
+        language = lang_map.get(language_key, language_key)
+        score_key = f"{language_key}_score"
+        score = latest.get(score_key, 0)
+        max_scores = {"python": 11, "cpp": 10, "java": 9}
+        max_score = max_scores.get(language_key, 10)
+        diff_raw = latest.get("difficulty_responses", "[]")
+        try:
+            diff_responses = (
+                json.loads(diff_raw) if isinstance(diff_raw, str) else diff_raw
+            )
+        except (json.JSONDecodeError, TypeError):
+            diff_responses = []
+        easy_count = sum(1 for r in diff_responses if r == "fácil")
+        if diff_responses and easy_count > len(diff_responses) / 2:
+            level = "Intermedio"
+        else:
+            level = "Básico"
+        chapters = self.get_secciones_by_language_and_level(language, level)
+        return {
+            "language": language_key,
+            "level": level,
+            "score": score,
+            "max_score": max_score,
+            "chapters": chapters,
+        }
+
     def get_questions(self):
         rows = self.conn.execute(
             "SELECT number, text, language, yes_next, no_next FROM questions ORDER BY number"
@@ -419,11 +573,15 @@ class b2:
         python_score: int,
         cpp_score: int,
         java_score: int,
+        difficulty_responses: list | None = None,
     ) -> bool:
         try:
+            if difficulty_responses is None:
+                difficulty_responses = []
+            diff_json = json.dumps(difficulty_responses)
             self.conn.execute(
-                "INSERT INTO diagnostic_results (username, result, python_score, cpp_score, java_score) VALUES (?, ?, ?, ?, ?)",
-                (username, result, python_score, cpp_score, java_score),
+                "INSERT INTO diagnostic_results (username, result, python_score, cpp_score, java_score, difficulty_responses) VALUES (?, ?, ?, ?, ?, ?)",
+                (username, result, python_score, cpp_score, java_score, diff_json),
             )
             self.conn.commit()
             return True
@@ -432,7 +590,7 @@ class b2:
 
     def get_diagnostic_results(self, username: str):
         rows = self.conn.execute(
-            "SELECT result, python_score, cpp_score, java_score, created FROM diagnostic_results WHERE username = ? ORDER BY created DESC",
+            "SELECT result, python_score, cpp_score, java_score, difficulty_responses, created FROM diagnostic_results WHERE username = ? ORDER BY created DESC",
             (username,),
         ).fetchall()
         return [
@@ -441,7 +599,8 @@ class b2:
                 "python_score": r[1],
                 "cpp_score": r[2],
                 "java_score": r[3],
-                "created": r[4],
+                "difficulty_responses": r[4],
+                "created": r[5],
             }
             for r in rows
         ]

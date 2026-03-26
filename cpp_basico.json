@@ -1,0 +1,142 @@
+{
+  "curso": "C++",
+  "nivel": "Básico",
+  "total_capitulos": 5,
+  "capitulos": [
+    {
+      "num_capitulo": 1,
+      "titulo": "Fundamentos y Salida de Datos",
+      "secciones": [
+        {
+          "id": 1,
+          "tipo": "contenido",
+          "titulo": "Introducción y Estructura",
+          "cuerpo": "¡Bienvenido al mundo de C++! Imagina que un programa es como una receta de cocina: C++ es el lenguaje para escribir esa receta. Todo programa tiene una 'puerta de entrada' llamada main(). Sin ella, la computadora no sabría por dónde empezar a leer tus instrucciones. Un detalle importante: C++ es muy estricto con las mayúsculas; no es lo mismo escribir 'Main' que 'main'.",
+          "codigo": "#include <iostream>\n\nint main() {\n    return 0;\n}"
+        },
+        {
+          "id": 2,
+          "tipo": "contenido",
+          "titulo": "Salida con cout",
+          "cuerpo": "Para que tu programa te 'hable', usamos std::cout. Piensa en las flechitas << como un mensajero que empuja el texto hacia la pantalla. Si quieres que el siguiente mensaje aparezca en una línea nueva (como dar un 'Enter'), usamos std::endl al final. Es la forma más básica de ver que tu código realmente está funcionando.",
+          "codigo": "std::cout << \"Hola Mundo\" << std::endl;"
+        },
+        {
+          "id": 3,
+          "tipo": "contenido",
+          "titulo": "Comentarios",
+          "cuerpo": "A veces querrás dejar notas para ti mismo o para otros amigos que lean tu código. Estas notas se llaman 'comentarios'. La computadora las ignora por completo, así que puedes escribir lo que quieras. Usa // para una nota rápida en una línea, o /* */ si necesitas escribir un párrafo entero de explicación.",
+          "codigo": "// Esta es una nota para mí\n/* Este bloque de texto\nno afecta al programa */"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 2,
+      "titulo": "Variables y Tipos de Datos",
+      "secciones": [
+        {
+          "id": 5,
+          "tipo": "contenido",
+          "titulo": "Tipos Primitivos",
+          "cuerpo": "Las variables son como cajitas donde guardamos información. Pero en C++, debemos ponerle una etiqueta a la caja para saber qué cabe dentro: 'int' es para números enteros (como tu edad), 'double' para números con punto decimal (como el precio de un dulce), 'char' para una sola letra y 'bool' para valores de sí o no (verdadero o falso).",
+          "codigo": "int edad = 20;\ndouble precio = 5.99;\nchar inicial = 'G';"
+        },
+        {
+          "id": 6,
+          "tipo": "contenido",
+          "titulo": "Entrada con cin",
+          "cuerpo": "Así como cout sirve para mostrar mensajes, std::cin sirve para 'escuchar' al usuario. Cuando el programa llega a esta instrucción, se detiene y espera a que escribas algo con el teclado y presiones Enter. Las flechitas ahora apuntan hacia la derecha >> porque la información 'entra' desde el teclado hacia tu variable.",
+          "codigo": "int miNumero;\nstd::cin >> miNumero;"
+        },
+        {
+          "id": 7,
+          "tipo": "contenido",
+          "titulo": "Aritmética básica",
+          "cuerpo": "C++ puede ser tu calculadora personal. Además de sumar (+), restar (-), multiplicar (*) y dividir (/), existe un símbolo especial llamado módulo (%). No da el resultado de la división, sino lo que 'sobra'. Por ejemplo, si divides 10 entre 3, el módulo es 1, porque 3 cabe tres veces y sobra una.",
+          "codigo": "int sobra = 10 % 3; // El resultado es 1"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 3,
+      "titulo": "Estructuras Condicionales",
+      "secciones": [
+        {
+          "id": 9,
+          "tipo": "contenido",
+          "titulo": "Sentencia if/else",
+          "cuerpo": "Esta es la forma en que tu programa toma decisiones. 'If' significa 'si ocurre esto...'. Si la condición se cumple, el programa hace una tarea; si no (else), puede hacer algo totalmente distinto. Es como decir: 'Si tengo dinero, compro pizza; si no, como en casa'.",
+          "codigo": "if(puntos > 50) {\n  // ¡Ganaste!\n} else {\n  // Sigue intentando\n}"
+        },
+        {
+          "id": 10,
+          "tipo": "contenido",
+          "titulo": "Operadores Lógicos",
+          "cuerpo": "A veces necesitas que se cumplan varias cosas a la vez. El símbolo && significa 'Y' (ambas deben ser ciertas), mientras que || significa 'O' (con que una sea cierta basta). También puedes usar el signo ! para decir 'NO' o 'lo contrario'. Son como las reglas de un club: 'Debes ser mayor de edad Y tener tu boleto'.",
+          "codigo": "if(edad >= 18 && tieneBoleto) { ... }"
+        },
+        {
+          "id": 11,
+          "tipo": "contenido",
+          "titulo": "Estructura Switch",
+          "cuerpo": "Cuando tienes muchas opciones basadas en un solo número o letra, usar muchos 'if' puede ser cansado. El 'switch' es como un menú: revisa el valor y salta directamente al 'caso' que coincida. ¡No olvides poner un 'break' al final de cada caso para que el programa no se siga derecho con las demás opciones!",
+          "codigo": "switch(color) {\n  case 1: // azul; break;\n}"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 4,
+      "titulo": "Bucles e Iteración",
+      "secciones": [
+        {
+          "id": 13,
+          "tipo": "contenido",
+          "titulo": "Bucle While",
+          "cuerpo": "Un bucle es algo que se repite una y otra vez. El 'while' dice: 'Mientras esto sea verdad, sigue haciendo esto'. Es muy útil cuando no sabes cuántas veces vas a repetir algo, como un juego que sigue funcionando mientras el jugador no pierda.",
+          "codigo": "while(vidas > 0) { // Sigue jugando... }"
+        },
+        {
+          "id": 14,
+          "tipo": "contenido",
+          "titulo": "Bucle For",
+          "cuerpo": "El bucle 'for' es el mejor amigo de los conteos. En una sola línea le dices al programa: 'Empieza en cero, llega hasta diez y suma de uno en uno'. Es mucho más ordenado cuando ya sabes exactamente cuántas veces quieres repetir una instrucción.",
+          "codigo": "for(int i=0; i<10; i++) {\n  std::cout << \"Repetición: \" << i;\n}"
+        },
+        {
+          "id": 15,
+          "tipo": "contenido",
+          "titulo": "Break y Continue",
+          "cuerpo": "A veces quieres salirte de un bucle antes de tiempo; para eso usamos 'break' (es como un freno de emergencia). Por otro lado, 'continue' es como decir 'salta esta vuelta y ve directo a la siguiente'. Son herramientas para tener un control total sobre tus repeticiones.",
+          "codigo": "if(encontrado) break; // ¡Ya lo encontré, me salgo!"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 5,
+      "titulo": "Funciones y Arreglos",
+      "secciones": [
+        {
+          "id": 17,
+          "tipo": "contenido",
+          "titulo": "Arreglos (Arrays)",
+          "cuerpo": "Imagina una fila de casilleros numerados, todos del mismo tamaño. Eso es un arreglo. Puedes guardar muchos datos del mismo tipo bajo un solo nombre. Un detalle de programadores: siempre empezamos a contar desde el 0. Así que el primer casillero es el 0, el segundo es el 1, y así sucesivamente.",
+          "codigo": "int misNotas[3] = {10, 9, 8}; // La nota en la posición 0 es 10"
+        },
+        {
+          "id": 18,
+          "tipo": "contenido",
+          "titulo": "Funciones básicas",
+          "cuerpo": "Las funciones son como pequeños 'robots' a los que les das una tarea específica. En lugar de escribir el mismo código diez veces, lo metes en una función y solo la llamas cuando la necesites. Le puedes dar datos para que trabaje y ella te puede devolver un resultado.",
+          "codigo": "int sumar(int a, int b) { return a + b; }"
+        },
+        {
+          "id": 19,
+          "tipo": "contenido",
+          "titulo": "Valor de Retorno y Void",
+          "cuerpo": "No todos los robots devuelven algo. Si una función solo hace un trabajo (como imprimir un mensaje en pantalla) pero no te entrega un resultado numérico, la llamamos 'void'. Si la función te entrega un valor para que lo uses después, usamos 'return' seguido del dato que quieres devolver.",
+          "codigo": "void saludar() { std::cout << \"¡Hola!\"; }"
+        }
+      ]
+    }
+  ]
+}

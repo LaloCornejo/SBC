@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { diagnosticApi } from '../../services/api'
 import './styles.css'
@@ -174,6 +174,12 @@ export function Diagnostico() {
   const [finished, setFinished] = useState<boolean>(false)
   const [questionCount, setQuestionCount] = useState<number>(0)
   const [animKey, setAnimKey] = useState<number>(0)
+  const [saving, setSaving] = useState(false)
+  const [saved, setSaved] = useState(false)
+  const [difficultyResponses, setDifficultyResponses] = useState<string[]>([])
+  const [showSelfAssessment, setShowSelfAssessment] = useState(false)
+
+  const SELF_ASSESSMENT_AFTER = 3
 
   const handleAnswer = (answer: 'yes' | 'no') => {
     const node = GRAPH[currentQuestion]
@@ -188,14 +194,25 @@ export function Diagnostico() {
       }))
     }
 
-    setQuestionCount((c) => c + 1)
+    const newCount = questionCount + 1
+    setQuestionCount(newCount)
 
     if (nextQ === -1) {
       setFinished(true)
+    } else if (newCount % SELF_ASSESSMENT_AFTER === 0) {
+      setShowSelfAssessment(true)
     } else {
       setCurrentQuestion(nextQ)
       setAnimKey((k) => k + 1)
     }
+  }
+
+  const handleSelfAssessment = (response: string) => {
+    setDifficultyResponses((prev) => [...prev, response])
+    setShowSelfAssessment(false)
+    const node = GRAPH[currentQuestion]
+    setCurrentQuestion(node.yes)
+    setAnimKey((k) => k + 1)
   }
 
   const handleRestart = () => {
@@ -203,6 +220,8 @@ export function Diagnostico() {
     setScores({ python: 0, cpp: 0, java: 0 })
     setFinished(false)
     setQuestionCount(0)
+    setDifficultyResponses([])
+    setShowSelfAssessment(false)
     setAnimKey((k) => k + 1)
   }
 
@@ -212,25 +231,35 @@ export function Diagnostico() {
     return 'java'
   }
 
-  const saveResult = async () => {
-    const username = localStorage.getItem('u')
-    if (!username) return
-
-    const winner = getWinner()
-    try {
-      await diagnosticApi.saveResult(username, {
-        result: winner,
-        python_score: scores.python,
-        cpp_score: scores.cpp,
-        java_score: scores.java,
-      })
-    } catch (error) {
-      console.error('Failed to save diagnostic result:', error)
+  useEffect(() => {
+    if (!finished || saved || saving) return
+    const saveResult = async () => {
+      setSaving(true)
+      const username = localStorage.getItem('u')
+      if (!username) {
+        setSaving(false)
+        setSaved(true)
+        return
+      }
+      const winner = getWinner()
+      try {
+        await diagnosticApi.saveResult(username, {
+          result: winner,
+          python_score: scores.python,
+          cpp_score: scores.cpp,
+          java_score: scores.java,
+          difficulty_responses: difficultyResponses,
+        })
+      } catch (error) {
+        console.error('Failed to save diagnostic result:', error)
+      }
+      setSaving(false)
+      setSaved(true)
     }
-  }
+    saveResult()
+  }, [finished, saved, saving, scores, difficultyResponses])
 
   if (finished) {
-    saveResult()
     const winner = getWinner()
     const info   = RESULT_INFO[winner]
 
@@ -253,8 +282,9 @@ export function Diagnostico() {
               <button
                 className="btn btn-result-primary"
                 onClick={() => navigate('/aprender')}
+                disabled={saving}
               >
-                Comenzar a aprender →
+                {saving ? 'Guardando...' : 'Comenzar a aprender →'}
               </button>
               <button
                 className="btn btn-result-secondary"
@@ -290,26 +320,56 @@ export function Diagnostico() {
 
         <p className="question-counter">Pregunta {questionCount} respondida</p>
 
-        <div key={animKey} className={`question-card ${block} animate-fadeIn`}>
-          <span className="block-badge">{blockLabel}</span>
-          <div className="question-number">#{currentQuestion}</div>
-          <p className="question-text">{QUESTIONS[currentQuestion]}</p>
-        </div>
+        {showSelfAssessment ? (
+          <div className="question-card self-assessment-card animate-fadeIn">
+            <span className="block-badge self-assessment-badge">Autoevaluación</span>
+            <p className="question-text">¿Cómo te sentiste con las preguntas anteriores?</p>
+          </div>
+        ) : (
+          <div key={animKey} className={`question-card ${block} animate-fadeIn`}>
+            <span className="block-badge">{blockLabel}</span>
+            <div className="question-number">#{currentQuestion}</div>
+            <p className="question-text">{QUESTIONS[currentQuestion]}</p>
+          </div>
+        )}
 
-        <div className="answer-buttons">
-          <button
-            className="btn-answer btn-yes"
-            onClick={() => handleAnswer('yes')}
-          >
-            ✓ Sí
-          </button>
-          <button
-            className="btn-answer btn-no"
-            onClick={() => handleAnswer('no')}
-          >
-            ✗ No
-          </button>
-        </div>
+        {showSelfAssessment ? (
+          <div className="answer-buttons">
+            <button
+              className="btn-answer btn-easy"
+              onClick={() => handleSelfAssessment('fácil')}
+            >
+              😊 Fácil
+            </button>
+            <button
+              className="btn-answer btn-normal"
+              onClick={() => handleSelfAssessment('normal')}
+            >
+              🤔 Normal
+            </button>
+            <button
+              className="btn-answer btn-hard"
+              onClick={() => handleSelfAssessment('difícil')}
+            >
+              😓 Difícil
+            </button>
+          </div>
+        ) : (
+          <div className="answer-buttons">
+            <button
+              className="btn-answer btn-yes"
+              onClick={() => handleAnswer('yes')}
+            >
+              ✓ Sí
+            </button>
+            <button
+              className="btn-answer btn-no"
+              onClick={() => handleAnswer('no')}
+            >
+              ✗ No
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )

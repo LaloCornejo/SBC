@@ -1,0 +1,142 @@
+{
+  "curso": "C++",
+  "nivel": "Avanzado",
+  "total_capitulos": 5,
+  "capitulos": [
+    {
+      "num_capitulo": 1,
+      "titulo": "C++ Moderno y Semántica de Movimiento",
+      "secciones": [
+        {
+          "id": 41,
+          "tipo": "contenido",
+          "titulo": "L-values y R-values",
+          "cuerpo": "En C++ moderno, la distinción de categorías de valor es fundamental. Un l-value (left value) tiene una identidad persistente y una dirección de memoria accesible (como una variable con nombre). Un r-value (right value) suele ser un objeto temporal que está a punto de ser destruido. Las r-value references (&&) nos permiten detectar estos objetos temporales para 'robar' sus recursos en lugar de copiarlos.",
+          "codigo": "int x = 10; // x es l-value\nint&& ref = 20; // 20 es un r-value temporal"
+        },
+        {
+          "id": 42,
+          "tipo": "contenido",
+          "titulo": "Semántica de Movimiento (std::move)",
+          "cuerpo": "La semántica de movimiento transforma una copia costosa en una simple transferencia de punteros. Al usar std::move, realizamos un cast de un l-value a un r-value reference, indicándole al compilador que el objeto original ya no necesita sus recursos. Esto es vital al manejar contenedores grandes como std::vector, donde evitamos reasignaciones masivas de memoria en el heap.",
+          "codigo": "std::vector<int> v2 = std::move(v1); // v1 queda vacío o en estado indefinido"
+        },
+        {
+          "id": 43,
+          "tipo": "contenido",
+          "titulo": "Constructores de Movimiento",
+          "cuerpo": "Para habilitar el movimiento en tus clases, debes implementar el Move Constructor y el Move Assignment Operator. Estos deben marcarse como 'noexcept' para que los contenedores de la STL (como vector) los prefieran sobre la copia durante una reasignación. Su lógica consiste en copiar los punteros del objeto origen y dejar a este último en un estado nulo o válido pero indefinido.",
+          "codigo": "Clase(Clase&& otro) noexcept : data(otro.data) { otro.data = nullptr; }"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 2,
+      "titulo": "Gestión de Memoria Inteligente",
+      "secciones": [
+        {
+          "id": 45,
+          "tipo": "contenido",
+          "titulo": "Smart Pointers: unique_ptr",
+          "cuerpo": "std::unique_ptr es un puntero de propiedad exclusiva (exclusive ownership). No permite copias, solo movimientos, garantizando que el recurso se libere exactamente cuando el puntero salga del scope. Es la opción de 'coste cero' frente a un puntero crudo, ya que no requiere conteo de referencias y ofrece seguridad total contra fugas de memoria.",
+          "codigo": "std::unique_ptr<int> p = std::make_unique<int>(10);"
+        },
+        {
+          "id": 46,
+          "tipo": "contenido",
+          "titulo": "Smart Pointers: shared_ptr y weak_ptr",
+          "cuerpo": "std::shared_ptr implementa un conteo de referencias atómico (Reference Counting). El recurso se libera solo cuando el último dueño desaparece. Para evitar 'ciclos de referencia' (dos objetos apuntándose mutuamente que nunca se liberan), usamos std::weak_ptr. Este no aumenta el contador, permitiendo observar el recurso sin reclamar propiedad sobre él.",
+          "codigo": "std::shared_ptr<int> s = std::make_shared<int>(20);"
+        },
+        {
+          "id": 47,
+          "tipo": "contenido",
+          "titulo": "RAII (Resource Acquisition Is Initialization)",
+          "cuerpo": "RAII es el pilar de la seguridad en C++. Dicta que la adquisición de un recurso (memoria, sockets, mutex) debe ocurrir en el constructor de un objeto en el stack, y su liberación en el destructor. De esta forma, si ocurre una excepción, el mecanismo de 'stack unwinding' garantiza que los destructores se ejecuten y los recursos se liberen automáticamente.",
+          "codigo": "// El objeto 'lock_guard' aplica RAII para liberar un mutex automáticamente"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 3,
+      "titulo": "Programación Genérica y Metaprogramación",
+      "secciones": [
+        {
+          "id": 49,
+          "tipo": "contenido",
+          "titulo": "Especialización de Templates",
+          "cuerpo": "La especialización permite optimizar algoritmos genéricos para tipos específicos. Si un template general es ineficiente para un 'bool' o un puntero, puedes escribir una implementación dedicada. Esto es clave en la metaprogramación para crear rasgos de tipos (Type Traits) y optimizar el binario final según el tipo de dato procesado.",
+          "codigo": "template <> class Caja<bool> { /* Implementación optimizada en bits */ };"
+        },
+        {
+          "id": 50,
+          "tipo": "contenido",
+          "titulo": "Variadic Templates",
+          "cuerpo": "Introducidos en C++11, permiten que un template acepte un número indefinido de argumentos de distintos tipos mediante el operador '...'. Se procesan usualmente de forma recursiva en tiempo de compilación. Son la base de funciones altamente flexibles y seguras como std::make_shared o sistemas de registro (logging) complejos.",
+          "codigo": "template<typename... Args> void log(Args... args);"
+        },
+        {
+          "id": 51,
+          "tipo": "contenido",
+          "titulo": "Metaprogramación: constexpr",
+          "cuerpo": "constexpr permite que expresiones y funciones se ejecuten durante la compilación. Esto no es solo una optimización de velocidad; permite usar el resultado de cálculos complejos para definir tamaños de arreglos o parámetros de otros templates. Con C++20, constexpr ha evolucionado permitiendo incluso el uso de vectores y strings en tiempo de compilación.",
+          "codigo": "constexpr int val = calcular_fibonacci(10); // Calculado antes de ejecutar"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 4,
+      "titulo": "Concurrencia y Multihilo",
+      "secciones": [
+        {
+          "id": 53,
+          "tipo": "contenido",
+          "titulo": "Hilos (std::thread)",
+          "cuerpo": "C++ ofrece una abstracción nativa sobre los hilos del sistema operativo. Al lanzar un std::thread, debemos decidir si esperamos su finalización con .join() o si lo dejamos libre con .detach(). La gestión de hilos requiere un diseño cuidadoso para evitar condiciones de carrera y asegurar que el hilo no sea destruido mientras sigue activo.",
+          "codigo": "std::thread t(miFuncion);\nt.join();"
+        },
+        {
+          "id": 54,
+          "tipo": "contenido",
+          "titulo": "Sincronización: Mutex",
+          "cuerpo": "Un std::mutex garantiza la exclusión mutua en regiones críticas. Sin embargo, el uso manual de .lock() y .unlock() es propenso a errores (como deadlocks). Lo estándar es usar wrappers RAII como std::lock_guard o std::unique_lock, que gestionan el bloqueo de forma segura incluso ante excepciones.",
+          "codigo": "std::unique_lock<std::mutex> lck(mtx);"
+        },
+        {
+          "id": 55,
+          "tipo": "contenido",
+          "titulo": "Futuros y Promesas (std::async)",
+          "cuerpo": "std::async es una abstracción de alto nivel para la concurrencia. Devuelve un std::future, que es un objeto que eventualmente contendrá el resultado de la tarea. Es ideal para paralelizar tareas independientes sin gestionar manualmente la creación de hilos, permitiendo al runtime decidir si lanza un hilo nuevo o reutiliza uno existente.",
+          "codigo": "auto fut = std::async(std::launch::async, calcular);"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 5,
+      "titulo": "Expresiones Lambda y STL Avanzado",
+      "secciones": [
+        {
+          "id": 57,
+          "tipo": "contenido",
+          "titulo": "Expresiones Lambda",
+          "cuerpo": "Las lambdas son objetos de función anónimos generados por el compilador. Permiten definir lógica 'inline', lo que mejora la localidad del código. Son fundamentales al usar algoritmos de la STL, ya que permiten pasar predicados personalizados de forma concisa y eficiente sin la verbosidad de los antiguos functores.",
+          "codigo": "auto suma = [](int a, int b) { return a + b; };"
+        },
+        {
+          "id": 58,
+          "tipo": "contenido",
+          "titulo": "Clausuras y Captura",
+          "cuerpo": "El 'capture clause' [] define qué variables del entorno estarán disponibles dentro de la lambda y cómo (por valor o referencia). Una captura por valor [=] crea una copia, mientras que por referencia [&] permite modificar la variable original. En C++14/17 podemos usar capturas con inicialización para mover objetos (como unique_ptr) dentro de una lambda.",
+          "codigo": "[ptr = std::move(p)]() { /* usa ptr */ };"
+        },
+        {
+          "id": 59,
+          "tipo": "contenido",
+          "titulo": "Algoritmos STL (std::sort, find_if)",
+          "cuerpo": "La potencia real de la STL reside en sus algoritmos. std::sort, find_if, transform y accumulate están diseñados para trabajar con iteradores de cualquier contenedor. En C++17/20, estos algoritmos pueden recibir políticas de ejecución (std::execution::par) para ejecutarse en paralelo de forma casi automática.",
+          "codigo": "std::find_if(v.begin(), v.end(), [](int n){ return n > 100; });"
+        }
+      ]
+    }
+  ]
+}

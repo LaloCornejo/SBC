@@ -1,0 +1,142 @@
+{
+  "curso": "Java",
+  "nivel": "Básico",
+  "total_capitulos": 5,
+  "capitulos": [
+    {
+      "num_capitulo": 1,
+      "titulo": "Introducción y Entorno Java",
+      "secciones": [
+        {
+          "id": 1,
+          "tipo": "contenido",
+          "titulo": "JDK, JRE y JVM",
+          "cuerpo": "Java es especial porque no corre directamente en tu computadora, sino en una 'computadora invisible' llamada JVM (Máquina Virtual de Java). Para empezar, necesitas el JDK (el kit de herramientas del programador). Imagina que el JDK es la caja de herramientas, el JRE es el manual de instrucciones para que otros lo usen, y la JVM es el motor que hace que todo se mueva.",
+          "codigo": "// Estructura mínima de un archivo .java\npublic class HolaMundo {\n    public static void main(String[] args) {\n        System.out.println(\"Hola Java\");\n    }\n}"
+        },
+        {
+          "id": 2,
+          "tipo": "contenido",
+          "titulo": "Sintaxis y Clases",
+          "cuerpo": "Java es un lenguaje muy organizado: nada puede andar 'suelto', todo debe vivir dentro de una 'Clase'. Piensa en una Clase como un contenedor o una carpeta. Una regla de oro que confunde a muchos al principio es que si tu clase se llama 'MiPrograma', tu archivo debe llamarse exactamente 'MiPrograma.java', respetando mayúsculas y minúsculas.",
+          "codigo": "public class MiClase { ... }"
+        },
+        {
+          "id": 3,
+          "tipo": "contenido",
+          "titulo": "Salida de Datos (System.out)",
+          "cuerpo": "Para mostrar mensajes, usamos una instrucción un poco larga: System.out.println(). Desglosémoslo: 'System' es el sistema, 'out' es la salida y 'println' es 'imprimir línea'. La diferencia entre 'print' y 'println' es que el segundo da un salto de línea automático al terminar, como si presionaras Enter.",
+          "codigo": "System.out.println(\"Línea con salto\");"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 2,
+      "titulo": "Variables y Tipos de Datos",
+      "secciones": [
+        {
+          "id": 5,
+          "tipo": "contenido",
+          "titulo": "Tipos Primitivos",
+          "cuerpo": "Java es muy estricto con sus datos. Si dices que una variable es 'int', solo aceptará números enteros. Si quieres usar decimales, el estándar es 'double'. Para una sola letra usamos 'char' (con comillas simples) y para decisiones de sí o no usamos 'boolean'. Esta rigidez ayuda a que tu programa cometa menos errores de lógica.",
+          "codigo": "int edad = 20;\ndouble precio = 9.99;\nboolean esJava = true;"
+        },
+        {
+          "id": 6,
+          "tipo": "contenido",
+          "titulo": "Entrada con Scanner",
+          "cuerpo": "Para que tu programa pueda 'leer' lo que escribes en el teclado, necesitamos un objeto llamado Scanner. Es como contratar a un asistente que se queda esperando a que teclees algo. Para usarlo, primero debes 'importarlo' (pedir permiso para usar esa herramienta) al inicio de tu código.",
+          "codigo": "Scanner sc = new Scanner(System.in);\nint num = sc.nextInt();"
+        },
+        {
+          "id": 7,
+          "tipo": "contenido",
+          "titulo": "Operadores y Casting",
+          "cuerpo": "A veces tienes un número con decimales (double) y quieres guardarlo en una caja de enteros (int). A esto se le llama 'Casting' o conversión. Como Java es precavido, te obliga a escribirlo explícitamente entre paréntesis para confirmar que sabes que vas a perder los decimales en el proceso.",
+          "codigo": "double d = 9.8;\nint i = (int) d; // i valdrá 9, se pierde el .8"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 3,
+      "titulo": "Estructuras de Decisión",
+      "secciones": [
+        {
+          "id": 9,
+          "tipo": "contenido",
+          "titulo": "Sentencias If-Else",
+          "cuerpo": "El 'If' es el corazón de la lógica. Si la condición que pones entre paréntesis es verdadera, Java ejecutará el código que está entre las llaves { }. Si no se cumple, el bloque 'else' se encarga de dar una respuesta alternativa. Recuerda: las llaves definen dónde empieza y termina tu decisión.",
+          "codigo": "if (edad >= 18) {\n    System.out.println(\"¡Puedes pasar!\");\n}"
+        },
+        {
+          "id": 10,
+          "tipo": "contenido",
+          "titulo": "Operadores Lógicos (&&, ||, !)",
+          "cuerpo": "Sirven para unir varias preguntas en una sola. && (Y) exige que se cumplan todas las condiciones. || (O) se conforma con que al menos una sea cierta. El signo ! (NO) simplemente invierte el valor: lo que era verdad se vuelve falso. Es como poner condiciones para salir: 'Si no llueve Y tengo dinero...'.",
+          "codigo": "if (tieneLlave && tienePermiso) { ... }"
+        },
+        {
+          "id": 11,
+          "tipo": "contenido",
+          "titulo": "Switch y Case",
+          "cuerpo": "Cuando tienes muchas opciones posibles para una misma variable (como los días de la semana), el 'Switch' es mucho más limpio que usar diez 'If'. Vas saltando de 'case' en 'case' hasta encontrar el correcto. ¡Importante! Usa la instrucción 'break' para salir del menú una vez encuentres tu opción, o Java seguirá leyendo todas las demás.",
+          "codigo": "switch(dia) {\n    case \"Lunes\": \n        System.out.println(\"Inicio de semana\");\n        break;\n}"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 4,
+      "titulo": "Bucles e Iteración",
+      "secciones": [
+        {
+          "id": 13,
+          "tipo": "contenido",
+          "titulo": "Bucle While y Do-While",
+          "cuerpo": "Un bucle repite código mientras una condición sea cierta. La diferencia clave es que 'while' pregunta antes de entrar (y si la respuesta es no, nunca entra), mientras que 'do-while' primero hace la acción y luego pregunta. Es como un gimnasio que te deja entrar primero y luego te pregunta si tienes membresía.",
+          "codigo": "do {\n    System.out.println(\"Al menos verás esto una vez\");\n} while (condicion);"
+        },
+        {
+          "id": 14,
+          "tipo": "contenido",
+          "titulo": "Bucle For Clásico",
+          "cuerpo": "El bucle 'for' es el más usado para contar. En una sola línea pones tres cosas: desde dónde empiezas, hasta dónde quieres llegar y cuánto vas sumando en cada vuelta (usualmente i++ para sumar de uno en uno). Es muy ordenado y difícil de que se te olvide alguna parte.",
+          "codigo": "for (int i = 0; i < 5; i++) {\n    System.out.println(\"Vuelta: \" + i);\n}"
+        },
+        {
+          "id": 15,
+          "tipo": "contenido",
+          "titulo": "Bucle For-Each",
+          "cuerpo": "Esta es la versión moderna y cómoda del bucle for. Se usa para recorrer listas o grupos de datos. No necesitas llevar la cuenta de en qué número vas; Java simplemente toma cada elemento del grupo uno por uno hasta terminar. Es mucho más difícil cometer errores con este método.",
+          "codigo": "for (int num : misNumeros) {\n    System.out.println(num);\n}"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 5,
+      "titulo": "Arreglos y Métodos Básicos",
+      "secciones": [
+        {
+          "id": 17,
+          "tipo": "contenido",
+          "titulo": "Arreglos Unidimensionales",
+          "cuerpo": "Un arreglo (o array) es como una fila de casilleros del mismo tipo. En Java, debes decidir cuántos casilleros quieres desde el principio y ese tamaño no puede cambiar después. Recuerda que Java es de los que empiezan a contar desde el 0; el primer casillero es el índice 0.",
+          "codigo": "int[] misGoles = new int[10]; // Un espacio para 10 números"
+        },
+        {
+          "id": 18,
+          "tipo": "contenido",
+          "titulo": "Definición de Métodos",
+          "cuerpo": "Los métodos son acciones que tu programa puede realizar. En lugar de escribir el mismo código muchas veces, creas un método con un nombre descriptivo y lo llamas cuando lo necesites. Siempre debes decir qué tipo de 'paquete' va a devolver (un int, un double...) o usar 'void' si no devuelve nada.",
+          "codigo": "public void saludar() {\n    System.out.println(\"¡Hola!\");\n}"
+        },
+        {
+          "id": 19,
+          "tipo": "contenido",
+          "titulo": "Paso de Parámetros",
+          "cuerpo": "A los métodos les puedes enviar información para que trabajen. Estos son los parámetros. Si envías un número simple, Java hace una copia (paso por valor); si envías un objeto o una lista, Java trabaja sobre el original (paso por referencia). Es como pasarle a alguien una fotocopia de tu tarea o pasarle tu cuaderno original.",
+          "codigo": "void mostrarEdad(int edad) {\n    System.out.println(\"Tienes \" + edad + \" años\");\n}"
+        }
+      ]
+    }
+  ]
+}

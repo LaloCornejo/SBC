@@ -1,0 +1,142 @@
+{
+  "curso": "Python",
+  "nivel": "Avanzado",
+  "total_capitulos": 5,
+  "capitulos": [
+    {
+      "num_capitulo": 1,
+      "titulo": "Programación Asíncrona (Asyncio)",
+      "secciones": [
+        {
+          "id": 41,
+          "tipo": "contenido",
+          "titulo": "Corrutinas con async y await",
+          "cuerpo": "Python implementa la concurrencia mediante corrutinas, que son funciones capaces de pausar su ejecución para ceder el control al Event Loop. A diferencia del multihilo tradicional, aquí no hay cambios de contexto forzados por el SO, sino una 'espera cooperativa'. Cuando usas 'await', liberas el hilo para que otras tareas procesen su entrada/salida (I/O) mientras esperas una respuesta de red o disco.",
+          "codigo": "async def tarea():\n    await asyncio.sleep(1)\n    print('Hecho')"
+        },
+        {
+          "id": 42,
+          "tipo": "contenido",
+          "titulo": "Event Loop y Tareas",
+          "cuerpo": "El Event Loop es el motor central que gestiona la ejecución de corrutinas. Al convertir una corrutina en una 'Task', esta se registra en el bucle para ser ejecutada de forma asíncrona. Esto permite manejar miles de conexiones simultáneas en un solo hilo, lo cual es extremadamente eficiente para servidores web de alto tráfico o aplicaciones de scraping intensivo.",
+          "codigo": "asyncio.gather(tarea1(), tarea2()) # Ejecución concurrente"
+        },
+        {
+          "id": 43,
+          "tipo": "contenido",
+          "titulo": "Programación Asíncrona vs Multihilo",
+          "cuerpo": "Es vital distinguir entre concurrencia (Asyncio) y paralelismo (Multiprocessing). Asyncio es ideal para tareas 'I/O Bound' (esperar a internet o archivos), ya que optimiza los tiempos muertos. Sin embargo, debido al GIL, para tareas 'CPU Bound' (procesamiento matemático o criptografía) debemos usar Multiprocessing para distribuir la carga en núcleos reales de la CPU.",
+          "codigo": "# Asyncio = 1 hilo manejando muchas esperas."
+        }
+      ]
+    },
+    {
+      "num_capitulo": 2,
+      "titulo": "Metaprogramación y Metaclases",
+      "secciones": [
+        {
+          "id": 45,
+          "tipo": "contenido",
+          "titulo": "Metaclases (type)",
+          "cuerpo": "En Python, todo es un objeto, incluso las clases. Una metaclase es la 'fábrica' que construye las clases. La metaclase por defecto es 'type'. Al crear una metaclase personalizada heredando de 'type', puedes interceptar la creación de una clase para validar sus métodos, modificar sus atributos automáticamente o registrarla en un sistema de plugins antes de que exista.",
+          "codigo": "class MiMeta(type):\n    def __new__(cls, name, bases, dct):\n        return super().__new__(cls, name, bases, dct)"
+        },
+        {
+          "id": 46,
+          "tipo": "contenido",
+          "titulo": "Introspección y Atributos Dinámicos",
+          "cuerpo": "La introspección permite a un programa examinar su propia estructura en tiempo de ejecución. Mediante funciones como getattr(), setattr() y __dict__, puedes manipular objetos de forma dinámica. Esto es la base de muchos frameworks (como Django o FastAPI) que crean funcionalidad basándose en los nombres de atributos o métodos que tú defines.",
+          "codigo": "setattr(objeto, 'valor_dinamico', 100)"
+        },
+        {
+          "id": 47,
+          "tipo": "contenido",
+          "titulo": "Decoradores de Clase",
+          "cuerpo": "A diferencia de los decoradores de función, estos reciben una clase completa. Son herramientas potentes para implementar patrones como el 'Singleton' o para inyectar métodos automáticamente a todas las clases de un módulo. Son preferibles a las metaclases cuando solo se necesita una modificación superficial de la estructura de la clase.",
+          "codigo": "@singleton\nclass Database: pass"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 3,
+      "titulo": "Tipado Avanzado y Anotaciones",
+      "secciones": [
+        {
+          "id": 49,
+          "tipo": "contenido",
+          "titulo": "Type Hinting (typing)",
+          "cuerpo": "Aunque Python sigue siendo dinámico, el uso de 'Type Hints' es el estándar en el desarrollo profesional. Permite que herramientas como MyPy o Pyright realicen análisis estático para detectar errores de lógica de tipos antes de la ejecución. Esto mejora drásticamente el autocompletado del IDE y la mantenibilidad del código en proyectos de gran escala.",
+          "codigo": "from typing import List, Optional\ndef busca(id: int) -> Optional[str]: pass"
+        },
+        {
+          "id": 50,
+          "tipo": "contenido",
+          "titulo": "Protocolos y Duck Typing",
+          "cuerpo": "Python se basa en el 'Duck Typing' (si camina como pato, es un pato). Los 'Protocols' (PEP 544) permiten definir interfaces estructurales. A diferencia de las clases abstractas (ABC), un objeto cumple con un Protocolo simplemente teniendo los métodos requeridos, sin necesidad de heredar explícitamente, lo que desacopla el diseño del sistema.",
+          "codigo": "from typing import Protocol\nclass Drawable(Protocol):\n    def draw(self): ..."
+        },
+        {
+          "id": 51,
+          "tipo": "contenido",
+          "titulo": "Generics",
+          "cuerpo": "Los tipos genéricos permiten definir estructuras de datos o funciones que operan sobre tipos de datos abstractos (T), manteniendo la seguridad de tipos. Esto evita la duplicación de código cuando tenemos, por ejemplo, una clase 'Contenedor' que debe comportarse igual ya sea que guarde enteros, strings o modelos de base de datos.",
+          "codigo": "T = TypeVar('T')\nclass Caja(Generic[T]):\n    def __init__(self, item: T): self.item = item"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 4,
+      "titulo": "Contextos y Descriptores",
+      "secciones": [
+        {
+          "id": 53,
+          "tipo": "contenido",
+          "titulo": "Protocolo Descriptor",
+          "cuerpo": "Los descriptores son la magia detrás de @property, @classmethod y los métodos de instancia. Al implementar __get__, __set__ o __delete__ en una clase, puedes controlar exactamente qué sucede cuando se accede a un atributo de otra clase. Es la herramienta definitiva para validación de datos, 'lazy loading' (carga perezosa) o creación de ORMs.",
+          "codigo": "class ValidatedNumber: # Esto es un descriptor"
+        },
+        {
+          "id": 54,
+          "tipo": "contenido",
+          "titulo": "Contextlib y Generadores",
+          "cuerpo": "Crear un gestor de contexto con una clase (__enter__/__exit__) puede ser verboso. El decorador @contextmanager permite usar generadores para manejar recursos de forma compacta. Todo lo que esté antes del 'yield' es el código de entrada, y lo que esté después es el de limpieza (salida), asegurando un manejo de recursos impecable.",
+          "codigo": "@contextmanager\ndef transaccion():\n    begin(); yield; commit()"
+        },
+        {
+          "id": 55,
+          "tipo": "contenido",
+          "titulo": "Manejo de Recursos Críticos",
+          "cuerpo": "En sistemas distribuidos o de alta disponibilidad, el manejo de contextos garantiza que locks, sockets de red o buffers de memoria se liberen incluso ante señales del sistema (SIGTERM) o excepciones críticas. Es el patrón RAII adaptado a Python para evitar estados de 'deadlock' o corrupción de archivos.",
+          "codigo": "with lock_global: # Operación atómica asumiendo hilos"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 5,
+      "titulo": "Rendimiento y C-Extensions",
+      "secciones": [
+        {
+          "id": 57,
+          "tipo": "contenido",
+          "titulo": "Profiling de Código",
+          "cuerpo": "Antes de optimizar, hay que medir. El 'Profiling' estadístico e instrumental (como cProfile) identifica qué funciones consumen más tiempo de CPU o cuántas veces se llaman. Esto evita la 'optimización prematura' y permite al desarrollador enfocarse en el 20% del código que causa el 80% de la lentitud.",
+          "codigo": "python -m cProfile script.py"
+        },
+        {
+          "id": 58,
+          "tipo": "contenido",
+          "titulo": "Global Interpreter Lock (GIL)",
+          "cuerpo": "El GIL es un mutex que protege el acceso a los objetos de Python, evitando que múltiples hilos nativos ejecuten bytecodes de Python al mismo tiempo. Entender el GIL es crucial: por eso Python no escala en CPU con hilos (threads), sino con procesos (multiprocessing). Sin embargo, en I/O, el GIL se libera, permitiendo eficiencia con hilos o asyncio.",
+          "codigo": "from multiprocessing import Pool # Para saltar el GIL"
+        },
+        {
+          "id": 59,
+          "tipo": "contenido",
+          "titulo": "Cython e Interoperabilidad",
+          "cuerpo": "Para romper la barrera de velocidad de un lenguaje interpretado, podemos usar Cython. Este traduce código Python (con anotaciones de tipo de C) a lenguaje C puro, que luego se compila como un módulo binario (.so o .pyd). Esto permite ejecutar bucles matemáticos a velocidades cercanas a C++ manteniendo la sintaxis de Python.",
+          "codigo": "cpdef int suma_rapida(int n): # Mezcla de C y Python"
+        }
+      ]
+    }
+  ]
+}

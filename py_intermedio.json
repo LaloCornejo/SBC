@@ -1,0 +1,142 @@
+{
+  "curso": "Python",
+  "nivel": "Intermedio",
+  "total_capitulos": 5,
+  "capitulos": [
+    {
+      "num_capitulo": 1,
+      "titulo": "Comprensión de Listas y Funciones Avanzadas",
+      "secciones": [
+        {
+          "id": 21,
+          "tipo": "contenido",
+          "titulo": "List Comprehensions",
+          "cuerpo": "Las 'List Comprehensions' son una forma sintáctica concisa de crear listas. A diferencia de un bucle for tradicional, estas son generalmente más rápidas ya que están optimizadas a nivel de C en el intérprete de Python. Permiten incluir lógica condicional (if/else) para filtrar o transformar elementos de una colección existente en una sola línea de código legible.",
+          "codigo": "cuadrados = [x**2 for x in range(10) if x % 2 == 0]"
+        },
+        {
+          "id": 22,
+          "tipo": "contenido",
+          "titulo": "Funciones Lambda",
+          "cuerpo": "Las lambdas son funciones anónimas (sin nombre) limitadas a una sola expresión. Se utilizan principalmente como argumentos de 'funciones de orden superior' como map(), filter() o sorted(). Aunque son potentes, la buena práctica dicta usarlas solo para operaciones simples; si la lógica requiere más de una línea, es mejor definir una función estándar con 'def' para mantener la legibilidad.",
+          "codigo": "sumar = lambda a, b: a + b\nprint(sumar(5, 3))"
+        },
+        {
+          "id": 23,
+          "tipo": "contenido",
+          "titulo": "Argumentos *args y **kwargs",
+          "cuerpo": "Estas herramientas otorgan una flexibilidad enorme a tus funciones. *args captura un número indefinido de argumentos posicionales y los empaqueta en una 'Tupla'. Por otro lado, **kwargs captura argumentos nombrados (como clave=valor) y los empaqueta en un 'Diccionario'. Esto permite crear funciones que actúen como envoltorios o que reciban configuraciones dinámicas.",
+          "codigo": "def funcion(*args, **kwargs):\n    print(args) # Ejemplo: (1, 2, 3)\n    print(kwargs) # Ejemplo: {'id': 101, 'rol': 'admin'}"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 2,
+      "titulo": "POO en Python",
+      "secciones": [
+        {
+          "id": 25,
+          "tipo": "contenido",
+          "titulo": "Clases y self",
+          "cuerpo": "En Python, las clases definen el plano para crear objetos. El parámetro 'self' es una referencia explícita a la instancia específica que está llamando al método; permite acceder a los atributos y otros métodos de ese objeto en particular. Aunque no es una palabra reservada (podrías usar otro nombre), es el estándar absoluto en la comunidad para que tu código sea entendible.",
+          "codigo": "class Robot:\n    def __init__(self, nombre):\n        self.nombre = nombre # Atributo de instancia"
+        },
+        {
+          "id": 26,
+          "tipo": "contenido",
+          "titulo": "Herencia y super()",
+          "cuerpo": "Python permite que una clase herede atributos y métodos de otra. La función super() es vital porque te permite acceder y llamar a métodos de la clase padre (superclase) de forma dinámica. Esto es especialmente útil en el método __init__ para asegurar que la clase padre se inicialice correctamente antes de añadir la lógica específica de la clase hija.",
+          "codigo": "class Drone(Robot):\n    def __init__(self, nombre):\n        super().__init__(nombre) # Inicializa la parte de 'Robot'"
+        },
+        {
+          "id": 27,
+          "tipo": "contenido",
+          "titulo": "Métodos Especiales (Dunder)",
+          "cuerpo": "Los métodos 'Double Underscore' (Dunder) permiten sobrecargar comportamientos integrados del lenguaje. Por ejemplo, __str__ define qué se muestra al hacer un print() del objeto, mientras que __len__ define qué devuelve la función len(). Estos métodos permiten que tus propios objetos se comporten de forma nativa e intuitiva dentro del ecosistema de Python.",
+          "codigo": "def __str__(self):\n    return f\"Robot: {self.nombre}\""
+        }
+      ]
+    },
+    {
+      "num_capitulo": 3,
+      "titulo": "Manejo de Errores y Archivos",
+      "secciones": [
+        {
+          "id": 29,
+          "tipo": "contenido",
+          "titulo": "Excepciones (try, except, finally)",
+          "cuerpo": "El manejo de excepciones es crucial para construir software robusto. El bloque 'try' contiene el código que podría fallar; 'except' captura errores específicos para manejarlos con gracia. El bloque 'finally' es el más fiable: se ejecutará pase lo que pase, siendo el lugar perfecto para tareas de limpieza como cerrar conexiones a bases de datos o liberar memoria.",
+          "codigo": "try:\n    f = open('data.txt')\nexcept FileNotFoundError:\n    print('Archivo no encontrado')\nfinally:\n    print('Limpieza finalizada')"
+        },
+        {
+          "id": 30,
+          "tipo": "contenido",
+          "titulo": "Lectura y Escritura de Archivos",
+          "cuerpo": "Python interactúa con el sistema de archivos mediante open(). Los modos más comunes son 'r' para lectura (read), 'w' para escritura (write, sobrescribe todo) y 'a' para añadir (append). Es fundamental manejar el 'encoding' (usualmente utf-8) para evitar errores con caracteres especiales al leer o escribir datos.",
+          "codigo": "f = open(\"test.txt\", \"w\", encoding=\"utf-8\")\nf.write(\"Hola con tilde: á\")\nf.close()"
+        },
+        {
+          "id": 31,
+          "tipo": "contenido",
+          "titulo": "Context Managers (with)",
+          "cuerpo": "La sentencia 'with' implementa el protocolo de gestión de contexto. Es la forma recomendada de trabajar con recursos externos (como archivos o hilos). Al usar 'with', Python se encarga automáticamente de llamar al método __exit__ del objeto al terminar el bloque, cerrando el archivo incluso si ocurre un error inesperado. Esto previene la corrupción de datos y el desperdicio de recursos.",
+          "codigo": "with open(\"test.txt\", \"r\") as archivo:\n    contenido = archivo.read()\n# Aquí el archivo ya está cerrado automáticamente"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 4,
+      "titulo": "Iteradores, Generadores y Decoradores",
+      "secciones": [
+        {
+          "id": 33,
+          "tipo": "contenido",
+          "titulo": "Generadores y yield",
+          "cuerpo": "Los generadores son una de las herramientas más potentes de Python para optimizar la RAM. A diferencia de las listas, no calculan todos los valores de golpe; en su lugar, usan la palabra clave 'yield' para pausar la ejecución y devolver un valor a la vez. Esto permite procesar archivos gigantes de varios gigabytes sin agotar la memoria de la computadora.",
+          "codigo": "def contador_infinito():\n    n = 0\n    while True:\n        yield n\n        n += 1"
+        },
+        {
+          "id": 34,
+          "tipo": "contenido",
+          "titulo": "Iteradores",
+          "cuerpo": "Un iterador es cualquier objeto que siga el 'protocolo de iteración', compuesto por __iter__() y __next__(). Cuando haces un bucle for, Python convierte tu lista en un iterador detrás de escena. Entender esto te permite crear tus propias clases que se pueden recorrer elemento por elemento, controlando exactamente cómo se entregan los datos.",
+          "codigo": "mi_lista = [1, 2]\nit = iter(mi_lista)\nprint(next(it)) # 1"
+        },
+        {
+          "id": 35,
+          "tipo": "contenido",
+          "titulo": "Decoradores",
+          "cuerpo": "Los decoradores son una forma elegante de metaprogramación. Son funciones que reciben otra función como entrada y devuelven una versión 'mejorada' o modificada de la misma. Se usan mucho para añadir registros (logs), verificar permisos de usuario o medir el tiempo de ejecución de un proceso sin ensuciar la lógica principal de la función original.",
+          "codigo": "@medir_tiempo\ndef proceso_pesado():\n    pass"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 5,
+      "titulo": "Módulos y Entornos Virtuales",
+      "secciones": [
+        {
+          "id": 37,
+          "tipo": "contenido",
+          "titulo": "PIP e Instalación de Librerías",
+          "cuerpo": "PIP es el instalador de paquetes estándar. Se conecta al PyPI (Python Package Index) para descargar librerías externas. Es una herramienta de terminal que gestiona las dependencias necesarias para que tu código pueda usar herramientas avanzadas como NumPy para ciencia de datos o Django para desarrollo web.",
+          "codigo": "# En consola: pip install pandas"
+        },
+        {
+          "id": 38,
+          "tipo": "contenido",
+          "titulo": "Entornos Virtuales (venv)",
+          "cuerpo": "Un entorno virtual es un directorio aislado que contiene su propia copia del intérprete de Python y sus propias librerías instaladas. Es una práctica obligatoria en el desarrollo profesional para evitar que las actualizaciones de un proyecto rompan otros proyectos que dependen de versiones antiguas de la misma librería.",
+          "codigo": "python -m venv mi_entorno\n# Luego se activa según el SO (Windows/Linux)"
+        },
+        {
+          "id": 39,
+          "tipo": "contenido",
+          "titulo": "Paquetes (__init__.py)",
+          "cuerpo": "Los paquetes permiten organizar módulos en una estructura de carpetas jerárquica. Históricamente, se requería un archivo vacío llamado __init__.py en cada carpeta para que Python la reconociera como un paquete importable. Hoy en día, aunque es opcional en versiones modernas, se sigue usando para ejecutar lógica de inicialización o para exponer funciones específicas de forma más limpia.",
+          "codigo": "from mi_sistema.red.utilidades import enviar_paquete"
+        }
+      ]
+    }
+  ]
+}

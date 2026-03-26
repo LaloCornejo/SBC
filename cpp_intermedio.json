@@ -1,0 +1,142 @@
+{
+  "curso": "C++",
+  "nivel": "Intermedio",
+  "total_capitulos": 5,
+  "capitulos": [
+    {
+      "num_capitulo": 1,
+      "titulo": "Punteros y Memoria",
+      "secciones": [
+        {
+          "id": 21,
+          "tipo": "contenido",
+          "titulo": "Direcciones de Memoria",
+          "cuerpo": "A diferencia de una variable común que guarda un valor, un puntero guarda la ubicación física (dirección) de ese valor en la memoria RAM. Usamos el operador de dirección '&' para 'preguntarle' a una variable en qué parte del mapa de memoria vive. Entender esto es la base para manejar estructuras de datos complejas y optimizar el rendimiento del sistema.",
+          "codigo": "int x = 10;\nint* ptr = &x;\nstd::cout << ptr; // Muestra la dirección"
+        },
+        {
+          "id": 22,
+          "tipo": "contenido",
+          "titulo": "Desreferenciación",
+          "cuerpo": "Desreferenciar es el acto de seguir la dirección almacenada en un puntero para llegar al valor real. Al usar el operador '*' sobre un puntero existente, le decimos a la computadora: 've a esa dirección y dime qué hay dentro'. Es una herramienta poderosa para modificar datos de forma indirecta y eficiente sin copiar toda la información.",
+          "codigo": "int valor = *ptr; // Accede al contenido"
+        },
+        {
+          "id": 23,
+          "tipo": "contenido",
+          "titulo": "Memoria Dinámica (new/delete)",
+          "cuerpo": "En C++ podemos solicitar memoria al 'Heap' (montículo) durante la ejecución mediante 'new'. A diferencia de la memoria automática (Stack), esta no se libera sola; tú tienes el control total. Por ello, es obligatorio usar 'delete' para liberar ese espacio. Si lo olvidas, creas una 'fuga de memoria' (Memory Leak), lo que eventualmente puede agotar los recursos del sistema.",
+          "codigo": "int* p = new int(5);\ndelete p;"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 2,
+      "titulo": "POO: Clases y Objetos",
+      "secciones": [
+        {
+          "id": 25,
+          "tipo": "contenido",
+          "titulo": "Definición de Clases",
+          "cuerpo": "Una clase es un plano arquitectónico o prototipo que define las características (atributos) y los comportamientos (métodos) de una entidad. Cuando creas una variable basada en esa clase, estás creando una 'instancia' u objeto. La Programación Orientada a Objetos nos permite modelar problemas del mundo real de una forma mucho más organizada y modular.",
+          "codigo": "class Coche {\n  public:\n    string marca;\n    void tocarClaxon() {};\n};"
+        },
+        {
+          "id": 26,
+          "tipo": "contenido",
+          "titulo": "Constructores y Destructores",
+          "cuerpo": "El constructor es un método especial que se invoca automáticamente al instanciar un objeto; su misión es dejarlo listo para usar (inicializar datos). Por el contrario, el destructor (~NombreClase) se activa justo antes de que el objeto desaparezca de la memoria. Es el lugar ideal para cerrar archivos, desconectar bases de datos o liberar memoria dinámica pedida con 'new'.",
+          "codigo": "Coche() { /* Inicio */ }\n~Coche() { /* Cierre */ }"
+        },
+        {
+          "id": 27,
+          "tipo": "contenido",
+          "titulo": "Encapsulamiento",
+          "cuerpo": "El encapsulamiento protege la integridad de los datos ocultando el estado interno del objeto. Usamos 'private' para que los atributos no sean modificados por error desde fuera. Para interactuar con ellos, usamos métodos públicos (getters y setters). Es como el tablero de un auto: puedes usar el volante y pedales (public), pero no necesitas tocar directamente los cables del motor (private).",
+          "codigo": "private:\n  int motorId;"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 3,
+      "titulo": "POO: Herencia y Polimorfismo",
+      "secciones": [
+        {
+          "id": 29,
+          "tipo": "contenido",
+          "titulo": "Herencia simple",
+          "cuerpo": "La herencia permite crear nuevas clases basadas en clases ya existentes, fomentando la reutilización de código. La clase hija hereda todo el ADN (atributos y métodos) de la clase padre. En C++, la herencia 'public' es la más común, indicando que 'un Estudiante ES UNA Persona'. Esto permite extender funcionalidades sin tener que reescribir la lógica base.",
+          "codigo": "class Estudiante : public Persona { ... };"
+        },
+        {
+          "id": 30,
+          "tipo": "contenido",
+          "titulo": "Funciones Virtuales",
+          "cuerpo": "La palabra clave 'virtual' indica al compilador que una función puede ser redefinida en las clases hijas. Esto es la base del polimorfismo en tiempo de ejecución: permite que un puntero de la clase padre llame a la versión específica de la función de la clase hija. Es lo que permite tratar a diferentes objetos de forma uniforme pero respetando sus comportamientos únicos.",
+          "codigo": "virtual void hablar() { ... }"
+        },
+        {
+          "id": 31,
+          "tipo": "contenido",
+          "titulo": "Clases Abstractas",
+          "cuerpo": "Una clase se vuelve abstracta cuando tiene al menos una función virtual pura (declarada con = 0). Estas clases actúan como contratos o interfaces: definen qué DEBE hacer una subclase, pero no CÓMO. No puedes crear objetos de una clase abstracta directamente; su único propósito es servir como base sólida para otras clases más específicas.",
+          "codigo": "virtual void dibujar() = 0;"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 4,
+      "titulo": "Standard Template Library (STL)",
+      "secciones": [
+        {
+          "id": 33,
+          "tipo": "contenido",
+          "titulo": "Vectores (std::vector)",
+          "cuerpo": "Los vectores son contenedores de la STL que funcionan como arreglos dinámicos. A diferencia de los arreglos clásicos, los vectores gestionan su propia memoria y crecen automáticamente cuando añades elementos. Ofrecen acceso aleatorio rápido mediante índices y son, en la práctica, el estándar de oro para manejar listas de datos en C++ moderno.",
+          "codigo": "std::vector<int> v = {1, 2, 3};\nv.push_back(4);"
+        },
+        {
+          "id": 34,
+          "tipo": "contenido",
+          "titulo": "Iteradores",
+          "cuerpo": "Los iteradores son objetos que actúan como un puente entre tu código y los datos dentro de un contenedor (como un vector o un mapa). Funcionan de forma muy similar a los punteros, permitiéndote recorrer una colección de principio a fin de manera uniforme, sin importar cómo estén guardados los datos internamente. Son la 'llave maestra' para moverte por la STL.",
+          "codigo": "std::vector<int>::iterator it = v.begin();"
+        },
+        {
+          "id": 35,
+          "tipo": "contenido",
+          "titulo": "Mapas (std::map)",
+          "cuerpo": "Un std::map es un contenedor asociativo que guarda pares de 'Clave-Valor'. Imagina un diccionario físico: la palabra es la clave (única) y la definición es el valor. Los mapas en C++ suelen estar implementados como árboles binarios, lo que significa que mantienen tus claves ordenadas automáticamente y permiten búsquedas muy rápidas.",
+          "codigo": "std::map<string, int> edades;\nedades[\"Juan\"] = 20;"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 5,
+      "titulo": "Templates y Manejo de Errores",
+      "secciones": [
+        {
+          "id": 37,
+          "tipo": "contenido",
+          "titulo": "Templates (Plantillas)",
+          "cuerpo": "Los templates permiten la programación genérica. En lugar de escribir una función para enteros, otra para flotantes y otra para doubles, escribes una 'plantilla' que funciona con cualquier tipo T. El compilador se encarga de generar la versión necesaria cuando la usas. Esto hace que tu código sea extremadamente flexible y fácil de mantener.",
+          "codigo": "template <typename T>\nT sumar(T a, T b) { return a + b; }"
+        },
+        {
+          "id": 38,
+          "tipo": "contenido",
+          "titulo": "Excepciones (try/catch)",
+          "cuerpo": "El manejo de excepciones es la forma profesional de lidiar con situaciones inesperadas (como dividir por cero o no encontrar un archivo). Usamos 'try' para encerrar el código que podría fallar, 'throw' para lanzar un aviso de error y 'catch' para capturar ese error y decidir cómo manejarlo sin que el usuario vea un cierre repentino del programa.",
+          "codigo": "try { throw 505; } catch(int e) { ... }"
+        },
+        {
+          "id": 39,
+          "tipo": "contenido",
+          "titulo": "Sobrecarga de Operadores",
+          "cuerpo": "C++ te permite redefinir el significado de operadores como +, == o << para que funcionen con tus propias clases. Por ejemplo, podrías sobrecargar el operador '+' en una clase 'Complejo' para sumar números imaginarios de forma natural. Esto hace que tus clases se sientan como si fueran tipos de datos nativos del lenguaje.",
+          "codigo": "bool operator==(const Coche& c) { ... }"
+        }
+      ]
+    }
+  ]
+}

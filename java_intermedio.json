@@ -1,0 +1,142 @@
+{
+  "curso": "Java",
+  "nivel": "Intermedio",
+  "total_capitulos": 5,
+  "capitulos": [
+    {
+      "num_capitulo": 1,
+      "titulo": "Programación Orientada a Objetos (POO)",
+      "secciones": [
+        {
+          "id": 21,
+          "tipo": "contenido",
+          "titulo": "Clases, Objetos y Atributos",
+          "cuerpo": "Una clase es el plano arquitectónico que define las características y comportamientos de una entidad, mientras que un objeto es la 'casa' ya construida en la memoria RAM (instancia). Los atributos representan el estado o los datos del objeto. Para dar vida a una clase, utilizamos la palabra reservada 'new', la cual reserva un espacio específico en el Heap de Java para almacenar esa nueva entidad.",
+          "codigo": "public class Persona {\n    String nombre;\n    int edad;\n}"
+        },
+        {
+          "id": 22,
+          "tipo": "contenido",
+          "titulo": "Constructores y Sobrecarga",
+          "cuerpo": "El constructor es un método especial que se ejecuta automáticamente al crear un objeto; su función principal es inicializar los atributos. Java permite la 'sobrecarga de constructores', lo que significa tener varias formas de crear un mismo objeto (por ejemplo, crear una Persona solo con su nombre o con nombre y edad). Si no defines ningún constructor, Java crea uno vacío por defecto.",
+          "codigo": "public Persona() {}\npublic Persona(String n) { this.nombre = n; }"
+        },
+        {
+          "id": 23,
+          "tipo": "contenido",
+          "titulo": "Encapsulamiento (Getters/Setters)",
+          "cuerpo": "El encapsulamiento es el pilar de la seguridad en POO. Consiste en ocultar los atributos usando el modificador 'private' para evitar que sean alterados erróneamente desde fuera de la clase. Para interactuar con estos datos de forma segura, proporcionamos métodos públicos conocidos como 'Getters' (para leer) y 'Setters' (para escribir/validar), manteniendo el control total sobre la información.",
+          "codigo": "private int saldo;\npublic int getSaldo() { return saldo; }"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 2,
+      "titulo": "Herencia y Polimorfismo",
+      "secciones": [
+        {
+          "id": 25,
+          "tipo": "contenido",
+          "titulo": "Herencia (extends)",
+          "cuerpo": "La herencia permite que una clase nueva (hija) herede el código de una clase existente (padre), promoviendo la reutilización. En Java, se utiliza la palabra 'extends' y solo se permite la herencia simple (una hija solo tiene un padre directo). Esto crea una jerarquía donde la hija 'es un' tipo del padre, heredando tanto sus datos como sus capacidades.",
+          "codigo": "public class Estudiante extends Persona { ... }"
+        },
+        {
+          "id": 26,
+          "tipo": "contenido",
+          "titulo": "Polimorfismo y Sobrescritura",
+          "cuerpo": "El polimorfismo permite que un objeto se comporte de diferentes maneras según el contexto. Mediante la 'sobrescritura' de métodos (@Override), una clase hija puede redefinir un método del padre para adaptarlo a su propia necesidad (por ejemplo, un Animal que hace sonido, pero un Perro que específicamente ladra). Es la capacidad de usar una referencia general para manejar objetos específicos.",
+          "codigo": "@Override\npublic void hablar() { System.out.println(\"El estudiante saluda.\"); }"
+        },
+        {
+          "id": 27,
+          "tipo": "contenido",
+          "titulo": "Uso de super",
+          "cuerpo": "La palabra clave 'super' funciona como un puente hacia la clase padre. Se utiliza principalmente para invocar al constructor del padre desde la clase hija o para ejecutar una versión de un método que el padre ya tenía definido. Es esencial cuando queremos extender la funcionalidad de la superclase sin borrar lo que ella ya hacía originalmente.",
+          "codigo": "public Estudiante(String n) {\n    super(n); // Llama al constructor de Persona\n}"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 3,
+      "titulo": "Abstracción e Interfaces",
+      "secciones": [
+        {
+          "id": 29,
+          "tipo": "contenido",
+          "titulo": "Clases Abstractas",
+          "cuerpo": "Una clase abstracta es una idea incompleta que no puede ser convertida en objeto directamente (no se puede usar 'new'). Sirve como una plantilla obligatoria para otras clases. Puede contener 'métodos abstractos' que no tienen código, obligando a las clases hijas a decidir cómo implementar esa funcionalidad específica (ej. la clase Forma es abstracta, pero Círculo debe implementar calcularArea).",
+          "codigo": "public abstract class Animal { abstract void sonido(); }"
+        },
+        {
+          "id": 30,
+          "tipo": "contenido",
+          "titulo": "Interfaces (implements)",
+          "cuerpo": "Una interfaz es un 'contrato' de comportamiento. A diferencia de la herencia, donde una clase 'es algo', con las interfaces una clase 'aprende a hacer algo'. Una de las grandes ventajas es que Java permite implementar múltiples interfaces a la vez, lo que suple la falta de herencia múltiple. Las interfaces definen habilidades puras (como Volador, Nadador o Conectable).",
+          "codigo": "public class Perro implements Mascota, Entrenable { ... }"
+        },
+        {
+          "id": 31,
+          "tipo": "contenido",
+          "titulo": "Interfaces vs Clases Abstractas",
+          "cuerpo": "La elección depende del diseño: las clases abstractas se usan cuando hay una relación de parentesco fuerte y atributos compartidos (identidad). Las interfaces se usan cuando queremos asegurar que diferentes clases, aunque no tengan nada que ver entre sí, cumplan con los mismos métodos (comportamiento). Una clase abstracta es un 'qué es' y una interfaz es un 'qué puede hacer'.",
+          "codigo": "// Abstract: Vehiculo, Interface: Conducible"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 4,
+      "titulo": "Colecciones y Listas",
+      "secciones": [
+        {
+          "id": 33,
+          "tipo": "contenido",
+          "titulo": "ArrayList",
+          "cuerpo": "El ArrayList es la evolución de los arreglos tradicionales. A diferencia de un array fijo, el ArrayList es dinámico: crece o se encoge automáticamente a medida que añades o eliminas elementos. Internamente gestiona un arreglo que se redimensiona, ofreciendo una flexibilidad total para manejar listas de datos cuyo tamaño desconocemos al iniciar el programa.",
+          "codigo": "ArrayList<String> lista = new ArrayList<>();\nlista.add(\"Java\");"
+        },
+        {
+          "id": 34,
+          "tipo": "contenido",
+          "titulo": "HashMap (Clave-Valor)",
+          "cuerpo": "El HashMap es una estructura de datos asociativa extremadamente rápida. Funciona guardando pares de 'Clave' y 'Valor' (como un diccionario). Cada clave debe ser única y te permite recuperar su valor asociado casi instantáneamente sin tener que recorrer toda la lista. Es ideal para bases de datos temporales, cachés o sistemas de configuración.",
+          "codigo": "HashMap<String, Integer> stock = new HashMap<>();\nstock.put(\"Manzanas\", 50);"
+        },
+        {
+          "id": 35,
+          "tipo": "contenido",
+          "titulo": "Wrapper Classes",
+          "cuerpo": "Las colecciones de Java solo pueden guardar objetos, no tipos primitivos (como int o char). Para solucionar esto, existen las Wrapper Classes (como Integer o Character). Java realiza un proceso llamado 'Autoboxing' donde convierte automáticamente un 'int' en un objeto 'Integer' para que puedas guardarlo en un ArrayList sin esfuerzo adicional.",
+          "codigo": "ArrayList<Integer> numeros = new ArrayList<>();\nnumeros.add(10); // Autoboxing de int a Integer"
+        }
+      ]
+    },
+    {
+      "num_capitulo": 5,
+      "titulo": "Excepciones y Errores",
+      "secciones": [
+        {
+          "id": 37,
+          "tipo": "contenido",
+          "titulo": "Jerarquía de Throwable",
+          "cuerpo": "En Java, todo lo que puede salir mal hereda de Throwable. Los 'Errors' son fallos críticos del sistema o la JVM que no podemos arreglar con código. Las 'Exceptions', en cambio, son situaciones previstas que el programador puede y debe manejar (como un archivo no encontrado o una división por cero) para evitar que la aplicación colapse.",
+          "codigo": "// Error (Grave) vs Exception (Manejable)"
+        },
+        {
+          "id": 38,
+          "tipo": "contenido",
+          "titulo": "Try-Catch-Finally",
+          "cuerpo": "Para manejar errores usamos el bloque try-catch. En el 'try' ponemos el código 'peligroso' y en el 'catch' la solución si algo falla. El bloque 'finally' es especial: se ejecuta siempre, haya habido error o no. Es el lugar perfecto para cerrar archivos o conexiones a internet, asegurando que no queden recursos abiertos por accidente.",
+          "codigo": "try {\n    int r = 10 / 0;\n} catch (ArithmeticException e) {\n    System.out.println(\"No puedes dividir por cero.\");\n} finally {\n    System.out.println(\"Operación finalizada.\");\n}"
+        },
+        {
+          "id": 39,
+          "tipo": "contenido",
+          "titulo": "Throws y Throw",
+          "cuerpo": "A veces un método sabe que algo puede fallar pero no quiere arreglarlo ahí mismo; en ese caso usa 'throws' para avisar a quien lo llame que debe estar preparado. Por otro lado, 'throw' (en singular) se usa para lanzar nosotros mismos una excepción manualmente si detectamos que algo no cumple nuestras reglas de negocio.",
+          "codigo": "public void retirar(int cant) throws SaldoInsuficienteException {\n    if (cant > saldo) throw new SaldoInsuficienteException();\n}"
+        }
+      ]
+    }
+  ]
+}

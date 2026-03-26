@@ -45,3 +45,29 @@ export interface NavItem {
   label: string;
   icon: string;
 }
+
+export interface Seccion {
+  id: number;
+  id_seccion: number;
+  tipo: string;
+  titulo: string;
+  cuerpo: string;
+  codigo: string | null;
+}
+
+export interface Tema {
+  id: number;
+  curso: string;
+  nivel: string;
+  id_capitulo: number;
+  titulo_capitulo: string;
+  secciones: Seccion[];
+}
+
+export interface UserLearningContent {
+  language: string;
+  level: string;
+  score: number;
+  max_score: number;
+  chapters: Tema[];
+}
