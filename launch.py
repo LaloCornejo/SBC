@@ -1,7 +1,29 @@
 #!/usr/bin/env python3
+"""SBC Launcher - creates venv if needed, installs deps, starts server."""
+
 import os
 import subprocess
 import sys
+
+
+def _ensure_venv():
+    """Create .venv in project dir if it doesn't exist, then re-launch from it."""
+    venv_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".venv")
+    python_in_venv = os.path.join(venv_dir, "Scripts", "python.exe")
+
+    if not os.path.exists(python_in_venv):
+        print("Creando entorno virtual en .venv...")
+        subprocess.run([sys.executable, "-m", "venv", venv_dir], check=True)
+        print("Entorno virtual creado")
+
+    # If already running from the venv, continue
+    if sys.executable.startswith(venv_dir):
+        return True
+
+    # Re-launch from venv python
+    print("Reiniciando desde el entorno virtual...")
+    result = subprocess.run([python_in_venv] + sys.argv, env={**os.environ})
+    sys.exit(result.returncode)
 
 
 def _0x():
@@ -21,7 +43,7 @@ def _1x():
 
     try:
         subprocess.run(
-            ["uv", "pip", "install", "-r", "backend/r.txt"],
+            ["uv", "pip", "install", "-r", "backend/r.txt", "--python", sys.executable],
             check=True,
         )
         print("Dependencias instaladas con uv")
@@ -86,4 +108,5 @@ def main():
 
 
 if __name__ == "__main__":
+    _ensure_venv()
     main()

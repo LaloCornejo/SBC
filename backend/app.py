@@ -227,6 +227,67 @@ async def health():
     return {"status": True}
 
 
+@app.get("/api/v1/user/profile")
+async def get_user_profile(username: str):
+    db = get_db()
+    user = db.get(username)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Usuario no encontrado",
+        )
+
+    role = db.get_user_role(username) or "student"
+    diagnostics = db.get_diagnostic_results(username)
+
+    # Calculate stats from diagnostics
+    total_diagnostics = len(diagnostics)
+    total_score = 0
+    max_possible = 0
+    score_map = {"python": "python_score", "cpp": "cpp_score", "java": "java_score"}
+    max_scores = {"python": 11, "cpp": 10, "java": 9}
+
+    for d in diagnostics:
+        result = d.get("result", "python")
+        score_key = score_map.get(result, "python_score")
+        total_score += d.get(score_key, 0)
+        max_possible += max_scores.get(result, 10)
+
+    accuracy = round((total_score / max_possible * 100)) if max_possible > 0 else 0
+
+    # Get user content for lessons completed
+    user_content = db.get_user_learning_content(username)
+    lessons_completed = 0
+    total_lessons = 0
+    if user_content:
+        total_lessons = len(user_content.get("chapters", []))
+        # For now, count chapters as lessons; progress tracking would need a separate table
+        lessons_completed = 0  # Would need a progress tracking table
+
+    # Calculate XP from diagnostics and activity
+    xp = total_diagnostics * 100 + lessons_completed * 50
+    level = (xp // 300) + 1
+    xp_to_next = level * 300
+
+    return {
+        "success": True,
+        "data": {
+            "username": username,
+            "role": role,
+            "join_date": user.get("created"),
+            "total_diagnostics": total_diagnostics,
+            "accuracy": accuracy,
+            "lessons_completed": lessons_completed,
+            "total_lessons": total_lessons,
+            "xp": xp,
+            "level": level,
+            "xp_to_next": xp_to_next,
+            "diagnostics": diagnostics,
+            "user_content": user_content,
+        },
+    }
+
+
 class AnnotationReq(BaseModel):
     expert_username: str
     student_username: str

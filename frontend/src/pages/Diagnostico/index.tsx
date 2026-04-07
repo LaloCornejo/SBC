@@ -121,25 +121,6 @@ function getPoints(q: number): Partial<Scores> {
   return {}
 }
 
-type BlockType = 'block-python' | 'block-cpp' | 'block-java' | 'block-mixed'
-
-function getBlock(q: number): BlockType {
-  const pythonQs = [1,2,3,4,5,6,21,23,26,27,33,34,35,40]
-  const cppQs    = [7,8,9,10,11,12,20,22,24,28,32,37,38]
-  const javaQs   = [13,14,15,16,17,18,25,29,30,31,36,39]
-  if (pythonQs.includes(q)) return 'block-python'
-  if (cppQs.includes(q))    return 'block-cpp'
-  if (javaQs.includes(q))   return 'block-java'
-  return 'block-mixed'
-}
-
-const BLOCK_LABELS: Record<BlockType, string> = {
-  'block-python': 'Bloque Python',
-  'block-cpp':    'Bloque C++',
-  'block-java':   'Bloque Java',
-  'block-mixed':  'Zona de convergencia',
-}
-
 type Winner = 'python' | 'cpp' | 'java'
 
 const RESULT_INFO: Record<Winner, { emoji: string; name: string; description: string; bgClass: string }> = {
@@ -272,11 +253,7 @@ export function Diagnostico() {
             <h1 className="result-language">{info.name}</h1>
             <p className="result-description">{info.description}</p>
 
-            <div className="result-scores">
-              <span className="score-item score-python">🐍 Python: {scores.python} pts</span>
-              <span className="score-item score-cpp">⚡ C++: {scores.cpp} pts</span>
-              <span className="score-item score-java">☕ Java: {scores.java} pts</span>
-            </div>
+
 
             <div className="result-actions">
               <button
@@ -299,9 +276,6 @@ export function Diagnostico() {
     )
   }
 
-  const block      = getBlock(currentQuestion)
-  const blockLabel = BLOCK_LABELS[block]
-
   return (
     <div className="page diagnostico-page">
       <div className="page-header diagnostico-header">
@@ -312,11 +286,7 @@ export function Diagnostico() {
       </div>
 
       <div className="container diagnostico-container">
-        <div className="scoreboard">
-          <span className="score-pill score-pill-python">🐍 Python: {scores.python}</span>
-          <span className="score-pill score-pill-cpp">⚡ C++: {scores.cpp}</span>
-          <span className="score-pill score-pill-java">☕ Java: {scores.java}</span>
-        </div>
+
 
         <p className="question-counter">Pregunta {questionCount} respondida</p>
 
@@ -326,8 +296,7 @@ export function Diagnostico() {
             <p className="question-text">¿Cómo te sentiste con las preguntas anteriores?</p>
           </div>
         ) : (
-          <div key={animKey} className={`question-card ${block} animate-fadeIn`}>
-            <span className="block-badge">{blockLabel}</span>
+          <div key={animKey} className="question-card animate-fadeIn">
             <div className="question-number">#{currentQuestion}</div>
             <p className="question-text">{QUESTIONS[currentQuestion]}</p>
           </div>
