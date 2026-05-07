@@ -484,3 +484,8 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* STI Stats Section */
+.sti-stats-section {
+  margin-bottom: 2rem;
+}

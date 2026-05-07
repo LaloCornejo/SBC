@@ -1,0 +1,300 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{titlesec}
+\usepackage{parskip}
+
+\geometry{margin=2cm}
+
+\titleformat{\section}{\bfseries\Large}{}{0em}{}
+\titleformat{\subsection}{\bfseries\large}{}{0em}{}
+\titleformat{\subsubsection}{\bfseries}{}{0em}{}
+\titlespacing{\section}{0pt}{6pt}{4pt}
+\titlespacing{\subsection}{0pt}{4pt}{2pt}
+\titlespacing{\subsubsection}{0pt}{2pt}{1pt}
+
+\definecolor{codebg}{rgb}{0.95,0.95,0.95}
+
+\lstset{
+    backgroundcolor=\color{codebg},
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny,
+    breaklines=true,
+    basicstyle=\ttfamily\small,
+    language=Python
+}
+
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=cyan}
+
+\begin{document}
+
+% ============================================================================
+% PORTADA
+% ============================================================================
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+    
+    \includegraphics[width=3.5cm]{uaeh.png}\\[0.3cm]
+    \textbf{Universidad Autónoma del Estado de Hidalgo}\\[0.2cm]
+    \textbf{Instituto de Ciencias Básicas e Ingeniería (ICBI)}\\[1.5cm]
+    
+    \textbf{\Huge Aprender++}\\[0.3cm]
+    \textbf{\LARGE Sistema Inteligente de Aprendizaje de Programación}\\[1.5cm]
+    
+    \Large \textbf{Manual Técnico}\\[1.5cm]
+    
+    \textbf{Integrantes del Proyecto:}\\[0.3cm]
+    \begin{tabular}{l l}
+        Hernández Franco Brandom Galder & - Diseñador \\
+        Manzanilla Hornung Mauricio Daniel & - Líder de Proyecto \\
+        Orta Escobar Felipe de Jesús & - Desarrollo \\
+        Cornejo Clavel Jesús Eduardo & - Programador \\
+    \end{tabular}\\[1.5cm]
+    
+    \textbf{6to Semestre, Grupo 1} \\[0.5cm]
+    \textbf{Tecnologías: Python + React + Sistemas Basados en Conocimiento}\\[1.5cm]
+    
+    \vfill
+    \textbf{Abril 2026}
+\end{titlepage}
+
+% ============================================================================
+% ÍNDICE
+% ============================================================================
+\newpage
+\tableofcontents
+\newpage
+
+% ============================================================================
+% SECCIÓN 1: ARQUITECTURA
+% ============================================================================
+\section{Arquitectura del Sistema}
+
+\subsection{Visión General}
+El sistema sigue una arquitectura cliente-servidor moderna:
+\begin{itemize}
+    \item \textbf{Frontend}: Aplicación web en React + TypeScript + Vite.
+    \item \textbf{Backend}: API REST en Python con FastAPI.
+\end{itemize}
+La comunicación se realiza mediante HTTP/JSON a través de una API RESTful en el puerto 8003.
+
+\subsection{Tecnologías del Frontend}
+\begin{itemize}
+    \item React 18: Framework de interfaz de usuario.
+    \item TypeScript: Lenguaje con tipos estáticos.
+    \item Vite: Herramienta de build y desarrollo.
+    \item React Router DOM: Navegación entre páginas.
+    \item Axios: Cliente HTTP para llamadas a la API.
+    \item Lucide React: Biblioteca de iconos.
+\end{itemize}
+
+\subsection{Tecnologías del Backend}
+\begin{itemize}
+    \item FastAPI: Framework web moderno de Python.
+    \item Uvicorn: Servidor ASGI de alto rendimiento.
+    \item Pydantic: Validación de datos.
+    \item SQLite: Base de datos embebida.
+    \item sqlite-vec: Extensión para búsquedas vectoriales (opcional).
+\end{itemize}
+
+% ============================================================================
+% SECCIÓN 2: FRONTEND
+% ============================================================================
+\section{Frontend}
+
+\subsection{Estructura del Proyecto}
+\begin{verbatim}
+frontend/
+├── src/
+│   ├── components/   # Navbar, Footer
+│   ├── pages/        # Home, About, Learning, Profile, Autenticación
+│   ├── services/     # API calls
+│   ├── hooks/        # Custom hooks
+│   ├── types/        # TypeScript types
+│   └── styles/       # Estilos globales
+├── public/           # Recursos estáticos
+└── package.json      # Dependencias
+\end{verbatim}
+
+\subsection{Páginas Principales}
+\begin{itemize}
+    \item \textbf{Home}: Página de bienvenida con información del proyecto.
+    \item \textbf{About}: Información del equipo y del proyecto.
+    \item \textbf{Learning}: Interfaz de lecciones con editor de código integrado.
+    \item \textbf{Profile}: Estadísticas de progreso del usuario.
+    \item \textbf{Diagnóstico}: Evaluación inicial para determinar el lenguaje recomendado.
+    \item \textbf{ExpertAnnotations}: Panel para expertos.
+\end{itemize}
+
+\subsection{Ejecución del Frontend}
+\begin{lstlisting}[language=bash]
+# Instalar dependencias
+bun install
+
+# Iniciar servidor de desarrollo
+bun run dev
+
+# Construir para producción
+bun run build
+\end{lstlisting}
+
+% ============================================================================
+% SECCIÓN 3: BACKEND
+% ============================================================================
+\section{Backend}
+
+\subsection{Estructura del Proyecto}
+\begin{verbatim}
+backend/
+├── app.py          # API principal con endpoints
+├── x2.py          # Gestión de base de datos
+├── r.txt          # Dependencias Python
+└── data/.hidden/  # Base de datos SQLite
+\end{verbatim}
+
+\subsection{Endpoints de la API}
+
+\textbf{Autenticación:}
+\begin{itemize}
+    \item POST /api/v1/login - Iniciar sesión
+    \item POST /api/v1/register - Registrar usuario
+    \item GET /api/v1/hc - Health check
+\end{itemize}
+
+\textbf{Diagnóstico:}
+\begin{itemize}
+    \item GET /api/v1/questions - Obtener preguntas
+    \item POST /api/v1/diagnostic-result - Guardar resultado
+    \item GET /api/v1/diagnostic-results/\{username\} - Ver resultados
+\end{itemize}
+
+\textbf{Contenido Educativo:}
+\begin{itemize}
+    \item GET /api/v1/content/user/\{username\} - Contenido personalizado
+    \item GET /api/v1/content/\{language\} - Contenido por lenguaje
+    \item GET /api/v1/content/\{language\}/\{level\} - Contenido por nivel
+\end{itemize}
+
+\textbf{Ejecución de Código:}
+\begin{itemize}
+    \item POST /api/v1/execute - Ejecutar código (Python, C++, Java)
+\end{itemize}
+
+\textbf{Panel de Experto:}
+\begin{itemize}
+    \item GET /api/v1/expert/students - Listar estudiantes
+    \item POST /api/v1/expert/annotation - Crear anotación
+    \item PUT /api/v1/expert/annotation/\{id\} - Actualizar anotación
+    \item DELETE /api/v1/expert/annotation/\{id\} - Eliminar anotación
+\end{itemize}
+
+% ============================================================================
+% SECCIÓN 4: BASE DE DATOS
+% ============================================================================
+\section{Base de Datos}
+
+\subsection{Tablas Principales}
+
+\textbf{users:}
+\begin{verbatim}
+id, username, password (hash SHA256), role, created
+\end{verbatim}
+
+\textbf{questions:}
+\begin{verbatim}
+id, number, text, language, yes_next, no_next
+\end{verbatim}
+
+\textbf{diagnostic\_results:}
+\begin{verbatim}
+id, username, result, python_score, cpp_score, java_score, 
+difficulty_responses (JSON), created
+\end{verbatim}
+
+\textbf{temas:}
+\begin{verbatim}
+id, curso, nivel, id_capitulo, titulo_capitulo
+\end{verbatim}
+
+\textbf{secciones:}
+\begin{verbatim}
+id, tema_id, id_seccion, tipo, titulo, cuerpo, codigo
+\end{verbatim}
+
+\textbf{expert\_annotations:}
+\begin{verbatim}
+id, expert_username, student_username, diagnostic_id, 
+annotation, created, updated
+\end{verbatim}
+
+\subsection{Contenido Educativo}
+Archivos JSON en la raíz del proyecto:
+\begin{itemize}
+    \item py\_basico.json, py\_intermedio.json, py\_avanzado.json
+    \item cpp\_basico.json, cpp\_intermedio.json, cpp\_avanzado.json
+    \item java\_basico.json, java\_intermedio.json, java\_avanzado.json
+\end{itemize}
+
+Estructura de cada archivo:
+\begin{verbatim}
+{
+  "curso": "Python",
+  "nivel": "Básico",
+  "total_capitulos": 5,
+  "capitulos": [
+    {
+      "num_capitulo": 1,
+      "titulo": "Introducción",
+      "secciones": [
+        {
+          "id": 1,
+          "tipo": "contenido",
+          "titulo": "Título",
+          "cuerpo": "Descripción...",
+          "codigo": "print('Hola')"
+        }
+      ]
+    }
+  ]
+}
+\end{verbatim}
+
+% ============================================================================
+% SECCIÓN 5: EJECUCIÓN
+% ============================================================================
+\section{Ejecución del Sistema}
+
+\subsection{Instalación y Ejecución}
+El archivo launch.py facilita la ejecución:
+
+\begin{enumerate}
+    \item Crea un entorno virtual si no existe
+    \item Instala las dependencias necesarias
+    \item Inicia el servidor FastAPI en el puerto 8003
+\end{enumerate}
+
+\begin{lstlisting}[language=bash]
+python launch.py
+\end{lstlisting}
+
+El servidor estará disponible en:
+\begin{itemize}
+    \item API: http://localhost:8003
+    \item Health check: http://localhost:8003/api/v1/hc
+\end{itemize}
+
+\subsection{Usuario Experto}
+Por defecto se crea un usuario para pruebas:
+\begin{itemize}
+    \item Username: expert
+    \item Password: root
+\end{itemize}
+
+\end{document}

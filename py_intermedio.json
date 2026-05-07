@@ -1,140 +1,579 @@
 {
   "curso": "Python",
   "nivel": "Intermedio",
-  "total_capitulos": 5,
+  "total_capitulos": 8,
   "capitulos": [
     {
       "num_capitulo": 1,
-      "titulo": "Comprensión de Listas y Funciones Avanzadas",
+      "titulo": "Programación Orientada a Objetos (POO)",
       "secciones": [
         {
-          "id": 21,
+          "id": 1,
           "tipo": "contenido",
-          "titulo": "List Comprehensions",
-          "cuerpo": "Las 'List Comprehensions' son una forma sintáctica concisa de crear listas. A diferencia de un bucle for tradicional, estas son generalmente más rápidas ya que están optimizadas a nivel de C en el intérprete de Python. Permiten incluir lógica condicional (if/else) para filtrar o transformar elementos de una colección existente en una sola línea de código legible.",
-          "codigo": "cuadrados = [x**2 for x in range(10) if x % 2 == 0]"
+          "titulo": "Introducción a la POO",
+          "cuerpo": "La Programación Orientada a Objetos (POO) es un paradigma de programación que organiza el código alrededor de 'objetos' que combinan datos (atributos) y comportamiento (métodos). En lugar de pensar en funciones sueltas, piensas en entidades que tienen propiedades y pueden realizar acciones.\n\nLos conceptos fundamentales de POO son:\n- **Clase**: El plano o molde para crear objetos\n- **Objeto**: Una instancia concreta de una clase\n- **Atributos**: Variables que pertenecen a una clase u objeto\n- **Métodos**: Funciones que pertenecen a una clase\n\nPOO te ayuda a estructurar código complejo de manera más organizada, reusable y mantenible.",
+          "codigo": "# Definir una clase simple\nclass Persona:\n    # Constructor - inicializa el objeto\n    def __init__(self, nombre, edad):\n        self.nombre = nombre  # Atributo\n        self.edad = edad      # Atributo\n    \n    # Método\n    def saludar(self):\n        return f\"Hola, me llamo {self.nombre}\"\n\n# Crear un objeto (instancia)\npersona1 = Persona(\"Juan\", 25)\nprint(persona1.saludar())",
+          "codigo_ejemplo": "# Múltiples instancias\npersona2 = Persona(\"María\", 30)\nprint(persona1.nombre)  # Juan\nprint(persona2.nombre)  # María\n\n# Cada objeto es independiente\npersona1.edad = 26\nprint(persona1.edad)  # 26\nprint(persona2.edad)  # 30 (no cambió)",
+          "explicacion_codigo": "class define la clase. __init__ es el constructor que se llama al crear el objeto. self representa la instancia actual. Los atributos se definen con self.atributo.",
+          "consejos": ["Las clases van en PascalCase (MiClase)", "Usa docstrings para documentar clases", "Cada objeto tiene su propia copia de atributos"],
+          "errores_comunes": [
+            {"error": "Olvidar self en métodos", "solucion": "Todos los métodos necesitan self como primer parámetro"},
+            {"error": "Confundir clase con instancia", "solucion": "Persona es la clase, Persona() es una instancia"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea una clase Coche con marca y modelo", "solucion": "class Coche:\n    def __init__(self, marca, modelo):\n        self.marca = marca\n        self.modelo = modelo\n    \nmi_coche = Coche(\"Toyota\", \"Corolla\")\nprint(mi_coche.marca)", "pista": "Define __init__ con los parámetros"}
+          ],
+          "kc_tags": ["poo", "clases", "objetos", "intro"],
+          "dificultad": 4,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": []
         },
         {
-          "id": 22,
+          "id": 2,
           "tipo": "contenido",
-          "titulo": "Funciones Lambda",
-          "cuerpo": "Las lambdas son funciones anónimas (sin nombre) limitadas a una sola expresión. Se utilizan principalmente como argumentos de 'funciones de orden superior' como map(), filter() o sorted(). Aunque son potentes, la buena práctica dicta usarlas solo para operaciones simples; si la lógica requiere más de una línea, es mejor definir una función estándar con 'def' para mantener la legibilidad.",
-          "codigo": "sumar = lambda a, b: a + b\nprint(sumar(5, 3))"
+          "titulo": "Atributos de Instancia y de Clase",
+          "cuerpo": "En Python, existen dos tipos de atributos: de instancia y de clase.\n\n**Atributos de instancia**: Pertenecen a cada objeto individual. Se definen en __init__ con self.\n\n**Atributos de clase**: Compartidos por todos los objetos de la clase. Se definen directamente en la clase, fuera de cualquier método.\n\nLos atributos de clase son útiles para valores por defecto o constantes relacionadas con la clase.",
+          "codigo": "# Atributos de clase y de instancia\nclass Usuario:\n    # Atributo de clase (compartido)\n    usuarios_activos = 0\n    \n    def __init__(self, nombre):\n        # Atributo de instancia (único por objeto)\n        self.nombre = nombre\n        Usuario.usuarios_activos += 1\n\n# Crear usuarios\nu1 = Usuario(\"Ana\")\nu2 = Usuario(\"Bob\")\n\nprint(Usuario.usuarios_activos)  # 2 (compartido)\nprint(u1.nombre)  # Ana (propio)\nprint(u2.nombre)  # Bob (propio)",
+          "codigo_ejemplo": "# Contador con clase\nclass Contador:\n    cuenta = 0  # Inicial en 0\n    \n    def __init__(self):\n        Contador.cuenta += 1\n    \n    @classmethod\n    def resetear(cls):\n        cls.cuenta = 0\n\nc1 = Contador()\nc2 = Contador()\nc3 = Contador()\nprint(Contador.cuenta)  # 3\n\nContador.resetear()\nprint(Contador.cuenta)  # 0",
+          "explicacion_codigo": "Atributos de clase se acceden con Clase.atributo o self.__class__.atributo. Modificarlos afecta a todos los objetos. Son úteis para contadores o configuración.",
+          "consejos": ["Usa atributos de clase para compartir estado", "Cuidado modificando mutables en atributos de clase", "Atributos de instancia personalizan cada objeto"],
+          "errores_comunes": [
+            {"error": "Confundir tipo de atributo", "solucion": "De clase: compartidos. De instancia: propios de cada objeto"},
+            {"error": "Lista como atributo de clase", "solucion": "Usa None y crea lista en __init__"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea una clase con un atributo de clase que cuente las instancias creadas", "solucion": "class Animal:\n    total = 0\n    \n    def __init__(self, nombre):\n        self.nombre = nombre\n        Animal.total += 1\n\na1 = Animal(\"Perro\")\na2 = Animal(\"Gato\")\nprint(Animal.total)", "pista": "Incrementa el atributo de clase en __init__"}
+          ],
+          "kc_tags": ["atributos", "instancia", "clase"],
+          "dificultad": 4,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [1]
         },
         {
-          "id": 23,
+          "id": 3,
           "tipo": "contenido",
-          "titulo": "Argumentos *args y **kwargs",
-          "cuerpo": "Estas herramientas otorgan una flexibilidad enorme a tus funciones. *args captura un número indefinido de argumentos posicionales y los empaqueta en una 'Tupla'. Por otro lado, **kwargs captura argumentos nombrados (como clave=valor) y los empaqueta en un 'Diccionario'. Esto permite crear funciones que actúen como envoltorios o que reciban configuraciones dinámicas.",
-          "codigo": "def funcion(*args, **kwargs):\n    print(args) # Ejemplo: (1, 2, 3)\n    print(kwargs) # Ejemplo: {'id': 101, 'rol': 'admin'}"
+          "titulo": "Métodos: Instancia, Clase y Estático",
+          "cuerpo": "En Python hay tres tipos de métodos:\n\n**Métodos de instancia**: Los más comunes. Reciben self y pueden acceder/modificar atributos de instancia y clase.\n\n**Métodos de clase**: Usan el decorador @classmethod. Reciben cls en lugar de self. Útiles para constructores alternativos o modificar estado de clase.\n\n**Métodos estáticos**: Usan @staticmethod. No reciben self ni cls. Son funciones normales que pertenecen a la clase por contexto.",
+          "codigo": "# Tres tipos de métodos\nclass Calculadora:\n    PI = 3.14159  # Atributo de clase\n    \n    def __init__(self, valor):\n        self.valor = valor  # De instancia\n    \n    # Método de instancia\n    def duplicar(self):\n        return self.valor * 2\n    \n    # Método de clase\n    @classmethod\n    def area_circulo(cls, radio):\n        return cls.PI * radio ** 2\n    \n    # Método estático\n    @staticmethod\n    def es_par(n):\n        return n % 2 == 0\n\n# Usar\ncalc = Calculadora(10)\nprint(calc.duplicar())  # 20\nprint(Calculadora.area_circulo(5))  # 78.54\nprint(Calculadora.es_par(4))  # True",
+          "codigo_ejemplo": "# Constructor alternativo con classmethod\nclass Persona:\n    def __init__(self, nombre, edad):\n        self.nombre = nombre\n        self.edad = edad\n    \n    @classmethod\n    def desde_string(cls, texto):\n        nombre, edad = texto.split(\"-\")\n        return cls(nombre, int(edad))\n\n# Crear desde string\np = Persona.desde_string(\"Juan-25\")\nprint(p.nombre, p.edad)",
+          "explicacion_codigo": "@classmethod para constructores alternativos o lógica de clase. @staticmethod para funciones de utilidad que no necesitan estado del objeto.",
+          "consejos": ["Usa @classmethod para factory methods", "staticmethod no necesita acceso a la clase", "Instancia primero, luego considera otros tipos"],
+          "errores_comunes": [
+            {"error": "Olvidar decorador @classmethod", "solucion": "Sin el decorador, cls se trata como primer argumento"},
+            {"error": "Método estático accede a self", "solucion": "No puede acceder a self ni cls"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea una clase con un método de clase que cree instancias desde un diccionario", "solucion": "class Persona:\n    def __init__(self, nombre, edad):\n        self.nombre = nombre\n        self.edad = edad\n    \n    @classmethod\n    def desde_dict(cls, datos):\n        return cls(datos['nombre'], datos['edad'])\n\np = Persona.desde_dict({'nombre': 'Ana', 'edad': 30})", "pista": "Usa cls() para crear la instancia"}
+          ],
+          "kc_tags": ["metodos", "classmethod", "staticmethod"],
+          "dificultad": 4,
+          "tiempo_estimado_minutos": 30,
+          "prerequisites": [2]
+        },
+        {
+          "id": 4,
+          "tipo": "contenido",
+          "titulo": "Herencia: Reutilizando Clases",
+          "cuerpo": "La herencia permite crear una nueva clase basada en una existente. La clase nueva (hija) hereda todos los atributos y métodos de la clase padre.\n\nEsto promueve la reutilización de código y la creación de jerarquías lógicas. La clase hija puede:\n- Usar todos los métodos del padre\n- Sobreescribir métodos del padre\n- Añadir nuevos métodos y atributos\n\nLa función super() permite acceder a métodos del padre.",
+          "codigo": "# Herencia básica\nclass Animal:\n    def __init__(self, nombre):\n        self.nombre = nombre\n    \n    def hacer_sonido(self):\n        return \"Sonido genérico\"\n\nclass Perro(Animal):  # Hereda de Animal\n    def hacer_sonido(self):\n        return \"¡Guau!\"\n\nclass Gato(Animal):\n    def hacer_sonido(self):\n        return \"¡Miau!\"\n\nperro = Perro(\"Fido\")\ngato = Gato(\"Michi\")\n\nprint(perro.nombre, perro.hacer_sonido())  # Fido ¡Guau!\nprint(gato.nombre, gato.hacer_sonido())   # Michi ¡Miau!",
+          "codigo_ejemplo": "# Herencia con super()\nclass Empleado:\n    def __init__(self, nombre, salario):\n        self.nombre = nombre\n        self.salario = salario\n    \n    def __str__(self):\n        return f\"{self.nombre} - ${self.salario}\"\n\nclass Gerente(Empleado):\n    def __init__(self, nombre, salario, departamento):\n        super().__init__(nombre, salario)  # Llama al padre\n        self.departamento = departamento\n    \n    def __str__(self):\n        return f\"{super().__str__()} - Depto: {self.departamento}\"\n\ng = Gerente(\"Ana\", 5000, \"IT\")\nprint(g)",
+          "explicacion_codigo": "class Hija(Padre) crea herencia. super().__init__() llama al constructor del padre. La hija puede sobreescribir cualquier método.",
+          "consejos": ["Usa herencia cuando hay relación 'es un'", "Favorece composición sobre herencia cuando sea posible", "super() facilita mantenimiento"],
+          "errores_comunes": [
+            {"error": "Olvidar super().__init__", "solucion": "Atributos del padre no se inicializan"},
+            {"error": "Herencia múltiple confuse", "solucion": "Usa MRO (Method Resolution Order)"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea una clase Estudiante que herede de Persona, añadiendo carrera", "solucion": "class Persona:\n    def __init__(self, nombre):\n        self.nombre = nombre\n\nclass Estudiante(Persona):\n    def __init__(self, nombre, carrera):\n        super().__init__(nombre)\n        self.carrera = carrera\n\ne = Estudiante(\"Juan\", \"Ing. Sistemas\")\nprint(e.nombre, e.carrera)", "pista": "Usa super() para llamar al padre"}
+          ],
+          "kc_tags": ["herencia", "super", "padre-hijo"],
+          "dificultad": 5,
+          "tiempo_estimado_minutos": 30,
+          "prerequisites": [3]
+        },
+        {
+          "id": 5,
+          "tipo": "contenido",
+          "titulo": "Polimorfismo",
+          "cuerpo": "El polimorfismo permite que objetos de diferentes clases respondan al mismo método de maneras diferentes. Es uno de los principios fundamentales de POO.\n\nEn Python, el polimorfismo es natural gracias al 'duck typing': 'If it walks like a duck and quacks like a duck, then it's a duck'. No necesitas herencia explícita.\n\nEl polimorfismo permite escribir código más genérico que funciona con diferentes tipos de objetos.",
+          "codigo": "# Polimorfismo con herencia\nclass Figura:\n    def area(self):\n        pass\n\nclass Cuadrado(Figura):\n    def __init__(self, lado):\n        self.lado = lado\n    \n    def area(self):\n        return self.lado ** 2\n\nclass Círculo(Figura):\n    def __init__(self, radio):\n        self.radio = radio\n    \n    def area(self):\n        return 3.14159 * self.radio ** 2\n\n# Función polimórfica\ndef imprimir_area(figura):\n    print(f\"Área: {figura.area()}\")\n\nimprimir_area(Cuadrado(5))  # 25\nimprimir_area(Círculo(3))   # 28.27",
+          "codigo_ejemplo": "# Duck typing - sin herencia necesaria\nclass Perro:\n    def sonido(self):\n        return \"Guau\"\n\nclass Persona:\n    def sonido(self):\n        return \"Hola\"\n\ndef hacer_hablar(algo):\n    print(f\"Dice: {algo.sonido()}\")\n\nhacer_hablar(Perro())   # Dice: Guau\nhacer_hablar(Persona())  # Dice: Hola\n# No necesitan heredar de una clase común",
+          "explicacion_codigo": "Polimorfismo = muchas formas. Mismo método, diferente comportamiento. En Python es automático gracias a duck typing.",
+          "consejos": ["Duck typing hace polimorfismo easy en Python", "No compliques con herencia si no la necesitas", "Interfaces informales (métodos con mismo nombre) son suficientes"],
+          "errores_comunes": [
+            {"error": "Sobregeneralizar", "solucion": "Solo aplica polimorfismo donde tiene sentido"},
+            {"error": "Confundir con herencia", "solucion": "En Python, herencia no es necesaria para polimorfismo"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea una función que acepte cualquier objeto con método describir()", "solucion": "class Perro:\n    def describir(self):\n        return \"Es un perro peludo\"\n\nclass Casa:\n    def describir(self):\n        return \"Es una casa grande\"\n\ndef mostrar_descripcion(algo):\n    print(algo.describir())\n\nmostrar_descripcion(Perro())\nmostrar_descripcion(Casa())", "pista": "Solo necesitan tener el método requerido"}
+          ],
+          "kc_tags": ["polimorfismo", "duck-typing", "polymorphism"],
+          "dificultad": 5,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [4]
+        },
+        {
+          "id": 6,
+          "tipo": "contenido",
+          "titulo": "Encapsulamiento",
+          "c三口": "El encapsulamiento restringe el acceso a ciertos componentes de un objeto. En Python, se usa convención: nombres con underscore indican 'privado'.\n\n**__atributo** (doble underscore): Name mangling - el nombre se transforma _Clase__atributo\n\n**_atributo** (underscore): Indica que es 'protegido' - no debería accederse directamente\n\nPython no tiene encapsulamiento verdadero (hay at-bajo nivel, pero se puede acceder si se quiere). Se basa en convenciones y responsabilidad del programador.",
+          "codigo": "# Encapsulamiento en Python\nclass CuentaBancaria:\n    def __init__(self, titular, saldo_inicial):\n        self.titular = titular\n        self.__saldo = saldo_inicial  # Privado (name mangling)\n    \n    # Método para acceder (getter)\n    def obtener_saldo(self):\n        return self.__saldo\n    \n    # Método para modificar (setter)\n    def depositar(self, monto):\n        if monto > 0:\n            self.__saldo += monto\n            return True\n        return False\n    \n    def __str__(self):\n        return f\"Cuenta de {self.titular}\"\n\ncuenta = CuentaBancaria(\"Juan\", 1000)\nprint(cuenta.obtener_saldo())  # 1000\ncuenta.depositar(500)\nprint(cuenta.obtener_saldo())  # 1500\n# print(cuenta.__saldo)  # Error! Atributo privado",
+          "codigo_ejemplo": "# Name mangling en acción\nclass MiClase:\n    def __init__(self):\n        self.__secreto = 42\n\nobj = MiClase()\n# No se puede acceder directamente:\n# print(obj.__secreto)  # AttributeError\n\n# Pero Python lo transforma:\nprint(obj._MiClase__secreto)  # 42 (no recomendado)",
+          "explicacion_codigo": "__atributo aplica name mangling _Clase__atributo. Es 'private by convention'. Getters/setters o @property son el approach pitónico.",
+          "consejos": ["Usa __ para indicar privado", "Proporciona métodos para acceder a datos sensibles", "@property es más pitónico que getters/setters"],
+          "errores_comunes": [
+            {"error": "Pensar que Python tiene privado real", "solucion": "Es convención, se puede acceder con _Clase__atributo"},
+            {"error": "Abusar de getters/setters", "solucion": "Usa @property para API más limpia"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea una clase con un atributo privado y un método para cambiarlo validando", "solucion": "class Temperatura:\n    def __init__(self):\n        self.__celsius = 0\n    \n    def set_celsius(self, valor):\n        if -273 <= valor:\n            self.__celsius = valor\n    \n    def get_celsius(self):\n        return self.__celsius\n\nt = Temperatura()\nt.set_celsius(25)\nprint(t.get_celsius())", "pista": "Usa __atributo para hacerlo 'privado'"}
+          ],
+          "kc_tags": ["encapsulamiento", "privado", "publico"],
+          "dificultad": 4,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [5]
         }
       ]
     },
     {
       "num_capitulo": 2,
-      "titulo": "POO en Python",
+      "titulo": "Excepciones y Manejo de Archivos",
       "secciones": [
         {
-          "id": 25,
+          "id": 7,
           "tipo": "contenido",
-          "titulo": "Clases y self",
-          "cuerpo": "En Python, las clases definen el plano para crear objetos. El parámetro 'self' es una referencia explícita a la instancia específica que está llamando al método; permite acceder a los atributos y otros métodos de ese objeto en particular. Aunque no es una palabra reservada (podrías usar otro nombre), es el estándar absoluto en la comunidad para que tu código sea entendible.",
-          "codigo": "class Robot:\n    def __init__(self, nombre):\n        self.nombre = nombre # Atributo de instancia"
+          "titulo": "Excepciones Personalizadas",
+          "cuerpo": "Puedes crear tus propias excepciones heredando de la clase Exception. Esto es útil para manejar errores específicos de tu aplicación.\n\nLas excepciones personalizadas permiten dar mensajes más claros y manejar errores específicos de tu dominio.",
+          "codigo": "# Crear excepción personalizada\nclass ErrorValidacion(Exception):\n    pass\n\nclass ErrorEdad(ErrorValidacion):\n    def __init__(self, edad):\n        self.edad = edad\n        super().__init__(f\"Edad inválida: {edad}\")\n\ndef verificar_edad(edad):\n    if edad < 0:\n        raise ErrorEdad(edad)\n    if edad > 150:\n        raise ErrorEdad(edad)\n    return \"Válido\"\n\ntry:\n    print(verificar_edad(200))\nexcept ErrorValidacion as e:\n    print(f\"Error de validación: {e}\")",
+          "codigo_ejemplo": "# Excepciones con datos adicionales\nclass ErrorBaseDatos(Exception):\n    def __init__(self, mensaje, codigo_error):\n        super().__init__(mensaje)\n        self.codigo_error = codigo_error\n\ntry:\n    raise ErrorBaseDatos(\"Conexión fallida\", 1001)\nexcept ErrorBaseDatos as e:\n    print(f\"Error {e.codigo_error}: {e}\")",
+          "explicacion_codigo": "class MiError(Exception): crea excepción personalizada. Hereda de Exception para errores generales. raise para lanzar.",
+          "consejos": ["Usa nombres descriptivos (Error...)", "Incluye información relevante en el mensaje", "Permite manejo específico con except"],
+          "errores_comunes": [
+            {"error": "No heredar de Exception", "solucion": "BaseException es muy general, Exception es mejor"},
+            {"error": "No pasar mensaje a super", "solucion": "super().__init__(mensaje) es necesario"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea una excepción para errores de contraseña muy corta", "solucion": "class ErrorContrasenaCorta(Exception):\n    def __init__(self, longitud):\n        self.longitud = longitud\n        super().__init__(f\"Contraseña muy corta: {longitud} caracteres\")\n\ndef validar_contrasena(pwd):\n    if len(pwd) < 8:\n        raise ErrorContrasenaCorta(len(pwd))\n    return True\n\nvalidar_contrasena(\"abc\")", "pista": "Hereda de Exception y usa raise"}
+          ],
+          "kc_tags": ["excepciones", "custom", "raise"],
+          "dificultad": 5,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [6]
         },
         {
-          "id": 26,
+          "id": 8,
           "tipo": "contenido",
-          "titulo": "Herencia y super()",
-          "cuerpo": "Python permite que una clase herede atributos y métodos de otra. La función super() es vital porque te permite acceder y llamar a métodos de la clase padre (superclase) de forma dinámica. Esto es especialmente útil en el método __init__ para asegurar que la clase padre se inicialice correctamente antes de añadir la lógica específica de la clase hija.",
-          "codigo": "class Drone(Robot):\n    def __init__(self, nombre):\n        super().__init__(nombre) # Inicializa la parte de 'Robot'"
+          "titulo": "Lectura de Archivos",
+          "cuerpo": "Python facilita la lectura y escritura de archivos. El objeto file proporciona métodos para esto.\n\nPara leer un archivo:\n1. Abrirlo con open('archivo', 'r')\n2. Leer con read(), readline() o readlines()\n3. Cerrar con close() o mejor, usar 'with'\n\nEl modo 'r' es lectura, 'w' es escritura (sobrescribe), 'a' es añadir.",
+          "codigo": "# Leer archivo completo\nwith open('ejemplo.txt', 'r') as archivo:\n    contenido = archivo.read()\n    print(contenido)\n\n# Leer línea por línea\nwith open('ejemplo.txt', 'r') as archivo:\n    for linea in archivo:\n        print(linea.strip())  # strip() elimina saltos de línea\n\n# Leer todas las líneas como lista\nwith open('ejemplo.txt', 'r') as archivo:\n    lineas = archivo.readlines()\n    print(lineas)",
+          "codigo_ejemplo": "# Manejo de archivos con encoding\n# Por defecto Python usa utf-8, pero puedes especificar\nwith open('datos.txt', 'r', encoding='utf-8') as f:\n    contenido = f.read()\n\n# Leer archivo que puede no existir\nimport os\n\nif os.path.exists('archivo.txt'):\n    with open('archivo.txt', 'r') as f:\n        print(f.read())\nelse:\n    print(\"El archivo no existe\")",
+          "explicacion_codigo": "open('ruta', 'r') abre para lectura. 'r'=lectura, 'w'=escritura, 'a'=añadir. with asegura cierre automático.",
+          "consejos": ["Usa siempre 'with' para archivos", "encoding='utf-8' evita problemas con acentos", "strip() para quitar saltos de línea"],
+          "errores_comunes": [
+            {"error": "Archivo no encontrado", "solucion": "Usa os.path.exists() o try-except"},
+            {"error": "Olvidar cerrar archivo", "solucion": "Usa 'with' que cierra automáticamente"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Lee un archivo y cuenta las líneas", "solucion": "with open('ejemplo.txt', 'r') as f:\n    lineas = f.readlines()\nprint(f\"Tiene {len(lineas)} líneas\")", "pista": "Usa readlines() o itera directamente"}
+          ],
+          "kc_tags": ["archivos", "lectura", "open", "read"],
+          "dificultad": 3,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [7]
         },
         {
-          "id": 27,
+          "id": 9,
           "tipo": "contenido",
-          "titulo": "Métodos Especiales (Dunder)",
-          "cuerpo": "Los métodos 'Double Underscore' (Dunder) permiten sobrecargar comportamientos integrados del lenguaje. Por ejemplo, __str__ define qué se muestra al hacer un print() del objeto, mientras que __len__ define qué devuelve la función len(). Estos métodos permiten que tus propios objetos se comporten de forma nativa e intuitiva dentro del ecosistema de Python.",
-          "codigo": "def __str__(self):\n    return f\"Robot: {self.nombre}\""
+          "titulo": "Escritura de Archivos",
+          "cuerpo": "Para escribir archivos, usa open() con modo 'w' (escritura) o 'a' (añadir). Ten cuidado con 'w' - sobrescribe el archivo existente.\n\nEl método write() escribe una cadena. Para escribir múltiples líneas, usa writelines() con una lista.\n\nSiempre cierra el archivo o usa 'with' para asegurar que se guarde correctamente.",
+          "codigo": "# Escribir archivo (sobrescribe)\nwith open('nuevo.txt', 'w') as f:\n    f.write(\"Primera línea\\n\")\n    f.write(\"Segunda línea\\n\")\n\n# Añadir a archivo existente\nwith open('nuevo.txt', 'a') as f:\n    f.write(\"Tercera línea añadida\\n\")\n\n# Escribir múltiples líneas\nlineas = [\"Línea 1\\n\", \"Línea 2\\n\", \"Línea 3\\n\"]\nwith open('multiples.txt', 'w') as f:\n    f.writelines(lineas)",
+          "codigo_ejemplo": "# Escribir con encoding\ndatos = \"Información con tildes: áéíóúñ\"\nwith open('utf8.txt', 'w', encoding='utf-8') as f:\n    f.write(datos)\n\n# Leer de vuelta\nwith open('utf8.txt', 'r', encoding='utf-8') as f:\n    print(f.read())",
+          "explicacion_codigo": "'w' sobrescribe, 'a' añade. write() escribe string, writelines() escribe lista de strings. encoding='utf-8' es importante para caracteres especiales.",
+          "consejos": ["'w' destruye contenido anterior, cuidado", "Usa 'a' para añadir sin sobrescribir", "Siempre especifica encoding='utf-8'"],
+          "errores_comunes": [
+            {"error": "Sobrescribir sin querer", "solucion": "Usa 'a' si quieres añadir"},
+            {"error": "No añadir \\n", "solucion": "write no añade salto de línea automáticamente"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea un archivo con los números del 1 al 10", "solucion": "with open('numeros.txt', 'w') as f:\n    for i in range(1, 11):\n        f.write(f\"{i}\\n\")", "pista": "Itera y escribe cada número"}
+          ],
+          "kc_tags": ["archivos", "escritura", "write"],
+          "dificultad": 3,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [8]
+        },
+        {
+          "id": 10,
+          "tipo": "contenido",
+          "titulo": "Context Managers y el Protocolo with",
+          "cuerpo": "El statement 'with' implementa el protocolo de context manager. Garantiza que los recursos se limpien correctamente, incluso si hay errores.\n\nEl context manager tiene métodos __enter__ y __exit__ que se llaman al entrar y salir del bloque.\n\nPython proporciona el módulo contextlib para crear context managers fácilmente con el decorador @contextmanager.",
+          "codigo": "# Context manager con 'with' ya integrado\n# Archivos, conexiones, locks, etc.\n\n# Crear tu propio context manager\nclass MiConexion:\n    def __init__(self, recurso):\n        self.recurso = recurso\n    \n    def __enter__(self):\n        print(f\"Conectando a {self.recurso}\")\n        return self  # Lo que asigna 'as'\n    \n    def __exit__(self, exc_type, exc_val, exc_tb):\n        print(f\"Desconectando {self.recurso}\")\n        return False  # No suprimir excepciones\n\n# Usarlo\nwith MiConexion(\"Base de datos\") as conn:\n    print(\"Trabajando con la conexión...\")\n    # Si hay error, __exit__ igual se ejecuta",
+          "codigo_ejemplo": "# Usando contextlib\nfrom contextlib import contextmanager\n\n@contextmanager\ndef temporizador(nombre):\n    import time\n    print(f\"Iniciando {nombre}...\")\n    inicio = time.time()\n    try:\n        yield  # Aquí se ejecuta el código del bloque\n    finally:\n        print(f\"Terminó {nombre} en {time.time() - inicio:.2f}s\")\n\nwith temporizador(\"mi proceso\"):\n    import time\n    time.sleep(1)",
+          "explicacion_codigo": "__enter__ ejecuta al entrar al 'with'. __exit__ ejecuta al salir (siempre, incluso con errores). yield reemplaza return en @contextmanager.",
+          "consejos": ["Úsalo para recursos que necesitan limpieza", "Garantiza que __exit__ siempre se llama", "@contextmanager simplifica creación"],
+          "errores_comunes": [
+            {"error": "No usar with", "solucion": "Recursos pueden no cerrarse correctamente"},
+            {"error": "Olvidar return en __enter__", "solucion": "Lo que retorna se usa en 'as'"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea un context manager que imprima al entrar y salir", "solucion": "class Saludo:\n    def __init__(self, nombre):\n        self.nombre = nombre\n    \n    def __enter__(self):\n        print(f\"Hola {self.nombre}\")\n        return self\n    \n    def __exit__(self, *args):\n        print(f\"Adiós {self.nombre}\")\n\nwith Saludo(\"Mundo\") as s:\n    print(\"Procesando...\")", "pista": "Implementa __enter__ y __exit__"}
+          ],
+          "kc_tags": ["context-manager", "with", "protocolo"],
+          "dificultad": 4,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [9]
         }
       ]
     },
     {
       "num_capitulo": 3,
-      "titulo": "Manejo de Errores y Archivos",
+      "titulo": "Funciones Avanzadas",
       "secciones": [
         {
-          "id": 29,
+          "id": 11,
           "tipo": "contenido",
-          "titulo": "Excepciones (try, except, finally)",
-          "cuerpo": "El manejo de excepciones es crucial para construir software robusto. El bloque 'try' contiene el código que podría fallar; 'except' captura errores específicos para manejarlos con gracia. El bloque 'finally' es el más fiable: se ejecutará pase lo que pase, siendo el lugar perfecto para tareas de limpieza como cerrar conexiones a bases de datos o liberar memoria.",
-          "codigo": "try:\n    f = open('data.txt')\nexcept FileNotFoundError:\n    print('Archivo no encontrado')\nfinally:\n    print('Limpieza finalizada')"
+          "titulo": "map(), filter() y reduce()",
+          "cuerpo": "Estas tres funciones son herramientas fundamentales de programación funcional en Python.\n\n**map(función, iterable)**: Aplica la función a cada elemento y devuelve un iterador con los resultados.\n\n**filter(función, iterable)**: Filtra elementos - mantiene solo los que devuelven True.\n\n**reduce(función, iterable)**: Reduce el iterable a un solo valor aplicando la función acumulativamente.",
+          "codigo": "# map - aplicar función a cada elemento\nnumeros = [1, 2, 3, 4, 5]\ncuadrados = list(map(lambda x: x**2, numeros))\nprint(cuadrados)  # [1, 4, 9, 16, 25]\n\n# filter - mantener los que cumplen condición\npares = list(filter(lambda x: x % 2 == 0, numeros))\nprint(pares)  # [2, 4]\n\n# reduce - acumular a un solo valor\nfrom functools import reduce\nproducto = reduce(lambda a, b: a * b, numeros)\nprint(producto)  # 120 (1*2*3*4*5)",
+          "codigo_ejemplo": "# Combinar map y filter\nnombres = [\"ana\", \"bob\", \"carol\", \"dave\"]\n\n# Filtrar los de más de 3 letras y poner en mayúsculas\nresultado = list(map(str.upper, \n                     filter(lambda x: len(x) > 3, nombres)))\nprint(resultado)  # ['CAROL', 'DAVE']\n\n# Con listas normales (no lambda)\ndef duplicar(x):\n    return x * 2\n\nprint(list(map(duplicar, [1, 2, 3])))  # [2, 4, 6]",
+          "explicacion_codigo": "map y filter devuelven iteradores (convierte a list para ver). reduce necesita import de functools. Son más eficientes que loops.",
+          "consejos": ["Combina map y filter para pipelines claros", "reduce puede ser difícil de leer, considera loop", "Son más pitónicos que list comprehensions para casos simples"],
+          "errores_comunes": [
+            {"error": "Olvidar list()", "solucion": "map y filter devuelven iteradores, usa list()"},
+            {"error": "reduce necesita import", "solucion": "from functools import reduce"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Usa map para convertir una lista de strings a enteros", "solucion": "strings = [\"1\", \"2\", \"3\"]\nenteros = list(map(int, strings))\nprint(enteros)", "pista": "Usa int como función"}
+          ],
+          "kc_tags": ["map", "filter", "reduce", "funcional"],
+          "dificultad": 4,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [10]
         },
         {
-          "id": 30,
+          "id": 12,
           "tipo": "contenido",
-          "titulo": "Lectura y Escritura de Archivos",
-          "cuerpo": "Python interactúa con el sistema de archivos mediante open(). Los modos más comunes son 'r' para lectura (read), 'w' para escritura (write, sobrescribe todo) y 'a' para añadir (append). Es fundamental manejar el 'encoding' (usualmente utf-8) para evitar errores con caracteres especiales al leer o escribir datos.",
-          "codigo": "f = open(\"test.txt\", \"w\", encoding=\"utf-8\")\nf.write(\"Hola con tilde: á\")\nf.close()"
+          "titulo": "Decoradores",
+          "cuerpo": "Los decoradores son funciones que modifican el comportamiento de otras funciones. Reciben una función como argumento y devuelven una función modificada.\n\nSe usan para:\n- Logging\n- Medir tiempo de ejecución\n- Autenticación\n- Validación\n- Cacheo\n\nEl símbolo @ se usa para aplicar decoradores.",
+          "codigo": "# Decorador básico\ndef mi_decorador(funcion):\n    def wrapper(*args, **kwargs):\n        print(\"Antes de ejecutar\")\n        resultado = funcion(*args, **kwargs)\n        print(\"Después de ejecutar\")\n        return resultado\n    return wrapper\n\n@mi_decorador\ndef saludar():\n    print(\"¡Hola!\")\n\nsaludar()\n# Imprime:\n# Antes de ejecutar\n# ¡Hola!\n# Después de ejecutar",
+          "codigo_ejemplo": "# Decorador con argumentos\ndef repetir(veces):\n    def decorador(func):\n        def wrapper(*args, **kwargs):\n            for _ in range(veces):\n                resultado = func(*args, **kwargs)\n            return resultado\n        return wrapper\n    return decorador\n\n@repetir(3)\ndef decir_hola():\n    print(\"Hola\")\n\ndecir_hola()  # Imprime Hola 3 veces",
+          "codigo_ejemplo": "# Decorador functools.wraps\nfrom functools import wraps\n\ndef mi_decorador(func):\n    @wraps(func)  # Preserva metadata de la función original\n    def wrapper(*args, **kwargs):\n        return func(*args, **kwargs)\n    return wrapper\n\n@mi_decorador\ndef original():\n    \"\"\"Documentación de la función original\"\"\"\n    pass\n\nprint(original.__name__)  # original, no wrapper\nprint(original.__doc__)  # Documentación de la función original",
+          "explicacion_codigo": "@mi_decorador aplica la función. functools.wraps preserva metadata. Para decoradores con argumentos, necesitas una capa extra.",
+          "consejos": ["Usa @wraps para preservar metadata", "Los decoradores son funciones que retornan funciones", "Pueden encadenarse @a @b @c"],
+          "errores_comunes": [
+            {"error": "Perder metadata de función", "solucion": "Usa @wraps"},
+            {"error": "Decorador sin argumentos", "solucion": "No uses paréntesis: @decorador no @decorador()"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea un decorador que imprima el tiempo que tarda una función", "solucion": "import time\n\ndef temporizador(func):\n    def wrapper(*args, **kwargs):\n        inicio = time.time()\n        resultado = func(*args, **kwargs)\n        print(f\"Tardó {time.time() - inicio:.2f}s\")\n        return resultado\n    return wrapper\n\n@temporizador\ndef lento():\n    time.sleep(1)\n    print(\"Terminé\")\n\nlento()", "pista": "Mide tiempo antes y después de llamar"}
+          ],
+          "kc_tags": ["decoradores", "decorators", "@"],
+          "dificultad": 5,
+          "tiempo_estimado_minutos": 30,
+          "prerequisites": [11]
         },
         {
-          "id": 31,
+          "id": 13,
           "tipo": "contenido",
-          "titulo": "Context Managers (with)",
-          "cuerpo": "La sentencia 'with' implementa el protocolo de gestión de contexto. Es la forma recomendada de trabajar con recursos externos (como archivos o hilos). Al usar 'with', Python se encarga automáticamente de llamar al método __exit__ del objeto al terminar el bloque, cerrando el archivo incluso si ocurre un error inesperado. Esto previene la corrupción de datos y el desperdicio de recursos.",
-          "codigo": "with open(\"test.txt\", \"r\") as archivo:\n    contenido = archivo.read()\n# Aquí el archivo ya está cerrado automáticamente"
+          "titulo": "Generadores y yield",
+          "cuerpo": "Los generadores son funciones que producen una secuencia de valores lazily (solo cuando se necesitan). Usan 'yield' en lugar de 'return'.\n\nA diferencia de las listas, los generadores:\n- No almacenan todos los valores en memoria\n- Calculan valores bajo demanda\n- Solo pueden iterarse una vez\n- Son más eficientes en memoria\n\nSon ideales para secuencias grandes o infinitas.",
+          "codigo": "# Función generadora\ndef contar_hasta(n):\n    for i in range(1, n + 1):\n        yield i  # Produce un valor sin terminar\n\n# Usar el generador\ngen = contar_hasta(5)\nprint(next(gen))  # 1\nprint(next(gen))  # 2\nprint(list(gen))  # [3, 4, 5] (el resto)\n\n# Con for (más común)\nfor numero in contar_hasta(3):\n    print(numero)",
+          "codigo_ejemplo": "# Generador infinito\ndef numeros_infinitos():\n    n = 1\n    while True:\n        yield n\n        n += 1\n\n# Solo se genera lo que necesitas\nfor i, num in enumerate(numeros_infinitos()):\n    if i >= 5:\n        break\n    print(num)  # 1, 2, 3, 4, 5\n\n# Expresiones generadoras\ngen = (x**2 for x in range(5))\nprint(list(gen))  # [0, 1, 4, 9, 16]",
+          "explicacion_codigo": "yield pausa la función y devuelve valor. next() obtiene siguiente valor. Cuando termina, StopIteration. Expresiones generadoras usan ( ) en lugar de [ ].",
+          "consejos": ["Usa generadores para secuencias grandes", "next() para obtener valores uno por uno", "Son ideales para pipelines de datos"],
+          "errores_comunes": [
+            {"error": "Confundir return con yield", "solucion": "return termina, yield pausa y puede continuar"},
+            {"error": "Iterar dos veces", "solucion": "Se agotan, convierte a lista si necesitas reusar"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea un generador que produzca los primeros n números Fibonacci", "solucion": "def fibonacci(n):\n    a, b = 0, 1\n    for _ in range(n):\n        yield a\n        a, b = b, a + b\n\nprint(list(fibonacci(10)))", "pista": "Usa yield y actualiza dos variables"}
+          ],
+          "kc_tags": ["generadores", "yield", "iterator"],
+          "dificultad": 4,
+          "tiempo_estimado_minutos": 30,
+          "prerequisites": [12]
+        },
+        {
+          "id": 14,
+          "tipo": "contenido",
+          "titulo": "Funciones Recursivas",
+          "cuerpo": "Una función recursiva es aquella que se llama a sí misma. Tiene dos partes:\n- **Caso base**: Condición que termina la recursión\n- **Caso recursivo**: Llamada a sí misma con parámetros modificados\n\nLa recursión es útil para problemas que pueden dividirse en casos similares más pequeños.\n\nPython tiene límite de recursión (default ~1000). Para recursion profunda, usa un deque o aumenta el límite.",
+          "codigo": "# Ejemplo clásico: Factorial\ndef factorial(n):\n    # Caso base\n    if n <= 1:\n        return 1\n    # Caso recursivo\n    return n * factorial(n - 1)\n\nprint(factorial(5))  # 120\n\n# Ejemplo: Contar hacia abajo\ndef cuenta_regresiva(n):\n    if n <= 0:\n        print(\"¡Despegue!\")\n        return\n    print(n)\n    cuenta_regresiva(n - 1)\n\ncuenta_regresiva(3)\n# 3\n# 2\n# 1\n# ¡Despegue!",
+          "codigo_ejemplo": "# Fibonacci recursivo\ndef fibonacci(n):\n    if n <= 1:\n        return n\n    return fibonacci(n - 1) + fibonacci(n - 2)\n\n# Advertencia: esto es ineficiente (exponencial)\n# Versión mejorada con memoización:\nfrom functools import lru_cache\n\n@lru_cache(maxsize=None)\ndef fib_cache(n):\n    if n <= 1:\n        return n\n    return fib_cache(n - 1) + fib_cache(n - 2)\n\nprint(fib_cache(50))  # Mucho más rápido",
+          "explicacion_codigo": "Caso base evita recursión infinita. Sin él, la función se llamaría para siempre. @lru_cache memoriza resultados para evitar cálculos重复.",
+          "consejos": ["Siempre define caso base", "Usa @lru_cache para optimizar recursión", "Considera iterativo si es más simple"],
+          "errores_comunes": [
+            {"error": "Sin caso base", "solucion": "RecursionError: maximum recursion depth exceeded"},
+            {"error": "Recursión muy profunda", "solucion": "Aumenta sys.setrecursionlimit o usa iterativo"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea una función recursiva que sume los dígitos de un número", "solucion": "def suma_digitos(n):\n    if n < 10:\n        return n\n    return n % 10 + suma_digitos(n // 10)\n\nprint(suma_digitos(12345))  # 15", "pista": "Suma el último dígito + recursion con los demás"}
+          ],
+          "kc_tags": ["recursion", "recursivo", "factorial"],
+          "dificultad": 4,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [13]
         }
       ]
     },
     {
       "num_capitulo": 4,
-      "titulo": "Iteradores, Generadores y Decoradores",
+      "titulo": "Estructuras de Datos Avanzadas",
       "secciones": [
         {
-          "id": 33,
+          "id": 15,
           "tipo": "contenido",
-          "titulo": "Generadores y yield",
-          "cuerpo": "Los generadores son una de las herramientas más potentes de Python para optimizar la RAM. A diferencia de las listas, no calculan todos los valores de golpe; en su lugar, usan la palabra clave 'yield' para pausar la ejecución y devolver un valor a la vez. Esto permite procesar archivos gigantes de varios gigabytes sin agotar la memoria de la computadora.",
-          "codigo": "def contador_infinito():\n    n = 0\n    while True:\n        yield n\n        n += 1"
+          "titulo": "Colecciones: namedtuple y deque",
+          "cuerpo": "El módulo collections proporciona contenedores especializados:\n\n**namedtuple()**: Crea tipos de tuplas con nombre de campos. Mejora la legibilidad.\n\n**deque()**: Cola de doble extremo. Inserción/eliminción O(1) en ambos extremos. Rápido para colas y stacks.",
+          "codigo": "# namedtuple - tuplas con nombre\nfrom collections import namedtuple\n\nPersona = namedtuple('Persona', ['nombre', 'edad', 'ciudad'])\np1 = Persona(\"Juan\", 30, \"Madrid\")\nprint(p1.nombre)  # Juan\nprint(p1[0])     # Juan\nprint(p1._fields)  # ('nombre', 'edad', 'ciudad')\n\n# Crear desde diccionario\np2 = Persona._make({'nombre': 'Ana', 'edad': 25, 'ciudad': 'Barcelona'})\n\n# Convertir a diccionario\nprint(p1._asdict())",
+          "codigo_ejemplo": "# deque - cola doble\nfrom collections import deque\n\ncola = deque([1, 2, 3])\ncola.append(4)      # [1,2,3,4] - derecha\ncola.appendleft(0)  # [0,1,2,3,4] - izquierda\ncola.pop()         # [0,1,2,3] - derecha\ncola.popleft()     # [1,2,3] - izquierda\n\n# maxlen limita el tamaño\ncola_limitada = deque(maxlen=3)\ncola_limitada.extend([1,2,3,4,5])  # Solo guarda últimos 3\nprint(cola_limitada)  # [3, 4, 5]",
+          "explicacion_codigo": "namedtuple crea clases de tuplas ligeras. _fields muestra nombres. _make crea desde iterable. deque es cola thread-safe con O(1).",
+          "consejos": ["namedtuple para registros ligeros", "deque para colas/FIFOs y LRU caches", "maxlen en deque para buffers circulares"],
+          "errores_comunes": [
+            {"error": "Confundir con clase normal", "solucion": "namedtuple es inmutable"},
+            {"error": "Rendimiento en listas", "solucion": "deque es O(1), lista es O(n) al inicio"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea un namedtuple para representar un punto 3D", "solucion": "from collections import namedtuple\n\nPunto3D = namedtuple('Punto3D', ['x', 'y', 'z'])\np = Punto3D(1, 2, 3)\nprint(p.x, p.y, p.z)", "pista": "Usa namedtuple con los campos x, y, z"}
+          ],
+          "kc_tags": ["collections", "namedtuple", "deque"],
+          "dificultad": 4,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [14]
         },
         {
-          "id": 34,
+          "id": 16,
           "tipo": "contenido",
-          "titulo": "Iteradores",
-          "cuerpo": "Un iterador es cualquier objeto que siga el 'protocolo de iteración', compuesto por __iter__() y __next__(). Cuando haces un bucle for, Python convierte tu lista en un iterador detrás de escena. Entender esto te permite crear tus propias clases que se pueden recorrer elemento por elemento, controlando exactamente cómo se entregan los datos.",
-          "codigo": "mi_lista = [1, 2]\nit = iter(mi_lista)\nprint(next(it)) # 1"
+          "titulo": "Colecciones: Counter y DefaultDict",
+          "cuerpo": "**Counter**: Subclase de dict para contar elementos hashables. Métodos útiles: elements(), most_common(), subtract().\n\n**defaultdict**: Dict que proporciona valores por defecto para claves inexistentes. Evita KeyError.",
+          "codigo": "# Counter - contar elementos\nfrom collections import Counter\n\ntexto = \"banana\"\nconteo = Counter(texto)\nprint(conteo)  # Counter({'a': 3, 'n': 2, 'b': 1})\n\n# Métodos útiles\nprint(conteo.most_common(2))  # [('a', 3), ('n', 2)]\nprint(list(conteo.elements()))  # ['a','a','a','n','n','b']\n\n# Contar palabras\npalabras = [\"hola\", \"mundo\", \"hola\", \"python\", \"hola\"]\nprint(Counter(palabras))  # Counter({'hola': 3, 'mundo': 1, 'python': 1})",
+          "codigo_ejemplo": "# defaultdict - valores por defecto\nfrom collections import defaultdict\n\n# Sin defaultdict\nnormal = {}\n# normal['a'] += 1  # KeyError!\n\n# Con defaultdict\ndd = defaultdict(int)  # int devuelve 0 por defecto\ndd['a'] += 1\ndd['b'] += 1\ndd['a'] += 5\nprint(dd)  # defaultdict(<class 'int'>, {'a': 6, 'b': 1})\n\n# Con list\nlista_dd = defaultdict(list)\nlista_dd['colores'].append('rojo')\nlista_dd['colores'].append('azul')\nprint(lista_dd)  # defaultdict(..., {'colores': ['rojo', 'azul']})",
+          "explicacion_codigo": "Counter es para contar. defaultdict evita checks de existencia. El argumento es el tipo/fábrica del valor por defecto.",
+          "consejos": ["Counter.most_common(n) para top n", "defaultdict(list) para grouping", "Evita KeyError con defaultdict"],
+          "errores_comunes": [
+            {"error": "Olvidar que Counter es dict", "solucion": "Puedes treatlo como dict"},
+            {"error": "defaultdict sin valor por defecto", "solucion": "Pasa el tipo: defaultdict(int), defaultdict(list)"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Usa Counter para encontrar la palabra más común en un texto", "solucion": "from collections import Counter\n\ntexto = \"el sol es amarillo y el cielo es azul\"\npalabras = texto.split()\nconteo = Counter(palabras)\nprint(conteo.most_common(1)[0])", "pista": "Divide el texto y cuenta"}
+          ],
+          "kc_tags": ["counter", "defaultdict", "colecciones"],
+          "dificultad": 4,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [15]
         },
         {
-          "id": 35,
+          "id": 17,
           "tipo": "contenido",
-          "titulo": "Decoradores",
-          "cuerpo": "Los decoradores son una forma elegante de metaprogramación. Son funciones que reciben otra función como entrada y devuelven una versión 'mejorada' o modificada de la misma. Se usan mucho para añadir registros (logs), verificar permisos de usuario o medir el tiempo de ejecución de un proceso sin ensuciar la lógica principal de la función original.",
-          "codigo": "@medir_tiempo\ndef proceso_pesado():\n    pass"
+          "titulo": "OrderedDict y ChainMap",
+          "cuerpo": "**OrderedDict**: Mantiene el orden de inserción (en Python 3.7+ los dicts ya mantienen orden, pero OrderedDict tiene métodos útiles como move_to_end()).\n\n**ChainMap**: Agrupa múltiples diccionarios en una vista. Busca en cada dict en orden.",
+          "codigo": "# OrderedDict\nfrom collections import OrderedDict\n\nod = OrderedDict()\nod['a'] = 1\nod['b'] = 2\nod['c'] = 3\n\n# Mover elemento al final\nod.move_to_end('a')\nprint(list(od.keys()))  # ['b', 'c', 'a']\n\n# Mover al inicio\nod.move_to_end('a', last=False)\nprint(list(od.keys()))  # ['a', 'b', 'c']",
+          "codigo_ejemplo": "# ChainMap - múltiples diccionarios\nfrom collections import ChainMap\n\nconfig_default = {'theme': 'dark', 'language': 'es'}\nconfig_user = {'theme': 'light'}\nconfig_override = {'language': 'en'}\n\n# Busca en orden: override -> user -> default\nconfig = ChainMap(config_override, config_user, config_default)\n\nprint(config['theme'])    # light (user tiene precedencia)\nprint(config['language']) # en (override tiene precedencia)\nprint(config['debug'])    # KeyError (no existe en ninguno)",
+          "explicacion_codigo": "OrderedDict mantiene orden. ChainMap es vista - no copia datos. Búsqueda va en orden de los.maps.",
+          "consejos": ["En Py3.7+ OrderedDict no es necesario para orden", "ChainMap es útil para jerarquías de configuración", "No copies datos, solo crea vista"],
+          "errores_comunes": [
+            {"error": "Pensar que ChainMap copia", "solucion": "Es solo una vista, cambios afectan los originales"},
+            {"error": "Orden de búsqueda", "solucion": "El primer dict tiene mayor prioridad"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Usa ChainMap para combinar configuración default con user settings", "solucion": "from collections import ChainMap\n\ndefault = {'color': 'azul', 'tamano': 'mediano'}\nuser = {'color': 'rojo'}\n\nconfig = ChainMap(user, default)\nprint(config['color'])  # rojo (user)", "pista": "Pasa user primero, default después"}
+          ],
+          "kc_tags": ["ordereddict", "chainmap", "diccionarios"],
+          "dificultad": 4,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [16]
         }
       ]
     },
     {
       "num_capitulo": 5,
-      "titulo": "Módulos y Entornos Virtuales",
+      "titulo": "Módulos y Paquetes",
       "secciones": [
         {
-          "id": 37,
+          "id": 18,
           "tipo": "contenido",
-          "titulo": "PIP e Instalación de Librerías",
-          "cuerpo": "PIP es el instalador de paquetes estándar. Se conecta al PyPI (Python Package Index) para descargar librerías externas. Es una herramienta de terminal que gestiona las dependencias necesarias para que tu código pueda usar herramientas avanzadas como NumPy para ciencia de datos o Django para desarrollo web.",
-          "codigo": "# En consola: pip install pandas"
+          "titulo": "Importación Avanzada",
+          "cuju": "Puedes importar de varias formas:\n- import modulo\n- from modulo import cosa\n- from modulo import cosa as alias\n- import modulo as alias\n- from modulo import * (cuidado)\n\nTambién puedes importar dentro de funciones (lazy import) o usar importlib para imports dinámicos.",
+          "codigo": "# Formas de importar\nimport math\nfrom collections import Counter, defaultdict\nimport numpy as np  # alias\nfrom datetime import datetime as dt  # alias\n\n# Importar todo (no recomendado)\n# from modulo import *\n\n# Import dentro de función (lazy)\ndef usar_numpy():\n    import numpy as np  # Solo se carga cuando se llama\n    return np.array([1, 2, 3])\n\n# Import dinámico\nimport importlib\n\nmodulo = importlib.import_module('math')\nprint(modulo.sqrt(16))  # 4.0",
+          "codigo_ejemplo": "# reload para desarrollo\nimport importlib\nimport some_module\n\n# Después de editar some_module\nimportlib.reload(some_module)\n\n# Verificar qué se importó\nimport sys\nprint('numpy' in sys.modules)  # False hasta que se importe\n\n# Import relativo (dentro de paquete)\nfrom . import otro_modulo  # mismo nivel\nfrom .. import modulo_padre  # nivel superior\nfrom ..paquete.hermano import algo",
+          "explicacion_codigo": "import carga el módulo y lo cachea en sys.modules. reload recarga. importlib permite importación dinámica.",
+          "consejos": ["Usa alias (as) para módulos largos", "Evita 'import *' - poluciona namespace", "Import relativo para paquetes"],
+          "errores_comunes": [
+            {"error": "Conflicto de nombres", "solucion": "Usa alias o importa específico"},
+            {"error": "Import circular", "solucion": "Mueve imports al final o usa import dentro de función"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Importa solo sqrt de math y úsala", "solucion": "from math import sqrt\nprint(sqrt(25))", "pista": "Usa from modulo import cosa"}
+          ],
+          "kc_tags": ["import", "modulos", "alias"],
+          "dificultad": 3,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [17]
         },
         {
-          "id": 38,
+          "id": 19,
           "tipo": "contenido",
-          "titulo": "Entornos Virtuales (venv)",
-          "cuerpo": "Un entorno virtual es un directorio aislado que contiene su propia copia del intérprete de Python y sus propias librerías instaladas. Es una práctica obligatoria en el desarrollo profesional para evitar que las actualizaciones de un proyecto rompan otros proyectos que dependen de versiones antiguas de la misma librería.",
-          "codigo": "python -m venv mi_entorno\n# Luego se activa según el SO (Windows/Linux)"
+          "titulo": "Paquetes y __init__.py",
+          "cuerpo": "Un paquete es una carpeta con módulos que puede importarse como unidad. El archivo __init__.py (ahora opcional en Py3.3+) marca una carpeta como paquete.\n\nPuedes controlar qué se exporta cuando alguien hace 'from paquete import *' usando __all__ en __init__.py.",
+          "codigo": "# Estructura de paquete\n# mi_paquete/\n#   __init__.py\n#   modulo1.py\n#   modulo2.py\n#   subpaquete/\n#       __init__.py\n#       modulo3.py\n\n# En __init__.py:\n__all__ = ['modulo1', 'modulo2']  # qué se exporta con *\n\n# desde outside:\nfrom mi_paquete import modulo1\nfrom mi_paquete.subpaquete import modulo3\n\n# En __init__.py, también puedes importar para facilitar\n# from . import modulo1  # ahora: from mi_paquete import modulo1 funciona",
+          "codigo_ejemplo": "# __init__.py con imports convenientes\n# package/\n#   __init__.py\n#   utils.py\n#   helpers.py\n\n# En __init__.py:\n# from .utils import funcion_util\n# from .helpers import clase_helper\n\n# Ahora el usuario puede:\n# from package import funcion_util  # en lugar de package.utils.funcion_util\n\n# __all__ define qué se exporta con *\n__all__ = ['funcion_util', 'clase_helper']",
+          "explicacion_codigo": "__init__.py se ejecuta al importar el paquete. __all__ controla import *. Imports en __init__ acortan rutas.",
+          "consejos": ["Usa __all__ para API controlada", "Imports en __init__ facilitan uso", "Evita código pesado en __init__"],
+          "errores_comunes": [
+            {"error": "Olvidar __init__.py", "solucion": "En Py3.3+ es opcional, pero recomendado"},
+            {"error": "Import circular", "solucion": "Usa imports dentro de funciones"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea un __init__.py que exporte una función", "solucion": "# En el archivo __init__.py del paquete:\nfrom .mi_modulo import mi_funcion\n\n__all__ = ['mi_funcion']", "pista": "Usa import relativo .modulo"}
+          ],
+          "kc_tags": ["paquetes", "__init__", "__all__"],
+          "dificultad": 4,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [18]
         },
         {
-          "id": 39,
+          "id": 20,
           "tipo": "contenido",
-          "titulo": "Paquetes (__init__.py)",
-          "cuerpo": "Los paquetes permiten organizar módulos en una estructura de carpetas jerárquica. Históricamente, se requería un archivo vacío llamado __init__.py en cada carpeta para que Python la reconociera como un paquete importable. Hoy en día, aunque es opcional en versiones modernas, se sigue usando para ejecutar lógica de inicialización o para exponer funciones específicas de forma más limpia.",
-          "codigo": "from mi_sistema.red.utilidades import enviar_paquete"
+          "titulo": "Entornos Virtuales con venv",
+          "cuerpo": "Los entornos virtuales aíslan dependencias de diferentes proyectos. Cada proyecto puede tener sus propias versiones de paquetes sin conflitar.\n\n**venv** es el módulo built-in para crear entornos (Python 3.3+).\n\nComandos básicos:\n- python -m venv mi_entorno (crear)\n- source mi_entorno/bin/activate (Linux/Mac)\n- mi_entorno\\Scripts\\activate (Windows)\n- pip install paquete (instalar)\n- deactivate (salir)",
+          "codigo": "# Crear y usar entorno virtual\n# En terminal:\n\n# Crear\npython -m venv mi_proyecto_env\n\n# Activar (Windows)\nmi_proyecto_env\\Scripts\\activate\n\n# Activar (Linux/Mac)\nsource mi_proyecto_env/bin/activate\n\n# Ahora pip instala solo en este entorno\npip install requests\npip list  # muestra paquetes instalados\n\n# Cuando termines\ndeactivate",
+          "codigo_ejemplo": "# requirements.txt - documentar dependencias\n# Generar\npip freeze > requirements.txt\n\n# Instalar desde requirements.txt\npip install -r requirements.txt\n\n# Estructura típica de proyecto\n# proyecto/\n#   venv/          # entorno virtual\n#   src/           # código fuente\n#   tests/         # pruebas\n#   requirements.txt\n#   README.md",
+          "explicacion_codigo": "venv aísla pip y paquetes. Cada proyecto = su propio entorno. pip freeze genera lista de paquetes instalados.",
+          "consejos": ["Un entorno por proyecto", "Añade venv/ a .gitignore", "requirements.txt es versionable"],
+          "errores_comunes": [
+            {"error": "Entornos mixtos", "solucion": "Cada proyecto su propio venv"},
+            {"error": "Olvidar activar", "solucion": "Ahorras problemas con pip install globally"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea un entorno virtual y muestra los paquetes instalados", "solucion": "# En terminal:\npython -m venv mi_entorno\nmi_entorno\\Scripts\\activate\npip list\ndeactivate", "pista": "Usa python -m venv y luego pip list"}
+          ],
+          "kc_tags": ["venv", "virtualenv", "entornos"],
+          "dificultad": 3,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [19]
+        }
+      ]
+    },
+    {
+      "num_capitulo": 6,
+      "titulo": "Expresiones Regulares",
+      "secciones": [
+        {
+          "id": 21,
+          "tipo": "contenido",
+          "titulo": "Introducción a Regex",
+          "cuju": "Las expresiones regulares (regex) son patrones para buscar y manipular texto. El módulo 're' proporciona esta funcionalidad.\n\n**Meta-caracteres básicos:**\n- . Cualquier caracter (excepto newline)\n- ^ Inicio de string\n- $ Fin de string\n- * 0 o más repeticiones\n- + 1 o más repeticiones\n- ? 0 o 1 vez\n- [] Caracteres permitidos\n- | O (alternancia)",
+          "codigo": "import re\n\n# Buscar patrón\ntexto = \"Mi correo es test@ejemplo.com\"\npatron = r'\\w+@\\w+\\.\\w+'\ncoincidencia = re.search(patron, texto)\nprint(coincidencia.group() if coincidencia else \"No encontrado\")\n\n# findall - todas las coincidencias\ntexto = \"El gato y el perro son animales\"\npatron = r'gato|perro'\nprint(re.findall(patron, texto))  # ['gato', 'perro']\n\n# match - solo al inicio\nprint(re.match(r'El', texto))",
+          "codigo_ejemplo": "# Grupos con paréntesis\ntexto = \"Fecha: 2024-01-15\"\npatron = r'(\\d{4})-(\\d{2})-(\\d{2})'\ncoincidencia = re.match(patron, texto)\nprint(coincidencia.group(0))  # 2024-01-15 (todo)\nprint(coincidencia.group(1))  # 2024 (año)\nprint(coincidencia.group(2))  # 01 (mes)\nprint(coincidencia.groups())   # ('2024', '01', '15')",
+          "explicacion_codigo": "re.search busca en cualquier parte. re.match solo al inicio. re.findall devuelve lista. grupos () capturan partes.",
+          "consejos": ["Usa r'string' para raw strings (evitar escapar \\)", "re.compile precompila para eficiencia", "Prueba en regex101.com"],
+          "errores_comunes": [
+            {"error": "Escapar caracteres", "solucion": "Usa raw string r'\\d'"},
+            {"error": "Complejidad excesiva", "solucion": "Divide en partes o usa str methods si es simple"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Encuentra todas las palabras que empiezan con 'a' en un texto", "solucion": "import re\n\ntexto = \"ana fue al aula y aprendió\"\npalabras = re.findall(r'\\ba\\w*', texto)\nprint(palabras)  # ['ana', 'al', 'aula', 'aprendió']", "pista": "Usa \\b para boundary y findall"}
+          ],
+          "kc_tags": ["regex", "re", "expresiones-regulares"],
+          "dificultad": 4,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [20]
+        },
+        {
+          "id": 22,
+          "tipo": "contenido",
+          "titulo": "Clases de Caracteres y Cuantificadores",
+          "cuerpo": "**Clases de caracteres []:**\n- [abc] a, b, o c\n- [^abc] cualquier cosa excepto a, b, c\n- [a-z] rango de letras\n- [0-9] rango de números\n\n**Clases predefinidas:**\n- \\d Dígito [0-9]\n- \\D No dígito\n- \\w Word char [a-zA-Z0-9_]\n- \\W No word char\n- \\s Espacio en blanco\n- \\S No espacio\n\n**Cuantificadores:**\n- {n} Exactamente n veces\n- {n,m} Entre n y m veces\n- * 0 o más (greedy)\n- + 1 o más (greedy)\n- *? / +? versiones no-greedy",
+          "codigo": "# Clases de caracteres\nprint(re.findall(r'[aeiou]', 'hola mundo'))  # ['o', 'u', 'o']\nprint(re.findall(r'\\d{3}', 'abc123def456'))  # ['123', '456']\nprint(re.findall(r'\\d{2,4}', '123456'))  # ['1234', '56']\n\n# Cuantificadores\nprint(re.findall(r'\\d+', 'tienes 2 gatos y 3 perros'))  # ['2', '3']\n\n# Non-greedy (mínimo caracteres)\nhtml = '<div>contenido</div>'\nprint(re.search(r'<.+?>', html).group())  # <div> (no <div>contenido</div>)\n\n#边界\\b\nprint(re.findall(r'\\bpalabra\\b', 'palabra otra palabra'))  # ['palabra', 'palabra']",
+          "codigo_ejemplo": "# Validar email\nemail = \"usuario@dominio.com\"\npatron = r'^[\\w.-]+@[\\w.-]+\\.\\w+$'\nprint(bool(re.match(patron, email)))  # True\n\n#Extraer números de teléfono\ntelefono = \"Llama al 55-1234-5678 mañana\"\npatron = r'\\d{2}-\\d{4}-\\d{4}'\nprint(re.findall(patron, telefono))  # ['55-1234-5678']",
+          "explicacion_codigo": "[a-zA-Z] = letras. \\d = dígito. {2,4} = 2 a 4 veces. ? después de * o + hace non-greedy (mínimo).",
+          "consejos": ["Usa clases predefinidas (\\d, \\w) cuando puedas", "Non-greedy *? +? evita sobrecaptura", "\\b para word boundaries"],
+          "errores_comunes": [
+            {"error": "Greedy sobrecaptura", "solucion": "Usa *? o +? para non-greedy"},
+            {"error": "Confundir con glob", "solucion": "Regex es más potente"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Valida que una cadena sea un número de 3 dígitos", "solucion": "import re\n\ndef validar_tres_digitos(s):\n    return bool(re.fullmatch(r'\\d{3}', s))\n\nprint(validar_tres_digitos(\"123\"))  # True\nprint(validar_tres_digitos(\"12\"))   # False", "pista": "Usa ^ y $ para match completo"}
+          ],
+          "kc_tags": ["regex", "cuantificadores", "clases"],
+          "dificultad": 4,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [21]
+        }
+      ]
+    },
+    {
+      "num_capitulo": 7,
+      "titulo": "Testing Básico",
+      "secciones": [
+        {
+          "id": 23,
+          "tipo": "contenido",
+          "titulo": "Introducción a unittest",
+          "cuju": "unittest es el framework de testing built-in de Python. Se basa en JUnit de Java.\n\nUnittest proporciona:\n- TestCase: Clase base para casos de prueba\n- assertEqual: Verificar igualdad\n- assertTrue/False: Verificar booleanos\n- assertRaises: Verificar excepciones\n- TestSuite: Agrupar tests\n- TestRunner: Ejecutar tests",
+          "codigo": "# Ejemplo básico con unittest\nimport unittest\n\ndef sumar(a, b):\n    return a + b\n\nclass TestMath(unittest.TestCase):\n    def test_sumar(self):\n        self.assertEqual(sumar(2, 3), 5)\n        self.assertEqual(sumar(-1, 1), 0)\n    \n    def test_sumar_strings(self):\n        self.assertEqual(sumar('a', 'b'), 'ab')\n\nif __name__ == '__main__':\n    unittest.main()",
+          "codigo_ejemplo": "# Más assertions\nclass TestAssertions(unittest.TestCase):\n    def test_tipos(self):\n        self.assertIsInstance(5, int)\n        self.assertIsNone(None)\n        \n    def test_verdad(self):\n        self.assertTrue(1 < 2)\n        self.assertFalse(1 > 2)\n        \n    def test_listas(self):\n        self.assertIn(3, [1, 2, 3])\n        self.assertNotIn(5, [1, 2, 3])\n    \n    def test_excepciones(self):\n        with self.assertRaises(ZeroDivisionError):\n            x = 1 / 0\n            \n    def test_casi_igual(self):\n        self.assertAlmostEqual(0.1 + 0.2, 0.3, places=7)",
+          "explicacion_codigo": "assertEqual(a, b) verifica a == b. assertRaises(exc) verifica que se lanze la excepción. methods van con test_ al inicio.",
+          "consejos": ["Nombra test_*.py", "Un test = una cosa", "assertAlmostEqual para floats"],
+          "errores_comunes": [
+            {"error": "No heredar de TestCase", "solucion": "class TestAlgo(unittest.TestCase)"},
+            {"error": "No usar test_ como prefijo", "solucion": "def test_mi_funcion()"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea un test para una función que calcule el área de un círculo", "solucion": "import unittest\n\ndef area_circulo(radio):\n    import math\n    return math.pi * radio ** 2\n\nclass TestArea(unittest.TestCase):\n    def test_area(self):\n        self.assertAlmostEqual(area_circulo(1), 3.14159, places=5)\n\nunittest.main()", "pista": "Usa assertAlmostEqual para decimales"}
+          ],
+          "kc_tags": ["testing", "unittest", "tests"],
+          "dificultad": 4,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [22]
+        },
+        {
+          "id": 24,
+          "tipo": "contenido",
+          "titulo": "Fixtures y setUp/tearDown",
+          "cuju": "Fixtures son recursos necesarios para los tests (archivos, conexiones DB, datos).\n\n**setUp()**: Se ejecuta antes de cada test - preparar recursos.\n**tearDown()**: Se ejecuta después de cada test - limpiar recursos.\n\nTambién puedes usar @classmethod setUpClass() y tearDownClass() para recursos que se comparten.",
+          "codigo": "# setUp y tearDown\nimport unittest\n\nclass TestArchivo(unittest.TestCase):\n    def setUp(self):\n        # Crear archivo de prueba\n        with open('test.txt', 'w') as f:\n            f.write('contenido inicial')\n    \n    def tearDown(self):\n        # Limpiar\n        import os\n        if os.path.exists('test.txt'):\n            os.remove('test.txt')\n    \n    def test_leer(self):\n        with open('test.txt', 'r') as f:\n            contenido = f.read()\n        self.assertEqual(contenido, 'contenido inicial')\n    \n    def test_escribir(self):\n        with open('test.txt', 'w') as f:\n            f.write('nuevo')\n        with open('test.txt', 'r') as f:\n            self.assertEqual(f.read(), 'nuevo')",
+          "codigo_ejemplo": "# setUpClass - una vez por clase\nclass TestDatabase(unittest.TestCase):\n    @classmethod\n    def setUpClass(cls):\n        cls.db = conectar_base_de_datos()\n    \n    @classmethod\n    def tearDownClass(cls):\n        cls.db.close()\n    \n    def test_insertar(self):\n        self.db.insertar('datos')\n        self.assertEqual(self.db.contar(), 1)\n    \n    def test_buscar(self):\n        resultado = self.db.buscar(1)\n        self.assertIsNotNone(resultado)",
+          "explicacion_codigo": "setUp/tearDown corre para cada test. setUpClass corre una vez para toda la clase. Úsalos para recursos costosos.",
+          "consejos": ["Usa setUpClass si la DB se comparte", "Limpia en tearDown siempre", "Archivos temporales: usa tempfile module"],
+          "errores_comunes": [
+            {"error": "Olvidar tearDown", "solucion": "Estado sucio afecta otros tests"},
+            {"error": "Tests que dependen entre sí", "solucion": "Cada test debe ser independiente"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea un test con setUp que inicialice una lista", "solucion": "class TestLista(unittest.TestCase):\n    def setUp(self):\n        self.lista = [1, 2, 3]\n    \n    def test_append(self):\n        self.lista.append(4)\n        self.assertEqual(len(self.lista), 4)\n\nunittest.main()", "pista": "Inicializa self.lista en setUp"}
+          ],
+          "kc_tags": ["fixtures", "setup", "teardown"],
+          "dificultad": 4,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [23]
+        }
+      ]
+    },
+    {
+      "num_capitulo": 8,
+      "titulo": "Proyecto: API REST Simple",
+      "secciones": [
+        {
+          "id": 25,
+          "tipo": "contenido",
+          "titulo": "Creando una API con Flask",
+          "cuju": "Flask es un micro-framework web ligero. Ideal para crear APIs REST simples rápidamente.\n\nUna API REST usa métodos HTTP:\n- GET: Obtener recursos\n- POST: Crear recursos\n- PUT: Actualizar recursos\n- DELETE: Eliminar recursos\n\nFlask路由 (routes) conectan URLs a funciones.",
+          "codigo": "# API básica con Flask\nfrom flask import Flask, jsonify, request\n\napp = Flask(__name__)\n\n# Base de datos en memoria\nusuarios = [\n    {'id': 1, 'nombre': 'Ana', 'email': 'ana@test.com'},\n    {'id': 2, 'nombre': 'Bob', 'email': 'bob@test.com'}\n]\n\n# GET - obtener todos\n@app.route('/usuarios', methods=['GET'])\ndef get_usuarios():\n    return jsonify(usuarios)\n\n# GET - obtener uno\n@app.route('/usuarios/<int:id>', methods=['GET'])\ndef get_usuario(id):\n    usuario = next((u for u in usuarios if u['id'] == id), None)\n    if usuario:\n        return jsonify(usuario)\n    return jsonify({'error': 'No encontrado'}), 404\n\nif __name__ == '__main__':\n    app.run(debug=True)",
+          "codigo_ejemplo": "# POST - crear usuario\n@app.route('/usuarios', methods=['POST'])\ndef crear_usuario():\n    datos = request.get_json()\n    nuevo_id = max(u['id'] for u in usuarios) + 1\n    usuario = {'id': nuevo_id, **datos}\n    usuarios.append(usuario)\n    return jsonify(usuario), 201\n\n# PUT - actualizar\n@app.route('/usuarios/<int:id>', methods=['PUT'])\ndef actualizar_usuario(id):\n    datos = request.get_json()\n    for u in usuarios:\n        if u['id'] == id:\n            u.update(datos)\n            return jsonify(u)\n    return jsonify({'error': 'No encontrado'}), 404\n\n# DELETE - eliminar\n@app.route('/usuarios/<int:id>', methods=['DELETE'])\ndef eliminar_usuario(id):\n    global usuarios\n    usuarios = [u for u in usuarios if u['id'] != id]\n    return '', 204",
+          "explicacion_codigo": "@app.route() define endpoints. request.get_json() obtiene datos POST. jsonify() convierte dict a JSON response.",
+          "consejos": ["Usa nombres RESTful para rutas", "Código de estado correcto (200, 201, 404)", "Valida datos de entrada"],
+          "errores_comunes": [
+            {"error": "Olvidar methods en route", "solucion": "GET es default, otros necesitan listing"},
+            {"error": "No validar input", "solucion": "Always validate incoming data"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea un endpoint GET que devuelva un mensaje de saludos", "solucion": "from flask import Flask\n\napp = Flask(__name__)\n\n@app.route('/')\ndef saludar():\n    return {'mensaje': '¡Hola, API!'}\n\napp.run()", "pista": "Simple return dict se convierte a JSON"}
+          ],
+          "kc_tags": ["flask", "api", "rest", "web"],
+          "dificultad": 4,
+          "tiempo_estimado_minutos": 30,
+          "prerequisites": [24]
         }
       ]
     }

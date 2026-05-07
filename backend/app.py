@@ -144,7 +144,7 @@ async def get_content_by_language_and_level(language: str, level: str):
 async def execute_code(data: ExecuteReq):
     try:
         if data.language == "python":
-            with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False) as f:
+            with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False, encoding="utf-8") as f:
                 f.write(data.code)
                 f.flush()
                 result = subprocess.run(
@@ -152,6 +152,8 @@ async def execute_code(data: ExecuteReq):
                     capture_output=True,
                     text=True,
                     timeout=10,
+                    encoding="utf-8",
+                    errors="replace",
                 )
         elif data.language == "java":
             with tempfile.TemporaryDirectory() as tmpdir:
@@ -160,13 +162,15 @@ async def execute_code(data: ExecuteReq):
                 class_match = re.search(r"public\s+class\s+(\w+)", data.code)
                 class_name = class_match.group(1) if class_match else "Main"
                 java_file = f"{tmpdir}/{class_name}.java"
-                with open(java_file, "w") as f:
+                with open(java_file, "w", encoding="utf-8") as f:
                     f.write(data.code)
                 compile_result = subprocess.run(
                     ["javac", java_file],
                     capture_output=True,
                     text=True,
                     timeout=10,
+                    encoding="utf-8",
+                    errors="replace",
                 )
                 if compile_result.returncode != 0:
                     return {
@@ -178,18 +182,22 @@ async def execute_code(data: ExecuteReq):
                     capture_output=True,
                     text=True,
                     timeout=10,
+                    encoding="utf-8",
+                    errors="replace",
                 )
         elif data.language == "cpp":
             with tempfile.TemporaryDirectory() as tmpdir:
                 cpp_file = f"{tmpdir}/main.cpp"
                 out_file = f"{tmpdir}/main"
-                with open(cpp_file, "w") as f:
+                with open(cpp_file, "w", encoding="utf-8") as f:
                     f.write(data.code)
                 compile_result = subprocess.run(
                     ["g++", "-o", out_file, cpp_file],
                     capture_output=True,
                     text=True,
                     timeout=10,
+                    encoding="utf-8",
+                    errors="replace",
                 )
                 if compile_result.returncode != 0:
                     return {
@@ -201,6 +209,8 @@ async def execute_code(data: ExecuteReq):
                     capture_output=True,
                     text=True,
                     timeout=10,
+                    encoding="utf-8",
+                    errors="replace",
                 )
         else:
             return {
@@ -257,12 +267,11 @@ async def get_user_profile(username: str):
 
     # Get user content for lessons completed
     user_content = db.get_user_learning_content(username)
-    lessons_completed = 0
-    total_lessons = 0
-    if user_content:
-        total_lessons = len(user_content.get("chapters", []))
-        # For now, count chapters as lessons; progress tracking would need a separate table
-        lessons_completed = 0  # Would need a progress tracking table
+    stats = db.get_student_stats(username)
+    lessons_completed = stats.get("completed_sections", 0)
+    total_lessons = stats.get("total_sections", 0)
+    if user_content and total_lessons == 0:
+        total_lessons = len(user_content.get("chapters", [])) * 5
 
     # Calculate XP from diagnostics and activity
     xp = total_diagnostics * 100 + lessons_completed * 50
@@ -427,3 +436,195 @@ if __name__ == "__main__":
     import uvicorn
 
     uvicorn.run(app, host="0.0.0.0", port=8003)
+
+
+# ============================================
+# STI API Endpoints - Intelligent Tutoring System
+# ============================================
+
+class SectionProgressReq(BaseModel):
+    username: str
+    section_id: int
+    completed: bool
+    time_seconds: int
+    hints_used: int = 0
+
+
+@app.post("/api/v1/sti/progress", response_model=Response)
+async def save_section_progress(data: SectionProgressReq):
+    db = get_db()
+    try:
+        db.save_section_progress(
+            data.username,
+            data.section_id,
+            data.completed,
+            data.time_seconds,
+            data.hints_used,
+        )
+        
+        correct = data.completed
+        
+        section = db.conn.execute(
+            "SELECT tipo FROM secciones WHERE id = ?",
+            (data.section_id,),
+        ).fetchone()
+        
+        if section and section[0] == "ejercicio":
+            lang_row = db.conn.execute(
+                "SELECT t.curso FROM secciones s JOIN temas t ON s.tema_id = t.id WHERE s.id = ?",
+                (data.section_id,),
+            ).fetchone()
+            if lang_row:
+                lang_map = {"Python": "python", "C++": "cpp", "Java": "java"}
+                lang = lang_map.get(lang_row[0], "python")
+                db.update_user_ability(data.username, lang, correct)
+        
+        return Response(success=True, data={"message": "Progreso guardado"})
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error al guardar progreso: {str(e)}",
+        )
+
+
+@app.get("/api/v1/sti/progress/{username}")
+async def get_user_progress(username: str):
+    db = get_db()
+    stats = db.get_student_stats(username)
+    return {"success": True, "data": stats}
+
+
+@app.get("/api/v1/sti/progress/{username}/sections")
+async def get_user_completed_sections(username: str):
+    db = get_db()
+    rows = db.conn.execute(
+        "SELECT section_id, completed, best_time_seconds FROM user_section_progress WHERE username = ?",
+        (username,),
+    ).fetchall()
+    sections = [
+        {"section_id": r[0], "completed": bool(r[1]), "best_time_seconds": r[2]}
+        for r in rows
+    ]
+    return {"success": True, "data": sections}
+
+
+class ReviewCompleteReq(BaseModel):
+    username: str
+    section_id: int
+    quality: int
+
+
+@app.post("/api/v1/sti/review", response_model=Response)
+async def complete_review(data: ReviewCompleteReq):
+    db = get_db()
+    try:
+        db.update_review_schedule(data.username, data.section_id, data.quality)
+        return Response(success=True, data={"message": "Repaso registrado"})
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e),
+        )
+
+
+@app.get("/api/v1/sti/review/{username}")
+async def get_due_reviews(username: str):
+    db = get_db()
+    reviews = db.get_review_schedule(username)
+    return {"success": True, "data": reviews}
+
+
+@app.get("/api/v1/sti/ability/{username}/{language}")
+async def get_user_ability(username: str, language: str):
+    db = get_db()
+    ability = db.get_user_ability(username, language)
+    if ability is None:
+        ability = {
+            "elo_rating": 1200,
+            "total_exercises": 0,
+            "correct_exercises": 0,
+            "current_streak": 0,
+            "longest_streak": 0,
+            "mastery_percentage": 0,
+        }
+    return {"success": True, "data": ability}
+
+
+class LogErrorReq(BaseModel):
+    username: str
+    section_id: int
+    error_type: str
+    error_message: str
+    code_attempt: str
+
+
+@app.post("/api/v1/sti/error", response_model=Response)
+async def log_error(data: LogErrorReq):
+    db = get_db()
+    if db.log_student_error(data.username, data.section_id, data.error_type, data.error_message, data.code_attempt):
+        return Response(success=True, data={"message": "Error registrado"})
+    raise HTTPException(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        detail="Error al registrar",
+    )
+
+
+@app.get("/api/v1/sti/recommendations/{username}")
+async def get_recommendations(username: str):
+    db = get_db()
+    
+    user_content = db.get_user_learning_content(username)
+    if not user_content:
+        return {"success": True, "data": {"next_section": None, "reason": "No ha realizado diagnóstico"}}
+    
+    lang = user_content.get("language", "python")
+    level = user_content.get("level", "Básico")
+    
+    ability = db.get_user_ability(username, lang)
+    mastery = ability.get("mastery_percentage", 0) if ability else 0
+    
+    next_level = None
+    if mastery > 80:
+        levels = {"Básico": "Intermedio", "Intermedio": "Avanzado"}
+        next_level = levels.get(level)
+    
+    return {
+        "success": True,
+        "data": {
+            "suggested_level": next_level or level,
+            "mastery_percentage": mastery,
+            "elo_rating": ability.get("elo_rating", 1200) if ability else 1200,
+            "current_streak": ability.get("current_streak", 0) if ability else 0,
+        },
+    }
+
+
+@app.get("/api/v1/sti/section/{section_id}")
+async def get_section_full(section_id: int):
+    db = get_db()
+    row = db.conn.execute(
+        "SELECT s.id_seccion, s.titulo, s.cuerpo, s.codigo, s.codigo_ejemplo, s.explicacion_codigo, s.consejos, s.dificultad, s.tiempo_estimado, s.kc_tags, t.curso, t.nivel FROM secciones s JOIN temas t ON s.tema_id = t.id WHERE s.id = ?",
+        (section_id,),
+    ).fetchone()
+    
+    if not row:
+        raise HTTPException(status_code=404, detail="Sección no encontrada")
+    
+    return {
+        "success": True,
+        "data": {
+            "id": section_id,
+            "id_seccion": row[0],
+            "titulo": row[1],
+            "cuerpo": row[2],
+            "codigo": row[3],
+            "codigo_ejemplo": row[4],
+            "explicacion_codigo": row[5],
+            "consejos": json.loads(row[6]) if row[6] else [],
+            "dificultad": row[7],
+            "tiempo_estimado": row[8],
+            "kc_tags": json.loads(row[9]) if row[9] else [],
+            "language": row[10],
+            "level": row[11],
+        },
+    }

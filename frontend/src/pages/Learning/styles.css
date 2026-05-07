@@ -131,6 +131,10 @@
   font-weight: 600;
 }
 
+.status-check {
+  color: var(--success);
+}
+
 .lesson-content {
   flex: 1;
   min-width: 0;
@@ -482,5 +486,130 @@
 
   .welcome-learning {
     padding: 2rem 1.5rem;
+  }
+}
+
+/* STI Recommendations */
+.sti-recommendations {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.rec-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+}
+
+.rec-card svg {
+  color: var(--primary-500);
+}
+
+.rec-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.rec-label {
+  font-size: 0.75rem;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.rec-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+.rec-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rec-progress-ring {
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+
+.rec-progress-ring svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.rec-progress-bg {
+  fill: none;
+  stroke: var(--gray-200);
+  stroke-width: 3;
+}
+
+.rec-progress-fill {
+  fill: none;
+  stroke: var(--progress-color, var(--primary-500));
+  stroke-width: 3;
+  stroke-linecap: round;
+  transition: stroke-dasharray var(--transition-slow);
+}
+
+.rec-progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+.streak-active {
+  color: #f97316;
+}
+
+/* Progress Summary in Sidebar */
+.progress-summary {
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.progress-bar-small {
+  height: 4px;
+  background: var(--gray-200);
+  border-radius: 100px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.progress-fill-small {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-500), var(--primary-600));
+  border-radius: 100px;
+  transition: width var(--transition-medium);
+}
+
+.progress-summary span {
+  font-size: 0.75rem;
+  color: var(--gray-500);
+}
+
+@media (max-width: 1024px) {
+  .sti-recommendations {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .sti-recommendations {
+    grid-template-columns: 1fr;
   }
 }

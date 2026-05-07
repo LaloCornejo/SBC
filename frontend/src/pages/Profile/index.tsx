@@ -1,9 +1,24 @@
-import { useState, useEffect } from 'react'
-import { User, Trophy, Flame, Star, Clock, Calendar, TrendingUp, Award } from 'lucide-react'
 import axios from 'axios'
+import { useState, useEffect } from 'react'
+import { User, Trophy, Flame, Star, Clock, Calendar, TrendingUp, Award, Target, Zap, RefreshCw } from 'lucide-react'
 import './styles.css'
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8003"
+
+interface StiAbility {
+  elo_rating: number
+  total_exercises: number
+  correct_exercises: number
+  current_streak: number
+  longest_streak: number
+  mastery_percentage: number
+}
+
+interface StiStats {
+  total_sections: number
+  completed_sections: number
+  overall_mastery: number
+}
 
 interface ProfileData {
   username: string
@@ -36,6 +51,8 @@ export function Profile() {
   const [profile, setProfile] = useState<ProfileData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [stiAbility, setStiAbility] = useState<StiAbility | null>(null)
+  const [stiStats, setStiStats] = useState<StiStats | null>(null)
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -50,7 +67,18 @@ export function Profile() {
         const response = await axios.get(`${API_URL}/api/v1/user/profile`, {
           params: { username }
         })
-        setProfile(response.data.data)
+        const userProfile = response.data.data
+        setProfile(userProfile)
+        
+        const lang = userProfile?.user_content?.language
+        if (lang) {
+          const [abilityRes, statsRes] = await Promise.all([
+            axios.get(`${API_URL}/api/v1/sti/ability/${username}/${lang}`),
+            axios.get(`${API_URL}/api/v1/sti/progress/${username}`),
+          ])
+          if (abilityRes.data?.data) setStiAbility(abilityRes.data.data)
+          if (statsRes.data?.data) setStiStats(statsRes.data.data)
+        }
       } catch (err) {
         setError('Error al cargar el perfil')
         console.error(err)
@@ -215,6 +243,50 @@ export function Profile() {
                   <p className="progress-detail">
                     {profile.user_content.chapters.length} capítulos disponibles
                   </p>
+                </div>
+              </section>
+            )}
+
+            {stiAbility && (
+              <section className="sti-stats-section">
+                <h3 className="section-title-small">Análisis de Aprendizaje</h3>
+                <div className="stats-grid-profile">
+                  <div className="stat-card-profile">
+                    <div className="stat-icon-wrapper purple">
+                      <Target size={24} />
+                    </div>
+                    <div className="stat-info">
+                      <span className="stat-value-profile">{stiAbility.elo_rating}</span>
+                      <span className="stat-label-profile">ELO Rating</span>
+                    </div>
+                  </div>
+                  <div className="stat-card-profile">
+                    <div className="stat-icon-wrapper blue">
+                      <Zap size={24} />
+                    </div>
+                    <div className="stat-info">
+                      <span className="stat-value-profile">{stiAbility.mastery_percentage}%</span>
+                      <span className="stat-label-profile">Dominio</span>
+                    </div>
+                  </div>
+                  <div className="stat-card-profile">
+                    <div className="stat-icon-wrapper orange">
+                      <Flame size={24} />
+                    </div>
+                    <div className="stat-info">
+                      <span className="stat-value-profile">{stiAbility.current_streak}</span>
+                      <span className="stat-label-profile">Racha Actual</span>
+                    </div>
+                  </div>
+                  <div className="stat-card-profile">
+                    <div className="stat-icon-wrapper green">
+                      <RefreshCw size={24} />
+                    </div>
+                    <div className="stat-info">
+                      <span className="stat-value-profile">{stiStats?.completed_sections || 0}</span>
+                      <span className="stat-label-profile">Secciones Completadas</span>
+                    </div>
+                  </div>
                 </div>
               </section>
             )}

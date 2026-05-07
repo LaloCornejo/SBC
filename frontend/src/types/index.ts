@@ -54,6 +54,7 @@ export interface Seccion {
   titulo: string;
   cuerpo: string;
   codigo: string | null;
+  completado?: boolean;
 }
 
 export interface Tema {

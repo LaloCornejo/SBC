@@ -1,140 +1,893 @@
 {
   "curso": "Python",
   "nivel": "Básico",
-  "total_capitulos": 5,
+  "total_capitulos": 8,
   "capitulos": [
     {
       "num_capitulo": 1,
-      "titulo": "Introducción y Sintaxis",
+      "titulo": "Introducción a la Programación y Python",
       "secciones": [
         {
           "id": 1,
           "tipo": "contenido",
-          "titulo": "Hola Mundo e Identación",
-          "cuerpo": "Python es un lenguaje 'amigable' que se lee muy parecido al inglés. A diferencia de otros lenguajes que usan llaves {}, Python utiliza espacios al inicio de la línea (llamados identación) para saber qué instrucciones van dentro de otras. Si no respetas estos espacios, el programa se confundirá y no funcionará. ¡Es su forma de mantener el código ordenado!",
-          "codigo": "print(\"Hola, Python\")\n\nif True:\n    print(\"Este mensaje tiene 4 espacios de sangría\")"
+          "titulo": "¿Qué es la Programación?",
+          "cuerpo": "La programación es el arte de dar instrucciones a una computadora para que realice tareas específicas. Imagina que tienes un asistente muy literal que hace exactamente lo que le dices, ni más ni menos. Ese asistente es tu programa. Las instrucciones deben ser precisas, claras y en un lenguaje que la computadora entienda.\n\nLa programación nos permite crear todo tipo de aplicaciones: desde juegos y aplicaciones móviles hasta sistemas de inteligencia artificial y análisis de datos. En el mundo actual, saber programar es como saber leer y escribir en el idioma del futuro.\n\nPython es uno de los lenguajes de programación más populares del mundo porque combina poder con simplicidad. Fue creado por Guido van Rossum en 1991 y su filosofía principal es que el código debe ser legible y elegante.",
+          "codigo": "# Este es un comentario - la computadora lo ignora\nprint(\"¡Hola, bienvenido al mundo de la programación!\")",
+          "codigo_ejemplo": "# La programación está en todas partes\n# - Apps de celular\n# - Sitios web\n# - Videojuegos\n# - Sistemas de recomendación\n# - Inteligencia artificial",
+          "explicacion_codigo": "La línea con print() es una instrucción que le dice a Python que muestre el texto entre comillas en la pantalla. El texto entre comillas se llama 'string' o cadena de texto.",
+          "consejos": ["Los comentarios empiezan con # y son para humanos", "Python ejecuta código de arriba hacia abajo", "Cada instrucción va en una nueva línea"],
+          "errores_comunes": [
+            {"error": "Olvidar las comillas", "solucion": "print(Hola) causará error, debe ser print(\"Hola\")"},
+            {"error": "Usar paréntesis incorrectos", "solucion": "print[] es incorrecto, debe ser print()"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Imprime tu nombre en la pantalla", "solucion": "print(\"TuNombre\")", "pista": "Usa print() con tu nombre entre comillas"}
+          ],
+          "kc_tags": ["introduccion", "print", "hola-mundo"],
+          "dificultad": 1,
+          "tiempo_estimado_minutos": 10,
+          "prerequisites": []
         },
         {
           "id": 2,
           "tipo": "contenido",
-          "titulo": "Variables y Tipos Dinámicos",
-          "cuerpo": "Imagina que las variables son etiquetas que le pones a los datos. En Python no tienes que avisarle a la computadora si vas a guardar un número o un texto; él es lo suficientemente inteligente para darse cuenta solo. Puedes guardar un nombre (texto), una edad (número entero) o un precio (número con decimales) simplemente asignándoles un valor.",
-          "codigo": "nombre = \"Ana\"  # Python sabe que es texto\nedad = 25        # Sabe que es número\nprecio = 10.5   # Sabe que es decimal"
+          "titulo": "Instalación y Entorno de Python",
+          "cuerpo": "Para empezar a programar en Python, necesitas tener Python instalado en tu computadora. Hay varias formas de hacerlo:\n\nLa más sencilla es descargar Python desde python.org. Durante la instalación en Windows, asegúrate de marcar la opción 'Add Python to PATH' para que puedas ejecutar Python desde cualquier terminal.\n\nDespués de instalado, puedes verificar que funciona abriendo una terminal y escribiendo 'python --version'. Debería mostrar algo como 'Python 3.x.x'.\n\nAdemás del interpretador, existen entornos de desarrollo (IDEs) que facilitan la programación con resaltado de código, autocompletado y depuración. VS Code es una opción popular y gratuita.",
+          "codigo": "# En la terminal, verifica Python\npython --version\n\n# También puedes usar el modo interactivo\npython\n# Luego escribe: print(\"Hola\")",
+          "codigo_ejemplo": "# Alternativas para ejecutar Python\n# 1. Terminal: python archivo.py\n# 2. IDLE (viene con Python)\n# 3. VS Code con extensión Python\n# 4. Jupyter Notebook para análisis de datos",
+          "explicacion_codigo": "El comando 'python --version' verifica que Python esté instalado correctamente. El número 3.x.x indica la versión, siendo 3 la versión principal actual.",
+          "consejos": ["Siempre verifica la instalación primero", "Usa un IDE como VS Code para facilitar", "Guarda tus archivos con extensión .py"],
+          "errores_comunes": [
+            {"error": "Python no encontrado en PATH", "solucion": "Reinstalar marcando 'Add to PATH' o agregar manualmente"},
+            {"error": "Escribir python3 en lugar de python", "solucion": "En algunos sistemas Linux/Mac es python3, en Windows es python"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Verifica que Python esté instalado en tu computadora", "solucion": "python --version", "pista": "Abre la terminal y escribe el comando"}
+          ],
+          "kc_tags": ["instalacion", "entorno", "terminal"],
+          "dificultad": 1,
+          "tiempo_estimado_minutos": 15,
+          "prerequisites": [1]
         },
         {
           "id": 3,
           "tipo": "contenido",
-          "titulo": "Entrada y Salida",
-          "cuerpo": "Para que tu programa interactúe contigo, usamos print() para mostrar mensajes en la pantalla y input() para hacer preguntas. Ten en cuenta un pequeño truco: todo lo que escribas en un input(), Python lo recibirá como si fuera texto, incluso si escribes un número.",
-          "codigo": "usuario = input(\"¿Cómo te llamas?: \")\nprint(f\"¡Qué gusto verte, {usuario}!\")"
+          "titulo": "Tu Primer Programa y la Función print()",
+          "cuerpo": "La función print() es una de las más básicas y útiles en Python. Te permite mostrar información en la pantalla. Piensa en ella como la voz de tu programa - lo que quieres comunicar al usuario.\n\nLa función print() puede mostrar:\n- Texto (strings) entre comillas\n- Números\n- Valores de variables\n- Combinaciones de estos\n\nPuedes usar comillas simples ('texto') o dobles (\"texto\") indistintamente. También puedes imprimir múltiples elementos separados por comas, Python automáticamente añadirá espacios entre ellos.",
+          "codigo": "# Imprimiendo texto\nprint(\"Hola, Python\")\nprint('Esto también funciona')\n\n# Imprimiendo números\nprint(42)\nprint(3.14159)\n\n# Combinando texto y números\nprint(\"La respuesta es:\", 42)",
+          "codigo_ejemplo": "# Diferencia entre comillas simples y dobles\nnombre = \"María\"\napellido = 'García'\n\n# Comillas triples para texto multilínea\npoema = \"\"\"Roses are red,\nViolets are blue,\nPython is awesome,\nAnd so are you.\"\"\"",
+          "explicacion_codigo": "print() es una función built-in de Python. Los argumentos van entre paréntesis. Cuando separas con comas, Python añade espacios automáticamente entre cada elemento.",
+          "consejos": ["Usa comillas consistemente en todo tu código", "print() siempre añade un salto de línea al final", "Puedes imprimir prácticamente cualquier cosa"],
+          "errores_comunes": [
+            {"error": "Comillas sin cerrar", "solucion": "Toda comilla abierta debe tener su par de cierre"},
+            {"error": "Mezclar tipos de comillas incorrectamente", "solucion": "Si starts with \", debe terminar con \""}
+          ],
+          "ejercicios": [
+            {"instruccion": "Imprime una presentación de ti mismo", "solucion": "print(\"Me llamo\", \"Juan\", \"y tengo\", 20, \"años\")", "pista": "Usa print() con comas para separar elementos"}
+          ],
+          "kc_tags": ["print", "output", "strings"],
+          "dificultad": 1,
+          "tiempo_estimado_minutos": 15,
+          "prerequisites": [1, 2]
+        },
+        {
+          "id": 4,
+          "tipo": "contenido",
+          "titulo": "Variables: Guardando Información",
+          "cuerpo": "Las variables son como cajas etiquetadas donde guardas información. Cada variable tiene un nombre (la etiqueta) y un valor (lo que guardas dentro). En Python, crear una variable es muy fácil: solo escribe el nombre, el signo igual, y el valor.\n\nPython es un lenguaje de tipado dinámico, lo que significa que no tienes que decir explícitamente qué tipo de dato guardas - Python lo deduce automáticamente. Esto hace que el código sea más rápido de escribir, aunque debes tener cuidado de no mezclar operaciones incompatibles.\n\nLos nombres de variables pueden contener letras, números y guiones bajos (_), pero no pueden empezar con un número. Además, Python distingue entre mayúsculas y minúsculas.",
+          "codigo": "# Creando variables\nnombre = \"Ana\"\nedad = 25\naltura = 1.65\nes_estudiante = True\n\n# Usando las variables\nprint(\"Nombre:\", nombre)\nprint(\"Edad:\", edad)\nprint(\"Altura:\", altura)",
+          "codigo_ejemplo": "# Buenos nombres de variables\nnombre_usuario = \"Carlos\"\ncontador = 0\nprecio_producto = 99.99\n\n# Malos nombres (evitar)\n# a = \"Pedro\"  # No descriptivo\n# 1valor = 10  # No puede empezar con número\n# mi-variable = 5  # No puede tener guiones",
+          "explicacion_codigo": "El signo '=' en programación se llama 'operador de asignación'. No significa 'igual a' como en matemáticas, sino 'asignar el valor de la derecha a la variable de la izquierda'.",
+          "consejos": ["Usa nombres descriptivos para tus variables", "Python recomienda snake_case: mi_variable", "Las variables pueden cambiar de valor durante el programa"],
+          "errores_comunes": [
+            {"error": "Variable no definida", "solucion": "Has usado una variable antes de crearla"},
+            {"error": "Confundir = con ==", "solucion": "= es asignación, == es comparación"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea variables para tu información personal e imprímelas", "solucion": "nombre = \"TuNombre\"\nprint(f\"Me llamo {nombre}\")", "pista": "Crea variables para nombre, edad, ciudad"}
+          ],
+          "kc_tags": ["variables", "asignacion", "tipos"],
+          "dificultad": 2,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [3]
+        },
+        {
+          "id": 5,
+          "tipo": "contenido",
+          "titulo": "Tipos de Datos Básicos",
+          "cuerpo": "Python maneja diferentes tipos de datos, cada uno con características propias. Los principales son:\n\n**Enteros (int)**: Números sin decimales, como 1, 42, -5, 1000.\n\n**Flotantes (float)**: Números con decimales, como 3.14, -0.5, 99.9. Python usa punto decimal, no coma.\n\n**Cadenas de texto (str)**: Secuencias de caracteres entre comillas, como \"Hola\" o 'Mundo'.\n\n**Booleanos (bool)**: Solo dos valores posibles: True (verdadero) o False (falso). Notar que van con mayúscula inicial.\n\nConocer el tipo de dato es importante porque determina qué operaciones puedes realizar. No puedes sumar texto con números directamente, por ejemplo.",
+          "codigo": "# Tipos de datos\nentero = 42           # int\nflotante = 3.14       # float\ntexto = \"Hola mundo\"  # str\nbooleano = True       # bool\n\n# Ver el tipo de una variable\nprint(type(entero))    # <class 'int'>\nprint(type(flotante))  # <class 'float'>\nprint(type(texto))     # <class 'str'>\nprint(type(booleano)) # <class 'bool'>",
+          "codigo_ejemplo": "# Conversión entre tipos\nnumero_texto = \"42\"\nnumero_entero = int(numero_texto)  # Convierte a entero\nnumero_flotante = float(numero_texto)  # Convierte a flotante\n\n# Números a texto\ntexto_numero = str(3.14)\n\n# Bool a texto\ntexto_bool = str(True)  # \"True\"",
+          "explicacion_codigo": "La función type() nos dice qué tipo de dato contiene una variable. La conversión entre tipos se llama 'casting' y se hace con int(), float(), str(), bool().",
+          "consejos": ["Usa type() para verificar tipos cuando tengas duda", "Cuidado al convertir texto a números si el texto no es numérico", "Los booleanos son importantes para condiciones"],
+          "errores_comunes": [
+            {"error": "ValueError al convertir", "solucion": "\"hola\" no puede convertirse a número"},
+            {"error": "Suma de string + int", "solucion": "Usa str() o f-strings: \"edad: \" + str(edad)"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea variables de cada tipo y verifica sus tipos", "solucion": "x = 10\ny = 2.5\nz = \"texto\"\nw = False\nprint(type(x), type(y), type(z), type(w))", "pista": "Crea una variable de cada tipo básico"}
+          ],
+          "kc_tags": ["tipos", "int", "float", "str", "bool"],
+          "dificultad": 2,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [4]
+        },
+        {
+          "id": 6,
+          "tipo": "contenido",
+          "titulo": "Entrada de Datos: La Función input()",
+          "cuerpo": "La función input() permite que tu programa interactúe con el usuario, pidiendo información que será ingresada por el teclado. Es fundamental para crear programas interactivos.\n\nCuando Python ejecuta input(), el programa se pausa y espera a que el usuario escriba algo y presione Enter. Lo que el usuario escribe se guarda como texto (string).\n\nSi necesitas que el usuario ingrese un número, debes convertir el string a número usando int() o float(). Esto es importante porque no puedes hacer operaciones matemáticas con texto.\n\nPuedes incluir un mensaje dentro de input() que se mostrará al usuario como sugerencia de lo que debe escribir.",
+          "codigo": "# Pedir información al usuario\nnombre = input(\"¿Cómo te llamas? \")\nprint(\"¡Hola,\", nombre, \"!\")\n\n# Convirtiendo a número\nedad = int(input(\"¿Cuántos años tienes? \"))\nprint(\"El próximo año tendrás\", edad + 1)",
+          "codigo_ejemplo": "# Ejemplo completo de uso\nprint(\"=== Calculadora de IMC ===\")\npeso = float(input(\"Ingresa tu peso en kg: \"))\naltura = float(input(\"Ingresa tu altura en metros: \"))\n\nimc = peso / (altura ** 2)\nprint(\"Tu IMC es:\", imc)",
+          "explicacion_codigo": "input() siempre devuelve un string. Por eso necesitamos int() o float() para hacer cálculos matemáticos. El espacio después del signo ? en el mensaje es para que no se pegue el texto del usuario.",
+          "consejos": ["Siempre convierte a número si necesitas hacer cálculos", "El mensaje de input() debe ser claro", "Puedes combinar input() con validaciones"],
+          "errores_comunes": [
+            {"error": "input() devuelve string, no número", "solucion": "Usa int(input()) o float(input())"},
+            {"error": "Programa espera input en bucle infinito", "solucion": "Asegúrate de que el usuario pueda salir del programa"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Pide al usuario su nombre y edad, luego imprímelos", "solucion": "nombre = input(\"Tu nombre: \")\nedad = input(\"Tu edad: \")\nprint(nombre, \"tiene\", edad, \"años\")", "pista": "Usa input() dos veces, una para cada dato"}
+          ],
+          "kc_tags": ["input", "interaccion", "usuarious"],
+          "dificultad": 2,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [5]
+        },
+        {
+          "id": 7,
+          "tipo": "contenido",
+          "titulo": "Operadores Aritméticos Básicos",
+          "cuerpo": "Los operadores aritméticos te permiten realizar cálculos matemáticos en Python. Son fundamentales para cualquier programa que manipule números.\n\n**Suma (+)** y **Resta (-)**: Operaciones básicas que funcionan como esperas.\n\n**Multiplicación (*)**: Une grupos iguales, como 3 * 4 significa 3 grupos de 4.\n\n**División (/)**: Divide un número entre otro. Siempre devuelve un número flotante, incluso si el resultado es exacto.\n\n**División entera (//)**: Devuelve solo la parte entera del resultado, descartando decimales.\n\n**Módulo (%)**: Devuelve el residuo de la división. Muy útil para determinar si un número es par o impar.\n\n**Exponenciación (**)**: Eleva un número a una potencia.",
+          "codigo": "# Operaciones básicas\nprint(10 + 5)    # 15 - Suma\nprint(10 - 5)    # 5  - Resta\nprint(10 * 5)    # 50 - Multiplicación\nprint(10 / 5)    # 2.0 - División\nprint(10 // 3)   # 3  - División entera\nprint(10 % 3)    # 1  - Módulo (residuo)\nprint(2 ** 3)    # 8  - Exponenciación",
+          "codigo_ejemplo": "# Ejemplos prácticos\n# Calcular área de un círculo\nradio = 5\narea = 3.14159 * radio ** 2\nprint(\"Área:\", area)\n\n# Verificar si un número es par\nnumero = 7\nes_par = numero % 2 == 0\nprint(\"¿Es par?\", es_par)",
+          "explicacion_codigo": "El operador // (división entera) descarta los decimales, mientras que / siempre devuelve flotante. % (módulo) es el residuo: lo que sobra cuando divides 10 entre 3.",
+          "consejos": ["Usa paréntesis para controlar el orden de operaciones", "** tiene precedencia sobre * y /", "El módulo es muy útil para ciclos y patrones"],
+          "errores_comunes": [
+            {"error": "Confundir / con //", "solucion": "10/3 = 3.333..., 10//3 = 3"},
+            {"error": "Orden de operaciones", "solucion": "2 + 3 * 4 = 14, usa paréntesis: (2+3) * 4 = 20"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Calcula el área de un rectángulo dados ancho y alto", "solucion": "ancho = 5\nalto = 10\narea = ancho * alto\nprint(\"El área es:\", area)", "pista": "El área es ancho multiplicado por alto"}
+          ],
+          "kc_tags": ["operadores", "aritmetica", "matematicas"],
+          "dificultad": 2,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [5]
+        },
+        {
+          "id": 8,
+          "tipo": "contenido",
+          "titulo": "Indentación en Python",
+          "cuerpo": "La indentación es uno de los aspectos más distintivos de Python. A diferencia de otros lenguajes que usan llaves {} para agrupar código, Python usa espacios al inicio de cada línea para definir bloques de código.\n\nCuando una línea termina con dos puntos (:), todo el código indentado debajo pertenece a ese bloque. Puede ser un bucle, una función, una condición, etc.\n\n**La regla de oro**: Sé consistente con los espacios. Tradicionalmente se usan 4 espacios (o 1 tabulación) para cada nivel de indentación. Mezclar tabs y espacios causa errores.\n\nLa indentación no es solo estética - es parte de la sintaxis de Python. Un código mal indentado no funcionará.",
+          "codigo": "# Ejemplo de indentación en un if\nedad = 18\n\nif edad >= 18:\n    print(\"Eres mayor de edad\")\n    print(\"Puedes votar\")\n\nprint(\"Este print NO está indentado\")\n\n# Ejemplo con for\nfor i in range(3):\n    print(f\"Iteración {i}\")\n    print(\"  Esto está más indentado\")",
+          "codigo_ejemplo": "# Error común: indentación inconsistente\nif True:\nprint(\"Esto causará error\")  # Error! Falta indentación\n\n# Otro error común: mezclar espacios y tabs\nif True:\n\tprint(\"Tab\")  # Mezcla de tab y espacios\n    print(\"Espacios\")",
+          "explicacion_codigo": "Los dos puntos (:) al final de una línea indican que empieza un nuevo bloque. Todo lo que esté indentado debajo pertenece a ese bloque. El código sin indentación pertenece al nivel principal.",
+          "consejos": ["Usa 4 espacios por nivel de indentación", "Configura tu editor para mostrar tabs como espacios", "Cuando veas :, espera un bloque indentado"],
+          "errores_comunes": [
+            {"error": "IndentationError", "solucion": "Revisa que todos los bloques estén correctamente indentados"},
+            {"error": "Código no entra al if", "solucion": "Quizás necesitas más indentación"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea un if que imprima un mensaje diferente según seas mayor o menor de edad", "solucion": "edad = 20\nif edad >= 18:\n    print(\"Mayor de edad\")\nelse:\n    print(\"Menor de edad\")", "pista": "Usa if y else con la condición adecuada"}
+          ],
+          "kc_tags": ["indentacion", "sintaxis", "bloques"],
+          "dificultad": 2,
+          "tiempo_estimado_minutos": 15,
+          "prerequisites": [6, 7]
         }
       ]
     },
     {
       "num_capitulo": 2,
-      "titulo": "Operadores y Control de Flujo",
+      "titulo": "Control de Flujo: Condicionales",
       "secciones": [
         {
-          "id": 5,
+          "id": 9,
           "tipo": "contenido",
-          "titulo": "Operadores Aritméticos",
-          "cuerpo": "Python sabe hacer matemáticas básicas como sumar (+) o restar (-), pero también tiene superpoderes: el operador // te da el resultado de una división sin decimales (división entera) y el operador ** sirve para elevar un número a una potencia, como decir 2 al cubo.",
-          "codigo": "print(10 // 3)  # Da 3\nprint(2 ** 3)   # Da 8"
+          "titulo": "La Sentencia if",
+          "cuerpo": "La sentencia if (si) es fundamental en programación. Permite que tu programa tome decisiones basadas en condiciones. Si una condición es verdadera, se ejecuta un bloque de código; si es falsa, se salta.\n\nLa estructura es: if condición: seguido del código a ejecutar si la condición es True. La condición debe ser una expresión que evalué a True o False (un valor booleano).\n\nPuedes usar operadores de comparación para crear condiciones: == (igual a), != (diferente de), > (mayor que), < (menor que), >= (mayor o igual), <= (menor o igual).",
+          "codigo": "# Ejemplo básico de if\ntemperatura = 30\n\nif temperatura > 25:\n    print(\"Hace calor\")\n    print(\"Enciende el ventilador\")\n\n# Verificando condiciones\nedad = 20\nif edad >= 18:\n    print(\"Eres adulto\")",
+          "codigo_ejemplo": "# Comparando valores\nx = 10\ny = 20\n\nif x == 10:\n    print(\"x es igual a 10\")\n\nif y != x:\n    print(\"y es diferente de x\")\n\nif x < y:\n    print(\"x es menor que y\")",
+          "explicacion_codigo": "La condición va después de 'if' y antes de los dos puntos. Debe evaluarse a True o False. Si es True, se ejecuta el bloque indentado debajo. Si es False, se salta.",
+          "consejos": ["Usa == para comparar, = es asignación", "Las condiciones pueden encadenarse", "if es la base de la lógica condicional"],
+          "errores_comunes": [
+            {"error": "Usar = en lugar de ==", "solucion": "if x = 10 es error, debe ser if x == 10"},
+            {"error": "Olvidar los dos puntos", "solucion": "if condición: - los dos puntos son obligatorios"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Pide un número e indica si es positivo", "solucion": "num = int(input(\"Número: \"))\nif num > 0:\n    print(\"Es positivo\")", "pista": "Compara si el número es mayor que 0"}
+          ],
+          "kc_tags": ["if", "condiciones", "comparacion"],
+          "dificultad": 2,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [8]
         },
         {
-          "id": 6,
+          "id": 10,
           "tipo": "contenido",
-          "titulo": "Condicionales (if, elif, else)",
-          "cuerpo": "Las condicionales son como caminos en un bosque. 'If' es tu primera opción; si no se cumple, puedes usar 'elif' para dar otra opción específica, y finalmente 'else' es lo que sucede si ninguna de las anteriores funcionó. Es como decidir: si hace sol voy al parque, si llueve voy al cine, y si no, me quedo en casa.",
-          "codigo": "if nota >= 9:\n    print(\"Excelente\")\nelif nota >= 7:\n    print(\"Aprobado\")\nelse:\n    print(\"Reprobado\")"
+          "titulo": "if-else: Tomando Dos Caminos",
+          "cuerpo": "La sentencia else (sino) proporciona una alternativa cuando la condición del if es falsa. Si no se cumple la primera condición, se ejecuta el bloque del else.\n\nLa estructura es: if condición: ... else: ... El bloque else se ejecuta únicamente cuando ninguna de las condiciones anteriores fue verdadera.\n\nelse es opcional pero muy útil. Te permite cubrir ambos casos posibles: cuando algo es verdadero y cuando es falso.",
+          "codigo": "# if-else básico\nedad = 15\n\nif edad >= 18:\n    print(\"Puedes entrar\")\nelse:\n    print(\"No puedes entrar\")\n\n# Ejemplo con variables\nnumero = 7\nif numero % 2 == 0:\n    print(\"Es par\")\nelse:\n    print(\"Es impar\")",
+          "codigo_ejemplo": "# Validando entrada de usuario\ncontraseña = input(\"Ingresa contraseña: \")\nif contraseña == \"secreto123\":\n    print(\"¡Bienvenido!\")\nelse:\n    print(\"Contraseña incorrecta\")\n\n# Calculadora simple\nprint(\"Calculadora: 5 + 3\")\nrespuesta = int(input(\"Tu respuesta: \"))\nif respuesta == 8:\n    print(\"¡Correcto!\")\nelse:\n    print(\"Incorrecto, era 8\")",
+          "explicacion_codigo": "else no tiene condición propia - se ejecuta cuando todas las condiciones anteriores (if y elif) fueron falsas. Es como un 'por defecto' cuando nada más coincide.",
+          "consejos": ["else siempre va después de if", "Usa else para manejar el caso 'por defecto'", "Puedes anidar if-else dentro de otros"],
+          "errores_comunes": [
+            {"error": "else sin if antes", "solucion": "else siempre requiere un if previo"},
+            {"error": "Condición en else", "solucion": "else no lleva condición, solo if"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Pide un número e indica si es positivo o no positivo", "solucion": "n = int(input(\"Número: \"))\nif n > 0:\n    print(\"Positivo\")\nelse:\n    print(\"No positivo\")", "pista": "Usa else para el caso cuando no es mayor que 0"}
+          ],
+          "kc_tags": ["if", "else", "alternativas"],
+          "dificultad": 2,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [9]
         },
         {
-          "id": 7,
+          "id": 11,
           "tipo": "contenido",
-          "titulo": "Operadores Lógicos",
-          "cuerpo": "Para tomar decisiones más complejas, usamos palabras en lugar de símbolos raros. 'and' significa que se deben cumplir las dos cosas; 'or' significa que con una que sea verdad es suficiente; y 'not' simplemente voltea el resultado (lo que era verdad lo hace falso). ¡Es muy natural de leer!",
-          "codigo": "if edad > 18 and tiene_ticket:\n    print(\"¡Puedes pasar!\")"
+          "titulo": "elif: Múltiples Condiciones",
+          "cuerpo": "La sentencia elif (abreviatura de 'else if') permite evaluar múltiples condiciones en secuencia. Si la primera condición es falsa, se evalúa la siguiente, y así sucesivamente.\n\nPuedes usar tantos elif como necesites. El primer elif cuya condición sea verdadero será el que se ejecute, y los demás se saltarán.\n\nEs una forma de crear múltiples ramas de decisión sin necesidad de anidar muchos if unos dentro de otros.",
+          "codigo": "# elif múltiples\nnota = 85\n\nif nota >= 90:\n    print(\"Excelente: A\")\nelif nota >= 80:\n    print(\"Muy bien: B\")\nelif nota >= 70:\n    print(\"Bien: C\")\nelif nota >= 60:\n    print(\"Suficiente: D\")\nelse:\n    print(\"Reprobado: F\")",
+          "codigo_ejemplo": "# Sistema de tickets\nedad = 25\n\nif edad < 5:\n    print(\"Entrada gratis\")\nelif edad < 18:\n    print(\"Ticket de niño: $5\")\nelif edad < 60:\n    print(\"Ticket adulto: $10\")\nelse:\n    print(\"Ticket senior: $7\")",
+          "explicacion_codigo": "elif evalúa su condición solo si todas las condiciones anteriores fueron falsas. Se ejecutará el primer elif cuya condición sea True.",
+          "consejos": ["Usa elif cuando tengas más de 2 casos", "El orden importa - pon primero los casos más específicos", "else al final es opcional pero recomendado"],
+          "errores_comunes": [
+            {"error": "elif sin if antes", "solucion": "No puedes usar elif sin un if inicial"},
+            {"error": "Orden incorrecto de condiciones", "solucion": "Si pones las condiciones más generales primero, las específicas nunca se ejecutarán"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea un programa que diga el día de la semana según un número (1-7)", "solucion": "dia = int(input(\"Número (1-7): \"))\nif dia == 1:\n    print(\"Lunes\")\nelif dia == 2:\n    print(\"Martes\")\nelif dia == 3:\n    print(\"Miércoles\")\nelif dia == 4:\n    print(\"Jueves\")\nelif dia == 5:\n    print(\"Viernes\")\nelif dia == 6:\n    print(\"Sábado\")\nelif dia == 7:\n    print(\"Domingo\")\nelse:\n    print(\"Número inválido\")", "pista": "Usa elif para cada día de la semana"}
+          ],
+          "kc_tags": ["elif", "multiple-condiciones", "ramas"],
+          "dificultad": 3,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [10]
+        },
+        {
+          "id": 12,
+          "tipo": "contenido",
+          "titulo": "Operadores Lógicos: and, or, not",
+          "cuerpo": "Los operadores lógicos te permiten combinar múltiples condiciones. Son esenciales para crear decisiones complejas.\n\n**and (y)**: Ambas condiciones deben ser verdaderas para que el resultado sea verdadero. Es como una puerta AND.\n\n**or (o)**: Al menos una condición debe ser verdadera. Si cualquiera es true, el resultado es true.\n\n**not (no)**: Invierte el valor de verdad. True se vuelve False y viceversa.\n\nEstos operadores siguen reglas de precedencia: not se evalúa primero, luego and, y finalmente or.",
+          "codigo": "# and - ambas deben ser true\nedad = 25\ntiene_licencia = True\n\nif edad >= 18 and tiene_licencia:\n    print(\"Puedes conducir\")\n\n# or - al menos una debe ser true\ndia = \"sábado\"\nferiado = False\n\nif dia == \"sábado\" or dia == \"domingo\" or feriado:\n    print(\"No hay trabajo\")\n\n# not - invierte el valor\nes_estudiante = True\nif not es_estudiante:\n    print(\"No eres estudiante\")\nelse:\n    print(\"Eres estudiante\")",
+          "codigo_ejemplo": "# Validación de registro\nnombre = \"\"\nemail = \"correo@ejemplo.com\"\nedad = 20\n\nif nombre and email and edad >= 18:\n    print(\"Registro exitoso\")\nelse:\n    print(\"Faltan datos o no cumples requisitos\")\n\n# Rango de números\nnum = 15\nif num >= 1 and num <= 10:\n    print(\"Entre 1 y 10\")",
+          "explicacion_codigo": "and devuelve True solo si ambos operandos son True. or devuelve True si al menos uno es True. not invierte el valor booleano.",
+          "consejos": ["Usa paréntesis paraclarar el orden: (a or b) and c", "and es más 'restringido' que or", "not es útil para verificar negaciones"],
+          "errores_comunes": [
+            {"error": "Confundir & con and", "solucion": "En Python es 'and', no '&' (ese es para bits)"},
+            {"error": "or cuando se necesita and", "solucion": "Si necesitas ambas condiciones, usa and"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea un login que requiera usuario Y contraseña correctos", "solucion": "user = input(\"Usuario: \")\npassw = input(\"Contraseña: \")\n\nif user == \"admin\" and passw == \"1234\":\n    print(\"Acceso concedido\")\nelse:\n    print(\"Acceso denegado\")", "pista": "Usa and para combinar ambas condiciones"}
+          ],
+          "kc_tags": ["and", "or", "not", "logica"],
+          "dificultad": 3,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [11]
+        },
+        {
+          "id": 13,
+          "tipo": "contenido",
+          "titulo": "Condicionales Anidados",
+          "cuerpo": "Los condicionales anidados son sentencias if dentro de otras sentencias if. Te permiten tomar decisiones más granulares, donde cada decisión depende del resultado de decisiones anteriores.\n\nAunque son útiles, cuidado con el anidamiento excesivo - puede hacer el código difícil de leer. Como regla general, intenta no anidar más de 3 niveles.\n\nUna alternativa a múltiples anidamientos es usar elif, que es más limpio cuando tienes muchas ramas.",
+          "codigo": "# Condicionales anidados\nedad = 20\ntiene_dinero = True\n\nif edad >= 18:\n    print(\"Eres mayor de edad\")\n    if tiene_dinero:\n        print(\"Puedes comprar lo que quieras\")\n    else:\n        print(\"Pero no tienes dinero\")\nelse:\n    print(\"Eres menor de edad\")",
+          "codigo_ejemplo": "# Sistema de precios con anidación\ntipo_cliente = \"VIP\"\nmonto = 150\n\nif tipo_cliente == \"VIP\":\n    print(\"Cliente VIP\")\n    if monto > 100:\n        print(\"Descuento del 20%\")\n    else:\n        print(\"Descuento del 10%\")\nelif tipo_cliente == \"regular\":\n    print(\"Cliente regular\")\n    if monto > 100:\n        print(\"Descuento del 5%\")\n    else:\n        print(\"Sin descuento\")",
+          "explicacion_codigo": "Cada nivel de indentación representa un nivel de anidación. El código en niveles más profundos solo se ejecuta si todas las condiciones externas también son verdaderas.",
+          "consejos": ["Usa 4 espacios por nivel de indentación", "Considera usar elif para evitar anidamiento profundo", "Nombra las variables claramente para seguir la lógica"],
+          "errores_comunes": [
+            {"error": "Perder la pista de la indentación", "solucion": "Cuenta los espacios o usa un editor que resalte bloques"},
+            {"error": "Anidamiento muy profundo", "solucion": "Usa funciones o refactoriza con elif"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea un sistema que evalúe si puedes ir al cine según edad y dinero", "solucion": "edad = int(input(\"Edad: \"))\ndinero = float(input(\"Dinero: \"))\n\nif edad >= 18:\n    if dinero >= 80:\n        print(\"Puedes ir al cine\")\n    else:\n        print(\"No tienes suficiente dinero\")\nelse:\n    print(\"No tienes la edad suficiente\")", "pista": "Anida un if dentro de otro"}
+          ],
+          "kc_tags": ["anidamiento", "if-dentro-de-if"],
+          "dificultad": 3,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [12]
+        },
+        {
+          "id": 14,
+          "tipo": "contenido",
+          "titulo": "Expresiones Ternarias",
+          "cuerpo": "La expresión ternaria es una forma compacta de escribir un if-else en una sola línea. Es especialmente útil cuando necesitas asignar un valor basándote en una condición simple.\n\nLa sintaxis es: valor_si_true if condición else valor_si_false\n\nAunque es concisa, no debes abusar de ella - para condiciones complejas, un if-else tradicional es más legible.",
+          "codigo": "# Expresión ternaria básica\nedad = 20\n\n# Esto:\nif edad >= 18:\n    resultado = \"Adulto\"\nelse:\n    resultado = \"Menor\"\n\n# Equivalente en una línea:\nresultado = \"Adulto\" if edad >= 18 else \"Menor\"\n\nprint(resultado)",
+          "codigo_ejemplo": "# Usando en funciones\ndef par_o_impar(n):\n    return \"Par\" if n % 2 == 0 else \"Impar\"\n\nprint(par_o_impar(4))   # Par\nprint(par_o_impar(7))   # Impar\n\n# En print directamente\nedad = 15\nprint(\"Mayor\" if edad >= 18 else \"Menor\")",
+          "explicacion_codigo": "La estructura es: (valor_si_true) if (condición) else (valor_si_false). Se evalúa la condición - si es True, se usa el primer valor; si es False, el segundo.",
+          "consejos": ["Úsala para asignaciones simples", "No la uses para lógica compleja", "Es útil en comprensión de listas"],
+          "errores_comunes": [
+            {"error": "Olvidar el else", "solucion": "La expresión ternaria SIEMPRE necesita else"},
+            {"error": "Confundir el orden", "solucion": "Es: true_value if condition else false_value"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Usa expresión ternaria para decir si un número es positivo o negativo", "solucion": "n = -5\nprint(\"Positivo\" if n > 0 else \"No positivo\")", "pista": "Escribe la condición, luego el valor true, else, y valor false"}
+          ],
+          "kc_tags": ["ternario", "if-en-una-linea", "sintaxis"],
+          "dificultad": 3,
+          "tiempo_estimado_minutos": 15,
+          "prerequisites": [13]
         }
       ]
     },
     {
       "num_capitulo": 3,
-      "titulo": "Bucles y Colecciones Básicas",
+      "titulo": "Bucles: Repetición de Código",
       "secciones": [
         {
-          "id": 9,
+          "id": 15,
           "tipo": "contenido",
-          "titulo": "Bucle For y range()",
-          "cuerpo": "El bucle 'for' sirve para repetir una acción varias veces. Usamos range() para decirle cuántas veces queremos repetir. Por ejemplo, range(5) creará una cuenta del 0 al 4. Es perfecto para cuando ya sabes de antemano cuántas vueltas quieres dar.",
-          "codigo": "for i in range(5):\n    print(f\"Vuelta número {i}\")"
+          "titulo": "El Bucle for: Repeticiones Definidas",
+          "cuerpo": "El bucle for te permite repetir código un número específico de veces o iterar sobre elementos de una secuencia. Es uno de los bucles más usados en Python.\n\nLa estructura es: for variable in secuencia:. La variable toma cada valor de la secuencia en cada iteración.\n\nLa función range() es muy útil con for - genera una secuencia de números. range(5) genera 0,1,2,3,4. Puedes especificar inicio, fin y paso.",
+          "codigo": "# Bucle for básico\nfor i in range(5):\n    print(\"Iteración:\", i)\n\n# range(inicio, fin)\nfor i in range(1, 6):\n    print(\"Número:\", i)\n\n# range(inicio, fin, paso)\nfor i in range(0, 10, 2):\n    print(i, \"es par\")",
+          "codigo_ejemplo": "# Iterar sobre una lista\nfrutas = [\"manzana\", \"banana\", \"cereza\"]\nfor fruta in frutas:\n    print(\"Me gusta la\", fruta)\n\n# Iterar sobre string\nfor letra in \"Python\":\n    print(letra)",
+          "explicacion_codigo": "range(n) genera números de 0 a n-1. range(inicio, fin) genera de inicio a fin-1. range(inicio, fin, paso) permite saltarse valores.",
+          "consejos": ["range(5) da 0,1,2,3,4 - sin incluir el 5", "Usa _ como variable si no la necesitas", "range() es más eficiente que crear listas"],
+          "errores_comunes": [
+            {"error": "range(5) incluye el 5", "solucion": "range(5) es 0-4, range(1,6) es 1-5"},
+            {"error": "Bucle infinito", "solucion": "for con range siempre termina"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Imprime los números del 1 al 10 usando for", "solucion": "for i in range(1, 11):\n    print(i)", "pista": "Usa range(1, 11) para incluir el 10"}
+          ],
+          "kc_tags": ["for", "bucles", "range", "iteracion"],
+          "dificultad": 2,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [14]
         },
         {
-          "id": 10,
+          "id": 16,
           "tipo": "contenido",
-          "titulo": "Bucle While",
-          "cuerpo": "El bucle 'while' es como un guardia que te deja pasar mientras tengas permiso. Se repetirá 'mientras' la condición sea verdadera. ¡Ten cuidado! Debes asegurarte de que en algún momento la condición cambie a falso, o el programa se quedará repitiendo para siempre.",
-          "codigo": "while energia > 0:\n    print(\"Sigo caminando...\")\n    energia -= 1"
+          "titulo": "El Bucle while: Repeticiones Indefinidas",
+          "cuerpo": "El bucle while repite código mientras una condición sea verdadera. A diferencia de for, no sabes de antemano cuántas veces se repetirá - depende de cuándo la condición se vuelva falsa.\n\nEs ideal para situaciones donde no sabes cuántas iteraciones necesitarás, como esperar una entrada del usuario o procesar datos hasta encontrar un valor específico.\n\n**Importante**: Asegúrate de que en algún momento la condición se vuelva falsa, o tendrás un bucle infinito.",
+          "codigo": "# while básico\ncontador = 0\n\nwhile contador < 5:\n    print(\"Contador:\", contador)\n    contador = contador + 1\n\nprint(\"¡Terminó!\")",
+          "codigo_ejemplo": "# Menú interactivo\nopcion = \"\"\n\nwhile opcion != \"3\":\n    print(\"\\n1. Saludar\")\n    print(\"2. Despedirse\")\n    print(\"3. Salir\")\n    opcion = input(\"Elige opción: \")\n    \n    if opcion == \"1\":\n        print(\"¡Hola!\")\n    elif opcion == \"2\":\n        print(\"¡Adiós!\")\n\nprint(\"Fin del programa\")",
+          "explicacion_codigo": "while evalúa la condición. Si es True, ejecuta el bloque y vuelve a evaluar. Si es False, sale del bucle. Si nunca se hace False, el bucle no termina.",
+          "consejos": ["Siempre modifica la condición dentro del bucle", "Usa while cuando no sabes cuántas iteraciones", "Cuidado con bucles infinitos - usa Ctrl+C para parar"],
+          "errores_comunes": [
+            {"error": "Bucle infinito", "solucion": "Asegúrate de que la condición se vuelva False"},
+            {"error": "Olvidar actualizar la variable", "solucion": "contador += 1 es lo mismo que contador = contador + 1"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea un while que cuente desde 10 hasta 1", "solucion": "contador = 10\nwhile contador >= 1:\n    print(contador)\n    contador -= 1\nprint(\"¡Despegue!\")", "pista": "Resta 1 en cada iteración"}
+          ],
+          "kc_tags": ["while", "bucle-indefinido", "condiciones"],
+          "dificultad": 3,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [15]
         },
         {
-          "id": 11,
+          "id": 17,
           "tipo": "contenido",
-          "titulo": "Listas (Introducción)",
-          "cuerpo": "Una lista es como una mochila donde puedes meter muchas cosas. Puedes guardar textos, números y mezclarlos si quieres. Lo mejor es que son 'mutables', lo que significa que puedes sacar cosas, meter nuevas con .append() o cambiar lo que ya está guardado.",
-          "codigo": "frutas = [\"manzana\", \"pera\"]\nfrutas.append(\"uva\") # Ahora hay 3 frutas"
+          "titulo": "Control de Bucles: break y continue",
+          "cuerpo": "break y continue son herramientas que te dan control adicional dentro de los bucles.\n\n**break**: Sale inmediatamente del bucle completamente. El código después del bucle se ejecuta normalmente.\n\n**continue**: Salta a la siguiente iteración del bucle, omitiendo el resto del código en esa iteración actual.\n\nEstos comandos te permiten manejar casos especiales sin complicar demasiado la condición del bucle.",
+          "codigo": "# break - salir del bucle\nfor i in range(10):\n    if i == 5:\n        print(\"¡Encontré el 5, salgo!\")\n        break\n    print(\"i =\", i)\n\nprint(\"Bucle terminado\")\n\n# continue - saltar iteración\nfor i in range(5):\n    if i == 2:\n        continue  # Saltar el 2\n    print(\"i =\", i)\n\nprint(\"Fin\")",
+          "codigo_ejemplo": "# Buscar un elemento\nnumeros = [1, 3, 5, 7, 9, 11, 13]\nbuscado = 7\n\nfor n in numeros:\n    if n == buscado:\n        print(f\"¡Encontré el {buscado}!\")\n        break\n    print(f\"{n} no es...\")\n\n# Imprimir solo números pares\nfor i in range(10):\n    if i % 2 != 0:\n        continue\n    print(i, \"es par\")",
+          "explicacion_codigo": "break sale del bucle completamente. continue salta solo la iteración actual y pasa a la siguiente. Ambos solo afectan al bucle más interno si están anidados.",
+          "consejos": ["Usa break cuando encontremos lo que buscamos", "Usa continue para saltar casos específicos", "Evita abusar - puede hacer el código difícil de seguir"],
+          "errores_comunes": [
+            {"error": "Confundir break y continue", "solucion": "break = salir, continue = saltar"},
+            {"error": "Múltiples breaks", "solucion": "Considera usar una bandera o condición"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Usa un for con break para encontrar el primer múltiplo de 7 mayor a 50", "solucion": "for i in range(1, 100):\n    if i > 50 and i % 7 == 0:\n        print('Encontrado:', i)\n        break", "pista": "Busca desde 1 hasta encontrar"}
+          ],
+          "kc_tags": ["break", "continue", "control-bucle"],
+          "dificultad": 3,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [16]
+        },
+        {
+          "id": 18,
+          "tipo": "contenido",
+          "titulo": "Bucles Anidados",
+          "cuerpo": "Los bucles anidados son bucles dentro de bucles. Son útiles para trabajar con estructuras de dos dimensiones, como tablas de multiplicar, matrices, o cualquier situación donde necesitas combinar elementos.\n\nEl bucle exterior completa una iteración por cada iteración del bucle interior. Si el exterior tiene n iteraciones y el interior tiene m, el código dentro se ejecutará n × m veces.\n\nTen cuidado con bucles muy grandes - puede tomar mucho tiempo.",
+          "codigo": "# Tabla de multiplicar del 1 al 3\nfor i in range(1, 4):\n    for j in range(1, 4):\n        print(f\"{i} x {j} = {i*j}\")\n    print(\"---\")\n\n# Padrón de asteriscos\nfor i in range(1, 4):\n    print(\"*\" * i)",
+          "codigo_ejemplo": "# Matriz simple\nmatriz = [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n]\n\n# Imprimir matriz\nfor fila in matriz:\n    for elemento in fila:\n        print(elemento, end=\" \")\n    print()",
+          "explicacion_codigo": "En bucles anidados, el bucle interno completa todas sus iteraciones por cada iteración del externo. Es como un reloj: el horario completa una vuelta mientras el minutero completa 60.",
+          "consejos": ["Usa nombres diferentes para las variables de控制", "Cuidado con el rendimiento en bucles grandes", "Puedes anidar cualquier tipo de bucle"],
+          "errores_comunes": [
+            {"error": "Confundir variables de control", "solucion": "Usa i, j, k para niveles sucesivos"},
+            {"error": "Rendimiento", "solucion": "Bucles muy grandes pueden ser lentos"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea un triángulo de números", "solucion": "for i in range(1, 6):\n    for j in range(i):\n        print(i, end=\" \")\n    print()", "pista": "El bucle interno debe ir de 0 a i"}
+          ],
+          "kc_tags": ["bucles-anidados", "nested-loops"],
+          "dificultad": 3,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [17]
+        },
+        {
+          "id": 19,
+          "tipo": "contenido",
+          "titulo": "La Función range() en Profundidad",
+          "cuerpo": "La función range() es fundamental para los bucles en Python. Genera secuencias de números de manera eficiente sin crear la lista completa en memoria.\n\nrange(stop): Genera desde 0 hasta stop-1\nrange(start, stop): Genera desde start hasta stop-1\nrange(start, stop, step): Genera desde start hasta stop-1, saltando step\n\nEl parámetro step puede ser negativo para contar hacia atrás.\n\nrange() es un objeto 'lazy' - solo calcula los números cuando los necesitas, ahorrando memoria.",
+          "codigo": "# Distintas formas de usar range\nprint(\"range(5):\", list(range(5)))      # [0,1,2,3,4]\nprint(\"range(2,8):\", list(range(2,8)))  # [2,3,4,5,6,7]\nprint(\"range(0,10,2):\", list(range(0,10,2)))  # [0,2,4,6,8]\nprint(\"range(5,0,-1):\", list(range(5,0,-1)))  # [5,4,3,2,1]",
+          "codigo_ejemplo": "# Contar hacia atrás\nfor i in range(10, 0, -1):\n    print(i, \"...\")\nprint(\"¡Feliz año nuevo!\")\n\n# Números pares e impares\npares = list(range(0, 10, 2))\nimpares = list(range(1, 10, 2))\nprint(\"Pares:\", pares)\nprint(\"Impares:\", impares)",
+          "explicacion_codigo": "range() nunca incluye el valor 'stop'. El step puede ser negativo, pero entonces start debe ser mayor que stop. list() convierte el range a lista visible.",
+          "consejos": ["range(5) = 0 a 4, no 1 a 5", "Usa step negativo para contar atrás", "range() es más eficiente que range(0,n,1)"],
+          "errores_comunes": [
+            {"error": "Esperar que incluya stop", "solucion": "range(5) no incluye 5"},
+            {"error": "step 0 causa error", "solucion": "step no puede ser 0"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Usa range para crear una lista de los primeros 10 números cuadrados", "solucion": "cuadrados = [x**2 for x in range(1, 11)]\nprint(cuadrados)", "pista": "Usa list comprehension con range"}
+          ],
+          "kc_tags": ["range", "secuencias", "numeros"],
+          "dificultad": 2,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [15]
         }
       ]
     },
     {
       "num_capitulo": 4,
-      "titulo": "Funciones y Modularidad",
+      "titulo": "Colecciones de Datos",
       "secciones": [
         {
-          "id": 13,
+          "id": 20,
           "tipo": "contenido",
-          "titulo": "Definición de Funciones (def)",
-          "cuerpo": "Las funciones son como recetas que guardas para usar después. Usas la palabra 'def' para darle un nombre a tu receta. Así, en lugar de escribir 10 líneas de código cada vez, solo llamas al nombre de tu función y Python hará todo el trabajo por ti.",
-          "codigo": "def saludar(nombre):\n    print(f\"Hola {nombre}, ¿cómo va todo?\")"
+          "titulo": "Listas: Tu Primera Colección",
+          "cuerpo": "Las listas son colecciones ordenadas de elementos que puedes modificar. Son la estructura de datos más versátil y usada en Python. Una lista puede contener cualquier tipo de dato: números, textos, booleanos, otras listas, etc.\n\nPara crear una lista, usa corchetes [] y separa los elementos con comas. Las listas mantienen el orden en que agregaste los elementos.\n\nA diferencia de otros lenguajes, las listas de Python son dinámicas - pueden crecer o reducirse según lo necesites.",
+          "codigo": "# Creando listas\nfrutas = [\"manzana\", \"banana\", \"cereza\"]\nnumeros = [1, 2, 3, 4, 5]\nmixta = [\"texto\", 42, 3.14, True]\nvacia = []\n\n# Acceder a elementos (índice empieza en 0)\nprint(frutas[0])  # manzana\nprint(frutas[1])  # banana\nprint(frutas[-1]) # cereza (último)",
+          "codigo_ejemplo": "# Listas con diferentes tipos\nestudiante = [\"Juan\", 20, 1.75, True]\nprint(estudiante[0], \"tiene\", estudiante[1], \"años\")\n\n# Modificar listas\nfrutas = [\"manzana\", \"banana\"]\nfrutas.append(\"cereza\")  # Agregar\nfrutas[0] = \"naranja\"    # Cambiar\nprint(frutas)",
+          "explicacion_codigo": "Los índices empiezan en 0. [-1] accede al último elemento, [-2] al penúltimo, etc. Las listas son mutables - puedes cambiar sus elementos.",
+          "consejos": ["Usa índices positivos de izquierda a derecha", "Usa índices negativos de derecha a izquierda", "append() agrega al final"],
+          "errores_comunes": [
+            {"error": "IndexError", "solucion": "Índice fuera de rango"},
+            {"error": "Confundir corchetes con paréntesis", "solucion": "Listas son [ ], no ( )"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea una lista con 5 números y muestra el tercero", "solucion": "numeros = [10, 20, 30, 40, 50]\nprint(numeros[2])", "pista": "Los índices empiezan en 0"}
+          ],
+          "kc_tags": ["listas", "colecciones", "indices"],
+          "dificultad": 2,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [19]
         },
         {
-          "id": 14,
+          "id": 21,
           "tipo": "contenido",
-          "titulo": "Parámetros y Retorno",
-          "cuerpo": "A las funciones les puedes pasar ingredientes (parámetros) para que trabajen con ellos. Cuando terminan su trabajo, pueden usarse para 'devolver' un resultado con la palabra 'return'. Es como una licuadora: metes fruta y te devuelve jugo.",
-          "codigo": "def suma(a, b):\n    return a + b"
+          "titulo": "Métodos de Listas",
+          "cuerpo": "Las listas en Python vienen con muchos métodos integrados que facilitan trabajar con ellas. Aquí están los más importantes:\n\n**append(x)**: Agrega x al final de la lista.\n**insert(i, x)**: Inserta x en la posición i.\n**remove(x)**: Elimina la primera ocurrencia de x.\n**pop(i)**: Elimina y devuelve el elemento en posición i.\n**extend(lista)**: Agrega todos los elementos de otra lista.\n**sort()**: Ordena la lista.\n**reverse()**: Invierte la lista.",
+          "codigo": "# Métodos de listas\nnumeros = [3, 1, 4, 1, 5]\n\nnumeros.append(9)      # [3,1,4,1,5,9]\nnumeros.insert(0, 0)   # [0,3,1,4,1,5,9]\nnumeros.remove(1)     # [0,3,4,1,5,9] (elimina primero)\nultimo = numeros.pop() # [0,3,4,1,5], ultimo=9\n\nprint(numeros)",
+          "codigo_ejemplo": "# Ordenar listas\npalabras = [\"banana\", \"manzana\", \"cereza\"]\npalabras.sort()\nprint(palabras)  # ['banana', 'cereza', 'manzana']\n\n# Orden inverso\npalabras.sort(reverse=True)\nprint(palabras)  # ['manzana', 'cereza', 'banana']",
+          "explicacion_codigo": "Los métodos modifican la lista original (in-place). sort() ordena ascending por defecto. Para ordernar descending, usa reverse=True.",
+          "consejos": ["append es más rápido que insert al final", "pop() sin argumento elimina el último", "sort() modifica la lista, sorted() crea nueva"],
+          "errores_comunes": [
+            {"error": "remove cuando no existe", "solucion": "ValueError si el elemento no está"},
+            {"error": "Confundir pop con remove", "solucion": "pop(i) elimina por índice, remove(x) por valor"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea una lista, agrégale 3 elementos, ordénala e imprímela", "solucion": "lista = []\nlista.append(5)\nlista.append(2)\nlista.append(8)\nlista.sort()\nprint(lista)", "pista": "Usa append para agregar y sort para ordenar"}
+          ],
+          "kc_tags": ["metodos-lista", "append", "sort", "pop"],
+          "dificultad": 2,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [20]
         },
         {
-          "id": 15,
+          "id": 22,
           "tipo": "contenido",
-          "titulo": "Scope (Ámbito de variables)",
-          "cuerpo": "No todas las variables se conocen entre sí. Una variable creada dentro de una función es 'local' (solo vive ahí dentro). Las que creas fuera son 'globales' y todos pueden verlas. Es como la diferencia entre un secreto de familia y una noticia en el periódico.",
-          "codigo": "x = 10 # Todos la ven\ndef mi_funcion():\n    y = 5 # Solo existe aquí adentro"
+          "titulo": "Slicing: Rebanar Listas",
+          "cuerpo": "El slicing te permite obtener partes de una lista usando índices. La sintaxis es lista[inicio:fin], donde fin no se incluye.\n\nPuedes omitir inicio (empieza desde 0) o fin (llega hasta el final). También puedes usar índices negativos.\n\nEl slicing siempre devuelve una nueva lista, sin modificar la original.",
+          "codigo": "# Slicing básico\nnumeros = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]\n\nprint(numeros[2:5])    # [2,3,4] (índice 2 a 4)\nprint(numeros[:4])     # [0,1,2,3] (inicio a 3)\nprint(numeros[6:])     # [6,7,8,9] (6 a final)\nprint(numeros[::2])    # [0,2,4,6,8] (cada 2)\nprint(numeros[::-1])   # [9,8,7,6,5,4,3,2,1,0] (inverso)",
+          "codigo_ejemplo": "# Extraer partes de texto\nemail = \"usuario@ejemplo.com\"\nusuario = email[:email.index(\"@\")]\ndominio = email[email.index(\"@\")+1:]\nprint(usuario)   # usuario\nprint(dominio)   # ejemplo.com\n\n# Copiar listas\ncopia = numeros[:]  # Copia total\nprint(copia == numeros)  # True",
+          "explicacion_codigo": "lista[inicio:fin] incluye inicio pero NO fin. [::2] significa 'cada 2'. [::-1] invierte la lista.",
+          "consejos": ["Fin no se incluye - range(5) da 0-4 también", "Usar [:] crea una copia", "Slicing no causa errores con índices fuera de rango"],
+          "errores_comunes": [
+            {"error": "Olvidar que fin no se incluye", "solucion": "a[:3] da índices 0,1,2"},
+            {"error": "Fin menor que inicio", "solucion": "Da lista vacía []"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Dada una lista, extrae los primeros 3 y los últimos 2 elementos", "solucion": "lista = [1,2,3,4,5,6,7]\nprint(lista[:3] + lista[-2:])", "pista": "Usa slicing con índices negativos para el final"}
+          ],
+          "kc_tags": ["slicing", "rebanar", "indices"],
+          "dificultad": 3,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [21]
+        },
+        {
+          "id": 23,
+          "tipo": "contenido",
+          "titulo": "Tuplas: Listas Inmutables",
+          "cuerpo": "Las tuplas son como listas pero inmutables - no puedes modificarlas después de crearlas. Se definen con paréntesis () en lugar de corchetes [].\n\n¿Para qué sirven si no puedes modificarlas? Son más eficientes en memoria, sirven como claves en diccionarios, y son ideales para datos que no deben cambiar (como coordenadas).\n\nLa inmutabilidad también significa que son más seguras - nadie puede cambiar accidentalmente sus datos.",
+          "codigo": "# Creando tuplas\ncoordenadas = (10, 20)\nprint(coordenadas[0])   # 10\nprint(coordenadas[1])   # 20\n\n# Tupla con un elemento (ojo: necesita coma)\nuno = (5,)\nprint(type(uno))  # <class 'tuple'>\n\n# Desempaquetado\nx, y = coordenadas\nprint(f\"x={x}, y={y}\")",
+          "codigo_ejemplo": "# Funciones que retornan tuplas\ndef dividir(dividendo, divisor):\n    cociente = dividendo // divisor\n    resto = dividendo % divisor\n    return (cociente, resto)\n\nresultado = dividir(17, 5)\nprint(resultado)  # (3, 2)\ncociente, resto = resultado\nprint(f\"Cociente: {cociente}, Resto: {resto}\")",
+          "explicacion_codigo": "Usa paréntesis () para tuplas. (5,) es tupla de un elemento - la coma es necesaria. Son inmutables pero contienen objetos mutables si los hay.",
+          "consejos": ["Usa tuplas para datos constants", "Son más rápidas que listas", "Puedes usarlas como claves de diccionario"],
+          "errores_comunes": [
+            {"error": "Olvidar la coma en tupla unitaria", "solucion": "(5) es int, (5,) es tupla"},
+            {"error": "Modificar tupla", "solucion": "Las tuplas no se pueden modificar"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea una tupla con 3 colores y-access the segundo", "solucion": "colores = (\"rojo\", \"verde\", \"azul\")\nprint(colores[1])", "pista": "Usa paréntesis, no corchetes"}
+          ],
+          "kc_tags": ["tuplas", "inmutable", "inmutabilidad"],
+          "dificultad": 2,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [22]
+        },
+        {
+          "id": 24,
+          "tipo": "contenido",
+          "titulo": "Diccionarios: Datos Clave-Valor",
+          "cuerpo": "Los diccionarios almacenan datos en pares clave-valor. Cada clave es única y mapea a un valor. Son como diccionarios reales: buscas una palabra (clave) y encuentras su definición (valor).\n\nSe crean con llaves {}. Son extremadamente rápidos para buscar valores por clave - O(1) en términos de complejidad.\n\nLos diccionarios son mutables: puedes agregar, modificar y eliminar pares clave-valor.",
+          "codigo": "# Diccionarios\npersona = {\n    \"nombre\": \"Juan\",\n    \"edad\": 25,\n    \"ciudad\": \"Madrid\"\n}\n\n# Acceder a valores\nprint(persona[\"nombre\"])  # Juan\nprint(persona.get(\"edad\"))  # 25\n\n# Modificar\npersona[\"edad\"] = 26\npersona[\"email\"] = \"juan@email.com\"\n\nprint(persona)",
+          "codigo_ejemplo": "# Diccionario con listas\nestudiante = {\n    \"nombre\": \"María\",\n    \"materias\": [\"Math\", \"Física\", \"Química\"],\n    \"calificaciones\": {\"Math\": 9, \"Física\": 8}\n}\n\nprint(estudiante[\"materias\"])\nprint(estudiante[\"calificaciones\"][\"Math\"])",
+          "explicacion_codigo": "Las claves deben ser inmutables (strings, números, tuplas). Los valores pueden ser cualquier tipo. get() devuelve None si no existe la clave.",
+          "consejos": ["Usa get() para evitar errores si no existe clave", "Las claves deben ser únicas", "Son muy eficientes para búsquedas"],
+          "errores_comunes": [
+            {"error": "KeyError", "solucion": "Usa get() para claves opcionales"},
+            {"error": "Clave duplicada", "solucion": "Solo guarda el último valor"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea un diccionario con información de un libro (título, autor, año)", "solucion": "libro = {\n    \"titulo\": \"1984\",\n    \"autor\": \"George Orwell\",\n    \"año\": 1949\n}\nprint(libro)", "pista": "Usa {} con pares clave: valor"}
+          ],
+          "kc_tags": ["diccionarios", "clave-valor", "hash"],
+          "dificultad": 2,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [23]
+        },
+        {
+          "id": 25,
+          "tipo": "contenido",
+          "titulo": "Métodos de Diccionarios",
+          "cuerpo": "Los diccionarios tienen métodos útiles para manipularlos:\n\n**keys()**: Devuelve las claves.\n**values()**: Devuelve los valores.\n**items()**: Devuelve pares (clave, valor).\n**update()**: Agrega o modifica pares.\n**pop()**: Elimina y devuelve un valor.\n**clear()**: Vacía el diccionario.",
+          "codigo": "# Métodos de diccionarios\npersona = {\"nombre\": \"Ana\", \"edad\": 30}\n\n#keys, values, items\nprint(persona.keys())   # dict_keys(['nombre', 'edad'])\nprint(persona.values()) # dict_values(['Ana', 30])\nprint(persona.items())  # dict_items([('nombre','Ana'), ('edad',30)])\n\n# Iterar\nfor clave, valor in persona.items():\n    print(f\"{clave}: {valor}\")",
+          "codigo_ejemplo": "# update combina diccionarios\nd1 = {\"a\": 1, \"b\": 2}\nd2 = {\"b\": 3, \"c\": 4}\nd1.update(d2)\nprint(d1)  # {'a':1, 'b':3, 'c':4} (b se sobrescribe)\n\n# Verificar existencia\nif \"nombre\" in persona:\n    print(\"Tiene nombre\")",
+          "explicacion_codigo": "items() devuelve tuplas (clave, valor). update() sobrescribe claves existentes. 'in' verifica si una clave existe.",
+          "consejos": ["Itera con items() para clave y valor", "update() es útil para fusionar diccionarios", "Usa 'in' para verificar claves"],
+          "errores_comunes": [
+            {"error": "Olvidar que dict_keys no es lista", "solucion": "Usa list() si necesitas lista"},
+            {"error": "update sobrescribe", "solucion": "Cuidado con claves duplicadas"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Cuenta las letras en una palabra usando un diccionario", "solucion": "palabra = \"python\"\nconteo = {}\nfor letra in palabra:\n    conteo[letra] = conteo.get(letra, 0) + 1\nprint(conteo)", "pista": "Usa get con valor por defecto"}
+          ],
+          "kc_tags": ["metodos-diccionario", "keys", "values", "items"],
+          "dificultad": 3,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [24]
+        },
+        {
+          "id": 26,
+          "tipo": "contenido",
+          "titulo": "Sets: Colecciones Sin Duplicados",
+          "cuerpo": "Los sets (conjuntos) son colecciones de elementos únicos sin orden. Son como listas pero no permiten duplicados.\n\nSe crean con llaves {} o con la función set(). Son muy útiles para eliminar duplicados de una lista o para operaciones de conjuntos (unión, intersección, diferencia).\n\nNo mantienen orden y no puedes acceder por índice.",
+          "codigo": "# Sets\nfrutas = {\"manzana\", \"banana\", \"cereza\", \"manzana\"}\nprint(frutas)  # {'manzana', 'banana', 'cereza'} - sin duplicado\n\n# Eliminar duplicados de lista\nnumeros = [1, 2, 2, 3, 3, 3, 4]\nunicos = set(numeros)\nprint(unicos)  # {1, 2, 3, 4}\n\n# Operaciones de conjuntos\nA = {1, 2, 3}\nB = {2, 3, 4}\nprint(A | B)  # Unión: {1,2,3,4}\nprint(A & B)  # Intersección: {2,3}\nprint(A - B)  # Diferencia: {1}",
+          "codigo_ejemplo": "# Encontrar elementos únicos\npalabra1 = \"python\"\npalabra2 = \"typhon\"\n\ncomunes = set(palabra1) & set(palabra2)\nprint(\"Letras comunes:\", comunes)\n\n# Eliminar duplicados manteniendo orden\ndef unique(items):\n    seen = set()\n    result = []\n    for item in items:\n        if item not in seen:\n            seen.add(item)\n            result.append(item)\n    return result\n\nprint(unique([1,2,2,3,1]))  # [1,2,3]",
+          "explicacion_codigo": "Sets usan tablas hash, por eso las búsquedas son muy rápidas. | es unión, & es intersección, - es diferencia.",
+          "consejos": ["Útiles para eliminar duplicados", "Búsqueda O(1) vs O(n) en listas", "No mantienen orden"],
+          "errores_comunes": [
+            {"error": "Set de un elemento", "solucion": "{1} es set, pero { } sin contenido es dict"},
+            {"error": "Acceder por índice", "solucion": "Sets no soportan índices"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Dados dos sets, encuentra qué elementos tiene el primero pero no el segundo", "solucion": "set1 = {1, 2, 3, 4}\nset2 = {2, 4}\nprint(set1 - set2)  # {1, 3}", "pista": "Usa el operador de diferencia (-)"}
+          ],
+          "kc_tags": ["sets", "conjuntos", "unicos"],
+          "dificultad": 3,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [25]
         }
       ]
     },
     {
       "num_capitulo": 5,
-      "titulo": "Estructuras de Datos Avanzadas",
+      "titulo": "Funciones: Código Reutilizable",
       "secciones": [
         {
-          "id": 17,
+          "id": 27,
           "tipo": "contenido",
-          "titulo": "Tuplas",
-          "cuerpo": "Las tuplas son primas de las listas, pero con una regla de oro: son 'inmutables'. Una vez que las creas con sus paréntesis (), no puedes cambiar nada dentro de ellas. Son ideales para datos que deben quedarse fijos, como las coordenadas de un mapa o los meses del año.",
-          "codigo": "punto = (10, 20) # No se puede cambiar"
+          "titulo": "Definición de Funciones",
+          "cuerpo": "Las funciones son bloques de código reutilizables que realizan una tarea específica. En lugar de escribir el mismo código múltiples veces, lo defines una vez y lo llamas cuando lo necesites.\n\nUna función se define con la palabra clave 'def' seguida del nombre de la función y paréntesis. El código dentro debe estar indentado.\n\nLas funciones pueden recibir datos (parámetros) y pueden devolver resultados (return).",
+          "codigo": "# Definir una función\ndef saludar():\n    print(\"¡Hola, bienvenido!\")\n\n# Llamar la función\nsaludar()\nsaludar()\n\n# Función con parámetro\ndef saludar_persona(nombre):\n    print(f\"¡Hola {nombre}!\")\n\nsaludar_persona(\"María\")\nsaludar_persona(\"Carlos\")",
+          "codigo_ejemplo": "# Función con múltiples parámetros\ndef presentar(nombre, edad, ciudad):\n    print(f\"Me llamo {nombre}, tengo {edad} años y vivo en {ciudad}\")\n\npresentar(\"Juan\", 25, \"Madrid\")\n\n# Parámetros con valores por defecto\ndef saludar_formal(nombre, saludo=\"Hola\"):\n    print(f\"{saludo}, {nombre}\")\n\nsaludar_formal(\"Ana\")  # Usa el saludo por defecto\nsaludar_formal(\"Ana\", \"Buenos días\")  # Usa el saludo dado",
+          "explicacion_codigo": "def nombre(parametros): define la función. Los parámetros con valor por defecto van al final. Al llamar, los argumentos se asignan en orden.",
+          "consejos": ["Usa nombres descriptivos", "Una función debe hacer una cosa", "Params con defaults van al final"],
+          "errores_comunes": [
+            {"error": "Olvidar paréntesis al llamar", "solucion": "saludar no llama, saludar() sí"},
+            {"error": "Orden de parámetros", "solucion": "Usa nombre=valor para especificar"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea una función que imprima un banner con un mensaje", "solucion": "def banner(mensaje):\n    print(\"=\" * (len(mensaje) + 4))\n    print(f\"  {mensaje}\")\n    print(\"=\" * (len(mensaje) + 4))\n\nbanner(\"Hola Mundo\")", "pista": "Usa print() y multiplica strings"}
+          ],
+          "kc_tags": ["funciones", "def", "parametros"],
+          "dificultad": 2,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [26]
         },
         {
-          "id": 18,
+          "id": 28,
           "tipo": "contenido",
-          "titulo": "Diccionarios",
-          "cuerpo": "Un diccionario funciona igual que uno real: buscas una 'clave' (la palabra) para encontrar su 'valor' (la definición). Se usan llaves {} y son increíblemente rápidos para encontrar información sin tener que revisar toda la lista.",
-          "codigo": "capitales = {\"España\": \"Madrid\", \"México\": \"CDMX\"}"
+          "titulo": "Return: Devolviendo Valores",
+          "cuerpo": "La palabra clave return permite que una función devuelva un valor al código que la llamó. Este valor puede ser cualquier tipo de dato.\n\nCuando una función encuentra return, termina inmediatamente y devuelve el valor. Si no hay return, la función devuelve None por defecto.\n\nEl valor devuelto puede guardarse en una variable o usarse directamente.",
+          "codigo": "# Función que retorna\ndef sumar(a, b):\n    return a + b\n\nresultado = sumar(3, 5)\nprint(resultado)  # 8\n\n# Usar directamente\nprint(sumar(10, 20))  # 30\n\n# Múltiples return (solo uno se ejecuta)\ndef par_o_impar(n):\n    if n % 2 == 0:\n        return \"Par\"\n    else:\n        return \"Impar\"\n\nprint(par_o_impar(7))  # Impar",
+          "codigo_ejemplo": "# Funciones que retornan múltiples valores\ndef operaciones(a, b):\n    return a + b, a - b, a * b\n\nsuma, resta, multi = operaciones(5, 3)\nprint(suma, resta, multi)  # 8 2 15\n\n# Retornar estructuras de datos\ndef estadisticas(numeros):\n    return {\n        \"suma\": sum(numeros),\n        \"promedio\": sum(numeros) / len(numeros),\n        \"max\": max(numeros),\n        \"min\": min(numeros)\n    }\n\nprint(estadisticas([1, 2, 3, 4, 5]))",
+          "explicacion_codigo": "return termina la función. Se puede retornar múltiples valores como tupla. None es lo que retorna si no hay return.",
+          "consejos": ["Usa return para resultados útiles", "Puedes retornar cualquier tipo", "return None es implícito si no pones nada"],
+          "errores_comunes": [
+            {"error": "Código después de return", "solucion": "return termina la función"},
+            {"error": "Olvidar return", "solucion": "Función retorna None"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea una función que calcule el área de un rectángulo y la devuelva", "solucion": "def area_rectangulo(base, altura):\n    return base * altura\n\nprint(area_rectangulo(5, 3))", "pista": "Multiplica base por altura y usa return"}
+          ],
+          "kc_tags": ["return", "devolver", "output"],
+          "dificultad": 2,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [27]
         },
         {
-          "id": 19,
+          "id": 29,
+          "tipo": "contenido",
+          "titulo": "Alcance de Variables: Scope",
+          "cuerpo": "El scope (alcance) define dónde una variable es accesible. Python tiene:\n\n**Variables globales**: Definidas fuera de funciones, accesibles en todo el programa.\n\n**Variables locales**: Definidas dentro de funciones, solo accesibles ahí.\n\nCuando usas el mismo nombre dentro y fuera de una función, Python trata cada una como diferente - la local oculta la global dentro de la función.",
+          "codigo": "# Variables globales y locales\nvariable_global = \"Soy global\"\n\ndef mi_funcion():\n    variable_local = \"Soy local\"\n    print(variable_global)  # Accede a global\n    print(variable_local)   # Accede a local\n\nmi_funcion()\n# print(variable_local)  # Error! no existe aquí\n\n# Modificar global dentro de función\ncontador = 0\n\ndef increment():\n    global contador\n    contador += 1\n    print(f\"Contador: {contador}\")\n\nincrement()\nincrement()",
+          "codigo_ejemplo": "# Ejemplo práctico de scope\nprecio = 100  # Global\n\ndef aplicar_descuento(precio):  # Este precio es local\n    descuento = precio * 0.1\n    return precio - descuento\n\nprint(aplicar_descuento(precio))  # 90\nprint(precio)  # 100 (global sin cambios)",
+          "explicacion_codigo": "global permite modificar variables globales desde dentro de funciones. Mejor evitar global cuando sea posible - pasa valores como parámetros.",
+          "consejos": ["Usa parámetros en lugar de global cuando puedas", "Nombra las variables locales diferente a las globales para evitar confusión", "Funciones pequeñas son más fáciles de entender"],
+          "errores_comunes": [
+            {"error": "Modificar global sin global", "solucion": "Usa 'global nombre' al inicio"},
+            {"error": "Confundir alcance", "solucion": "Variable local solo existe dentro de la función"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea una función que use una variable global pero no la modifique", "solucion": "mensaje = \"Hola\"\n\ndef saludar():\n    print(mensaje)\n\nsaludar()", "pista": "Simplemente lee la variable global"}
+          ],
+          "kc_tags": ["scope", "alcance", "global", "local"],
+          "dificultad": 3,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [28]
+        },
+        {
+          "id": 30,
+          "tipo": "contenido",
+          "titulo": "Argumentos *args y **kwargs",
+          "cuerpo": "*args permite pasar un número variable de argumentos posicionales a una función. Los argumentos se reciben como tupla.\n\n**kwargs permite pasar argumentos con nombre variables. Se reciben como diccionario.\n\nSon útiles cuando no sabes cuántos argumentos recibirá la función.",
+          "codigo": "# *args - argumentos variables\ndef suma_todo(*numeros):\n    print(type(numeros))  # tuple\n    return sum(numeros)\n\nprint(suma_todo(1, 2))        # 3\nprint(suma_todo(1, 2, 3, 4))  # 10\n\n# **kwargs - argumentos con nombre\ndef info_persona(**datos):\n    print(type(datos))  # dict\n    for clave, valor in datos.items():\n        print(f\"{clave}: {valor}\")\n\ninfo_persona(nombre=\"Ana\", edad=30)",
+          "codigo_ejemplo": "# Combinando todo\ndef func_completa(a, *args, **kwargs):\n    print(f\"a: {a}\")\n    print(f\"args: {args}\")\n    print(f\"kwargs: {kwargs}\")\n\nfunc_completa(1, 2, 3, 4, nombre=\"Juan\", ciudad=\"Madrid\")\n# a: 1\n# args: (2, 3, 4)\n# kwargs: {'nombre': 'Juan', 'ciudad': 'Madrid'}",
+          "explicacion_codigo": "*args收集 argumentos posicionales多余 en tupla. **kwargs收集 argumentos con nombre en diccionario. Son convenciones - puedes usar otros nombres pero * y ** son obligatorios.",
+          "consejos": ["*args va antes de **kwargs", "Args se unpacking con * al llamar", "Útil para decoradores y funciones genéricas"],
+          "errores_comunes": [
+            {"error": "Orden incorrecto", "solucion": "orden: def f(a, *args, **kwargs)"},
+            {"error": "Confundir con tipos", "solucion": "args es tupla, kwargs es dict"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea una función que acepte cualquier número de números y devuelva el mayor", "solucion": "def mayor(*numeros):\n    return max(numeros) if numeros else None\n\nprint(mayor(5, 2, 8, 1))  # 8", "pista": "Usa *args y la función max()"}
+          ],
+          "kc_tags": ["args", "kwargs", "argumentos-variables"],
+          "dificultad": 3,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [29]
+        },
+        {
+          "id": 31,
+          "tipo": "contenido",
+          "titulo": "Funciones Lambda",
+          "cuerpo": "Las funciones lambda son funciones anónimas pequeñas - no tienen nombre y se definen en una sola línea. Son útiles cuando necesitas una función breve para usar como argumento de otra función.\n\nLa sintaxis es: lambda parámetros: expresión\n\nEl cuerpo debe ser una expresión (no una语句). El resultado de la expresión se retorna automáticamente.",
+          "codigo": "# Lambda básica\ncuadrado = lambda x: x ** 2\nprint(cuadrado(5))  # 25\n\n# Lambda con múltiples parámetros\nsuma = lambda a, b: a + b\nprint(suma(3, 4))  # 7\n\n# Usar con funciones built-in\nnumeros = [1, 2, 3, 4, 5]\npares = list(filter(lambda x: x % 2 == 0, numeros))\nprint(pares)  # [2, 4]",
+          "codigo_ejemplo": "# Lambda con sorted()\nnombres = [\"Carlos\", \"Ana\", \"Juan\", \"Beatriz\"]\n# Ordenar por longitud\nordenados = sorted(nombres, key=lambda x: len(x))\nprint(ordenados)\n\n# Lambda con map()\nnumeros = [1, 2, 3, 4]\ndobles = list(map(lambda x: x * 2, numeros))\nprint(dobles)  # [2, 4, 6, 8]",
+          "explicacion_codigo": "lambda crea función anónima. No tiene nombre pero puede asignarse a variable. Es terbatas - solo una expresión, no statements.",
+          "consejos": ["Úsalas para funciones cortas", "Buenas con map, filter, sorted", "No abuses - funciones con nombre son más legibles"],
+          "errores_comunes": [
+            {"error": "Varias expresiones", "solucion": "Lambda solo acepta una expresión"},
+            {"error": "Olvidar los dos puntos", "solucion": "lambda x: x + 1"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Usa lambda para crear una función que reste 10 a un número", "solucion": "restar_diez = lambda x: x - 10\nprint(restar_diez(25))  # 15", "pista": "lambda param: expresion"}
+          ],
+          "kc_tags": ["lambda", "anonimas", "funciones-breves"],
+          "dificultad": 3,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [30]
+        }
+      ]
+    },
+    {
+      "num_capitulo": 6,
+      "titulo": "Strings y Manipulación de Texto",
+      "secciones": [
+        {
+          "id": 32,
           "tipo": "contenido",
           "titulo": "Métodos de Strings",
-          "cuerpo": "En Python, los textos son muy poderosos. Tienen funciones integradas para transformarse: puedes poner todo en mayúsculas (.upper()), minúsculas (.lower()) o incluso separar una frase en palabras sueltas (.split()). ¡Es muy fácil manipular texto!",
-          "codigo": "texto = \"hola mundo\"\nprint(texto.capitalize()) # Imprime \"Hola mundo\""
+          "cuerpo": "Los strings en Python son objetos con muchos métodos útiles. Aquí están los más importantes:\n\n**upper()** / **lower()**: Mayúsculas/minúsculas.\n**strip()**: Elimina espacios al inicio y final.\n**split()**: Separa en palabras.\n**join()**: Une elementos con separador.\n**replace()**: Reemplaza texto.\n**find()**: Busca texto, devuelve posición.\n**count()**: Cuenta ocurrencias.",
+          "codigo": "# Métodos de strings\ntexto = \"  Hola Mundo Python  \"\n\nprint(texto.upper())   # \"  HOLA MUNDO PYTHON  \"\nprint(texto.lower())   # \"  hola mundo python  \"\nprint(texto.strip())    # \"Hola Mundo Python\"\n\n# Split y Join\npalabras = \"uno,dos,tres\".split(\",\")\nprint(palabras)  # ['uno', 'dos', 'tres']\n\nunido = \"-\".join(palabras)\nprint(unido)  # \"uno-dos-tres\"",
+          "codigo_ejemplo": "# Replace y find\ntexto = \"Hola mundo, mundo hermoso\"\nprint(texto.replace(\"mundo\", \"Python\"))  # Hola Python, Python hermoso\nprint(texto.find(\"mundo\"))  # 5 (posición)\nprint(texto.count(\"mundo\"))  # 2\n\n# Verificar contenido\nprint(\"Hola\" in texto)  # True\nprint(texto.startswith(\"Hola\"))  # True\nprint(texto.endswith(\"no\"))  # False",
+          "explicacion_codigo": "Todos estos métodos devuelven strings modificados - el string original no cambia (strings son inmutables).",
+          "consejos": ["Strings son inmutables - siempre se crea uno nuevo", "strip() es útil para limpiar input de usuario", "split() sin argumento divide por espacios"],
+          "errores_comunes": [
+            {"error": "Olvidar que no modifican el original", "solucion": "Guarda el resultado: texto = texto.upper()"},
+            {"error": "Confundir find con index", "solucion": "find devuelve -1 si no encuentra, index lanza excepción"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Limpia un texto quitando espacios extras y conviértelo a mayúsculas", "solucion": "texto = \"   hola   python   \"\nprint(texto.strip().upper())", "pista": "Encadena los métodos"}
+          ],
+          "kc_tags": ["strings", "metodos", "texto"],
+          "dificultad": 2,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [31]
+        },
+        {
+          "id": 33,
+          "tipo": "contenido",
+          "titulo": "F-Strings: Formateo Moderno",
+          "cuerpo": "Los f-strings (formatted string literals) son la forma más moderna y legible de formatear strings en Python. Se crean poniendo 'f' antes de las comillas.\n\nPermiten incluir variables y expresiones directamente dentro de strings usando {}.\n\nSoportan formato de números, fechas, alineación y más.",
+          "codigo": "# F-strings básicos\nnombre = \"Juan\"\nedad = 25\nprint(f\"Me llamo {nombre} y tengo {edad} años\")\n\n# Expresiones dentro\nprint(f\"El doble de {edad} es {edad * 2}\")\n\n# Formateo de números\npi = 3.14159265\nprint(f\"Pi con 2 decimales: {pi:.2f}\")\nprint(f\"Porcentaje: {0.75:.1%}\")",
+          "codigo_ejemplo": "# Alineación\ntexto = \"Python\"\nprint(f\"|{texto:<10}|\")  # Izquierda: |Python    |\nprint(f\"|{texto:>10}|\")  # Derecha:    |    Python|\nprint(f\"|{texto:^10}|\")  # Centro:    |  Python  |\n\n# Fechas\nfrom datetime import datetime\nfecha = datetime(2024, 12, 25)\nprint(f\"Navidad: {fecha:%d/%m/%Y}\")  # 25/12/2024",
+          "explicacion_codigo": "f-string evalúa {} como código Python. :.2f significa 2 decimales flotante. < > ^ son alineación izquierda, derecha, centro.",
+          "consejos": ["Usa f-strings siempre que puedas", "Mucho más legible que format() o %", "Puedes poner expresiones complejas dentro"],
+          "errores_comunes": [
+            {"error": "Olvidar la 'f' antes de las comillas", "solucion": "Sin la f, {} se trata como texto literal"},
+            {"error": "Comillas dentro", "solucion": "Usa comillas simples dentro de f-string con comillas dobles"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea un mensaje personalizado con nombre y edad formateados", "solucion": "nombre = \"Ana\"\nedad = 28\nprint(f\"¡Hola {nombre}! Tienes {edad} años.\")", "pista": "Pon la 'f' antes de las comillas"}
+          ],
+          "kc_tags": ["f-strings", "formateo", "interpolacion"],
+          "dificultad": 2,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [32]
+        },
+        {
+          "id": 34,
+          "tipo": "contenido",
+          "titulo": "Slicing de Strings",
+          "cuerpo": "Al igual que las listas, los strings pueden rebañarse (slicing). La sintaxis es idéntica: string[inicio:fin].\n\nEsto es útil para extraer partes de texto, como el dominio de un email o la extensión de un archivo.\n\nLos strings son inmutables - slicing crea nuevos strings.",
+          "codigo": "# Slicing de strings\ntexto = \"Python Programming\"\n\nprint(texto[0:6])     # Python\nprint(texto[7:])       # Programming\nprint(texto[:6])       # Python\nprint(texto[::2])      # Pto rgamn (cada 2)\nprint(texto[::-1])     # gnimmargorP nohtyP (inverso)",
+          "codigo_ejemplo": "# Extraer partes de email\nemail = \"usuario@ejemplo.com\"\nusuario = email[:email.index(\"@\")]\ndominio = email[email.index(\"@\")+1:]\nprint(f\"Usuario: {usuario}, Dominio: {dominio}\")\n\n# Verificar extensión\narchivo = \"documento.pdf\"\nextension = archivo[archivo.find(\".\")+1:]\nprint(f\"Extensión: {extension}\")",
+          "explicacion_codigo": "Funciona igual que listas. inicio incluye, fin excluye. índices negativos funcionan igual. Strings son inmutables.",
+          "consejos": ["Útil para extraer extensiones, dominios", "逆向 string con [::-1]", "Mucho para parsing de texto"],
+          "errores_comunes": [
+            {"error": "Out of range", "solucion": "No causa error, simplemente da lo que puede"},
+            {"error": "Confundir con split", "solucion": "Slicing es [inicio:fin], split() es por delimitador"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Extrae el primer y último carácter de una palabra", "solucion": "palabra = \"Python\"\nprint(palabra[0] + palabra[-1])", "pista": "Usa índices 0 y -1"}
+          ],
+          "kc_tags": ["slicing", "strings", "substrings"],
+          "dificultad": 2,
+          "tiempo_estimado_minutos": 15,
+          "prerequisites": [33]
+        }
+      ]
+    },
+    {
+      "num_capitulo": 7,
+      "titulo": "Conceptos Avanzados Básico",
+      "secciones": [
+        {
+          "id": 35,
+          "tipo": "contenido",
+          "titulo": "Comprensión de Listas",
+          "cuerpo": "Las list comprehensions son una forma concisa de crear listas. Son más eficientes que usar bucles for porque están optimizadas a nivel de intérprete.\n\nLa sintaxis es: [expresión for elemento in iterable if condición]\n\nEl 'if condición' es opcional - filtra los elementos que cumplen la condición.",
+          "codigo": "# List comprehension básico\ncuadrados = [x**2 for x in range(5)]\nprint(cuadrados)  # [0, 1, 4, 9, 16]\n\n# Con condición\npares = [x for x in range(10) if x % 2 == 0]\nprint(pares)  # [0, 2, 4, 6, 8]\n\n# Transformar strings\npalabras = [\"HOLA\", \"MUNDO\", \"PYTHON\"]\nminusculas = [p.lower() for p in palabras]\nprint(minusculas)  # ['hola', 'mundo', 'python']",
+          "codigo_ejemplo": "# Anidado\nmatriz = [[i*3 + j for j in range(3)] for i in range(3)]\nprint(matriz)  # [[0,1,2],[3,4,5],[6,7,8]]\n\n# Diccionarios por comprensión\npalabra = \"python\"\nconteo = {letra: palabra.count(letra) for letra in palabra}\nprint(conteo)  # {'p':1,'y':1,'t':1,'h':1,'o':1,'n':1}",
+          "explicacion_codigo": "[expr for x in iterable if cond] es la sintaxis. if es opcional. Son más rápidas que append() en loop.",
+          "consejos": ["Úsalas siempre que sea simple", "No anides demasiadas", "Son más Pitónicas"],
+          "errores_comunes": [
+            {"error": "Complejidad excesiva", "solucion": "Usa un loop si es muy complicado"},
+            {"error": "Olvidar paréntesis", "solucion": "Es [ ], no ( )"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea una lista con los cubes de los primeros 10 números", "solucion": "cubos = [x**3 for x in range(1, 11)]\nprint(cubos)", "pista": "Usa x**3 en la expresión"}
+          ],
+          "kc_tags": ["list-comprehension", "comprension", "listas"],
+          "dificultad": 3,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [34]
+        },
+        {
+          "id": 36,
+          "tipo": "contenido",
+          "titulo": "Manejo de Errores: try-except",
+          "cuerpo": "El manejo de errores permite que tu programa continúe incluso cuando ocurren problemas. En lugar de crashear, puedes manejar el error elegantemente.\n\ntry: intenta ejecutar código.\nexcept: maneja el error si ocurre.\nfinally: código que siempre se ejecuta.\n\nEs importante solo capturar errores específicos que puedas manejar.",
+          "codigo": "# try-except básico\ntry:\n    resultado = 10 / 0\nexcept ZeroDivisionError:\n    print(\"¡No puedes dividir entre cero!\")\n\n# Manejar múltiples errores\ntry:\n    num = int(input(\"Número: \"))\n    print(10 / num)\nexcept ValueError:\n    print(\"¡Eso no es un número!\")\nexcept ZeroDivisionError:\n    print(\"No puedes usar 0\")",
+          "codigo_ejemplo": "# try-except-else-finally\ndef dividir_seguro(a, b):\n    try:\n        resultado = a / b\n    except ZeroDivisionError:\n        return \"Error: división por cero\"\n    else:\n        print(\"División exitosa\")\n        return resultado\n    finally:\n        print(\"Esta línea siempre se ejecuta\")\n\nprint(dividir_seguro(10, 2))",
+          "explicacion_codigo": "try ejecuta el código. Si hay error, se va a except apropiado. else ejecuta si no hubo error. finally siempre ejecuta.",
+          "consejos": ["Usa tipos de error específicos", "No catchees todo con Exception genérico", "Usa else para código que solo corre si no hay error"],
+          "errores_comunes": [
+            {"error": "Capturar Exception muy amplia", "solucion": "Usa errores específicos"},
+            {"error": "No hacer nada en except", "solucion": "Usa pass si realmente no necesitas hacer nada"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea una función que divida dos números manejando errores", "solucion": "def dividir(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return \"No se puede dividir por cero\"\n\nprint(dividir(10, 0))", "pista": "Usa try-except con ZeroDivisionError"}
+          ],
+          "kc_tags": ["try", "except", "manejo-errores", "excepciones"],
+          "dificultad": 3,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [35]
+        },
+        {
+          "id": 37,
+          "tipo": "contenido",
+          "titulo": "Introducción a Módulos",
+          "cuerpo": "Los módulos son archivos Python que contienen código reutilizable. Puedes importar funciones, clases y variables de otros archivos.\n\nPython tiene módulos built-in (estándar) y puedes crear los tuyos. Importar módulos te permite usar código que otros han escrito.\n\nLos módulos más usados de la biblioteca estándar son: math, random, datetime, os, sys.",
+          "codigo": "# Importar módulos\nimport math\n\nprint(math.pi)         # 3.141592...\nprint(math.sqrt(16))   # 4.0\nprint(math.factorial(5))  # 120\n\n# Importar función específica\nfrom random import randint, choice\n\nprint(randint(1, 10))  # Número aleatorio 1-10\nprint(choice([\"a\", \"b\", \"c\"]))  # Elemento aleatorio",
+          "codigo_ejemplo": "# Módulo datetime\nfrom datetime import datetime, timedelta\n\nahora = datetime.now()\nprint(ahora)\n\nfuturo = ahora + timedelta(days=7)\nprint(f\"Dentro de una semana: {futuro}\")\n\n# Formatear fecha\nprint(ahora.strftime(\"%d/%m/%Y %H:%M\"))",
+          "explicacion_codigo": "import modulo importa todo. from modulo import cosa importa específico. as renombra el módulo.",
+          "consejos": ["Usa import para evitar conflictos de nombres", "from import es más corto pero puede sobrescribir", "Python tiene muchos módulos útiles en stdlib"],
+          "errores_comunes": [
+            {"error": "Módulo no encontrado", "solucion": "pip install para módulos de terceros"},
+            {"error": "Confundir import", "solucion": "import math; math.sqrt() vs from math import sqrt; sqrt()"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Usa el módulo random para generar un número entre 1 y 100", "solucion": "import random\nprint(random.randint(1, 100))", "pista": "Usa random.randint(a, b)"}
+          ],
+          "kc_tags": ["modulos", "import", "libreria-estandar"],
+          "dificultad": 2,
+          "tiempo_estimado_minutos": 20,
+          "prerequisites": [36]
+        }
+      ]
+    },
+    {
+      "num_capitulo": 8,
+      "titulo": "Proyecto Final: Calculadora",
+      "secciones": [
+        {
+          "id": 38,
+          "tipo": "contenido",
+          "titulo": "Creando una Calculadora Básica",
+          "cuerpo": "Vamos a crear una calculadora que combine todo lo que hemos aprendido. Tendrá un menú interactivo y realizará operaciones básicas.\n\nEste proyecto integra: funciones, condicionales, bucles, manejo de errores y entrada/salida de datos.",
+          "codigo": "# Calculadora básica\ndef sumar(a, b):\n    return a + b\n\ndef restar(a, b):\n    return a - b\n\ndef multiplicar(a, b):\n    return a * b\n\ndef dividir(a, b):\n    if b == 0:\n        return \"Error: no se puede dividir por cero\"\n    return a / b\n\n# Menú\nprint(\"=== Calculadora ===\")\nprint(\"1. Sumar\")\nprint(\"2. Restar\")\nprint(\"3. Multiplicar\")\nprint(\"4. Dividir\")\nprint(\"5. Salir\")",
+          "codigo_ejemplo": "# Versión interactiva completa\ndef calculadora():\n    while True:\n        opcion = input(\"\\nElige operación (1-5): \")\n        \n        if opcion == \"5\":\n            print(\"¡Adiós!\")\n            break\n        \n        try:\n            a = float(input(\"Primer número: \"))\n            b = float(input(\"Segundo número: \"))\n            \n            if opcion == \"1\":\n                print(f\"Resultado: {a + b}\")\n            elif opcion == \"2\":\n                print(f\"Resultado: {a - b}\")\n            elif opcion == \"3\":\n                print(f\"Resultado: {a * b}\")\n            elif opcion == \"4\":\n                if b != 0:\n                    print(f\"Resultado: {a / b}\")\n                else:\n                    print(\"Error: división por cero\")\n            else:\n                print(\"Opción inválida\")\n        except ValueError:\n            print(\"Por favor, ingresa números válidos\")\n\ncalculadora()",
+          "explicacion_codigo": "Este proyecto integra todo lo aprendido: funciones con return, while para el loop, try-except para manejar errores de input, if-elif-else para el menú.",
+          "consejos": ["Programa poco a poco, prueba cada función", "Maneja casos especiales como división por cero", "Usa try-except para input del usuario"],
+          "errores_comunes": [
+            {"error": "Input como string", "solucion": "Usa float() o int() para convertir"},
+            {"error": "Loop infinito", "solucion": "Asegúrate de tener una condición de salida"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Amplía la calculadora con la operación potenciación", "solucion": "def potencia(a, b):\n    return a ** b\n\nprint(potencia(2, 3))  # 8", "pista": "Usa el operador **"}
+          ],
+          "kc_tags": ["proyecto", "calculadora", "integracion"],
+          "dificultad": 3,
+          "tiempo_estimado_minutos": 30,
+          "prerequisites": [37]
+        },
+        {
+          "id": 39,
+          "tipo": "contenido",
+          "titulo": "Mejorando la Calculadora",
+          "cuerpo": "Vamos a mejorar nuestra calculadora agregando más funciones y mejor estructura. Agregaremos historial de operaciones y mejor manejo de errores.",
+          "codigo": "# Calculadora con historial\nhistorial = []\n\ndef guardar_historial(operacion, resultado):\n    historial.append(f\"{operacion} = {resultado}\")\n\ndef mostrar_historial():\n    if historial:\n        print(\"\\n=== Historial ===\")\n        for item in historial:\n            print(item)\n    else:\n        print(\"No hay operaciones en el historial\")\n\ndef calculadora_v2():\n    while True:\n        opcion = input(\"\\n1. Operar  2. Historial  3. Salir: \")\n        \n        if opcion == \"3\":\n            print(\"¡Adiós!\")\n            break\n        elif opcion == \"2\":\n            mostrar_historial()\n        elif opcion == \"1\":\n            # código de operación...\n            print(\"Operación completada\")\n        else:\n            print(\"Opción inválida\")",
+          "codigo_ejemplo": "# Usando diccionario para operaciones\noperaciones = {\n    \"1\": (\"sumar\", lambda a, b: a + b),\n    \"2\": (\"restar\", lambda a, b: a - b),\n    \"3\": (\"multiplicar\", lambda a, b: a * b),\n    \"4\": (\"dividir\", lambda a, b: a / b if b != 0 else None)\n}\n\ndef usar_calculadora():\n    opcion = input(\"Elige (1-4): \")\n    if opcion in operaciones:\n        nombre, func = operaciones[opcion]\n        try:\n            a = float(input(\"a: \"))\n            b = float(input(\"b: \"))\n            resultado = func(a, b)\n            print(f\"{nombre}: {resultado}\")\n        except:\n            print(\"Error en la operación\")\n    else:\n        print(\"Opción inválida\")",
+          "explicacion_codigo": "Usar diccionarios para mapear opciones a funciones hace el código más limpio y extensible. Lambda permite definir funciones pequeñas.",
+          "consejos": ["Organiza tu código en funciones pequeñas", "Usa estructuras de datos para evitar muchos if-else", "El historial es una buena funcionalidad extra"],
+          "errores_comunes": [
+            {"error": "Historial crece sin límite", "solucion": "Limita el tamaño del historial"},
+            {"error": "No manejar división por cero", "solucion": "Siempre verifica antes de dividir"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Agrega una opción para limpiar el historial", "solucion": "def limpiar_historial():\n    historial.clear()\n    print(\"Historial limpiado\")", "pista": "Usa el método clear() de listas"}
+          ],
+          "kc_tags": ["proyecto", "mejoras", "historial"],
+          "dificultad": 3,
+          "tiempo_estimado_minutos": 25,
+          "prerequisites": [38]
+        },
+        {
+          "id": 40,
+          "tipo": "contenido",
+          "titulo": "Siguientes Pasos en tu Camino de Aprendizaje",
+          "cuerpo": "¡Felicitaciones! Has completado el curso de Python Básico. Ahora tienes una base sólida para continuar tu viaje en la programación.\n\n**Próximos temas a explorar:**\n\n**Python Intermedio:**\n- Programación Orientada a Objetos (clases, herencia)\n- Manejo de archivos (leer/escribir archivos)\n- Decoradores y generadores\n- Módulos externos (pip)\n\n**Práctica Recomendada:**\n- Resuelve ejercicios en plataformas como LeetCode o HackerRank\n- Crea proyectos propios\n- Lee código de otros programadores\n- Participa en comunidades de programación",
+          "codigo": "# Resumen de lo que aprendiste\nconceptos = {\n    \"Básico\": [\"Variables\", \"Tipos de datos\", \"Condicionales\", \"Bucles\",\n               \"Funciones\", \"Listas\", \"Diccionarios\", \"Strings\", \"Manejo de errores\"],\n    \"Intermedio\": [\"POO\", \"Archivos\", \"Decoradores\", \"Módulos\", \"Testing\"],\n    \"Avanzado\": [\"Generadores\", \"Context managers\", \"Metaclases\", \"Asincronía\"]\n}\n\nprint(\"=== Tu Viaje en Python ===\")\nfor nivel, temas in conceptos.items():\n    print(f\"\\n{nivel}:\")\n    for tema in temas:\n        print(f\"  ✓ {tema}\")",
+          "codigo_ejemplo": "# Continúa tu aprendizaje\nprint(\"\"\"\nRECURSOS RECOMENDADOS:\n\n📚 Documentación oficial: docs.python.org\n🎮 Práctica: leetcode.com, hackerrank.com\n📖 Proyectos: github.com/trending\n💬 Comunidades: reddit.com/r/learnpython\n\n¡Sigue programando. La práctica hace al maestro!\n\"\"\")",
+          "explicacion_codigo": "Este es el final del curso básico. Felicidades por completar este camino. La ключ is продолжать practicando y aprendiendo.",
+          "consejos": ["No pares de practicar", "Haz proyectos propios", "Busca feedback de otros", "No tengas miedo de preguntar"],
+          "errores_comunes": [
+            {"error": "Creer que ya sabes suficiente", "solucion": "Siempre hay más por aprender"},
+            {"error": "No practicar", "solucion": "Programa todos los días, aunque sea poco"}
+          ],
+          "ejercicios": [
+            {"instruccion": "Crea un proyecto propio aplicando lo aprendido", "solucion": "# Ideas: juego de ahorcado, lista de tareas, conversor de unidades, navegador de archivos", "pista": "Elige algo que te interese y empieza"}
+          ],
+          "kc_tags": ["conclusion", "proximo-pasos", "continuacion"],
+          "dificultad": 1,
+          "tiempo_estimado_minutos": 15,
+          "prerequisites": [39]
         }
       ]
     }

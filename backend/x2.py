@@ -146,12 +146,116 @@ class b2:
                 titulo TEXT NOT NULL,
                 cuerpo TEXT NOT NULL,
                 codigo TEXT,
+                codigo_ejemplo TEXT,
+                explicacion_codigo TEXT,
+                consejos TEXT,
+                errores_comunes TEXT,
+                ejercicios TEXT,
+                kc_tags TEXT,
+                dificultad INTEGER DEFAULT 5,
+                tiempo_estimado INTEGER DEFAULT 15,
+                prerequisites TEXT,
                 FOREIGN KEY (tema_id) REFERENCES temas(id)
             )
         """)
+        
+        # ============================================
+        # STI TABLES - Sistema Tutorial Inteligente
+        # ============================================
+        
+        # User progress per section
+        self.conn.execute("""
+            CREATE TABLE IF NOT EXISTS user_section_progress (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL,
+                section_id INTEGER NOT NULL,
+                completed INTEGER DEFAULT 0,
+                attempts INTEGER DEFAULT 0,
+                best_time_seconds INTEGER,
+                avg_time_seconds REAL,
+                first_attempt_score REAL,
+                last_attempt_score REAL,
+                hints_used INTEGER DEFAULT 0,
+                created_at REAL DEFAULT (unixepoch()),
+                updated_at REAL DEFAULT (unixepoch()),
+                FOREIGN KEY (username) REFERENCES users(username),
+                FOREIGN KEY (section_id) REFERENCES secciones(id),
+                UNIQUE(username, section_id)
+            )
+        """)
+        
+        # Spaced repetition schedule (SM-2)
+        self.conn.execute("""
+            CREATE TABLE IF NOT EXISTS review_schedule (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL,
+                section_id INTEGER NOT NULL,
+                next_review REAL NOT NULL,
+                interval_days INTEGER DEFAULT 1,
+                repetitions INTEGER DEFAULT 0,
+                ease_factor REAL DEFAULT 2.5,
+                last_quality INTEGER DEFAULT 0,
+                created_at REAL DEFAULT (unixepoch()),
+                FOREIGN KEY (username) REFERENCES users(username),
+                FOREIGN KEY (section_id) REFERENCES secciones(id),
+                UNIQUE(username, section_id)
+            )
+        """)
+        
+        # User ability (ELO rating) per language
+        self.conn.execute("""
+            CREATE TABLE IF NOT EXISTS user_ability (
+                username TEXT NOT NULL,
+                language TEXT NOT NULL,
+                elo_rating INTEGER DEFAULT 1200,
+                total_exercises INTEGER DEFAULT 0,
+                correct_exercises INTEGER DEFAULT 0,
+                current_streak INTEGER DEFAULT 0,
+                longest_streak INTEGER DEFAULT 0,
+                last_practice REAL,
+                suggested_level TEXT DEFAULT 'Básico',
+                suggested_next_section INTEGER,
+                mastery_percentage REAL DEFAULT 0,
+                PRIMARY KEY (username, language)
+            )
+        """)
+        
+        # Learning sessions
+        self.conn.execute("""
+            CREATE TABLE IF NOT EXISTS learning_sessions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL,
+                language TEXT NOT NULL,
+                start_time REAL DEFAULT (unixepoch()),
+                end_time REAL,
+                sections_completed INTEGER DEFAULT 0,
+                exercises_attempted INTEGER DEFAULT 0,
+                exercises_correct INTEGER DEFAULT 0,
+                total_time_seconds INTEGER DEFAULT 0,
+                avg_response_time_seconds REAL,
+                FOREIGN KEY (username) REFERENCES users(username)
+            )
+        """)
+        
+        # Student errors log
+        self.conn.execute("""
+            CREATE TABLE IF NOT EXISTS student_errors (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL,
+                section_id INTEGER NOT NULL,
+                error_type TEXT NOT NULL,
+                error_message TEXT,
+                code_attempt TEXT,
+                created_at REAL DEFAULT (unixepoch()),
+                FOREIGN KEY (username) REFERENCES users(username),
+                FOREIGN KEY (section_id) REFERENCES secciones(id)
+            )
+        """)
+        
         self._seed_questions()
         self._seed_temas()
         self._seed_expert_user()
+        self._seed_sti_data()
         self.conn.commit()
 
     def _seed_questions(self):
@@ -416,9 +520,9 @@ class b2:
         )
 
     def _seed_temas(self):
-        count = self.conn.execute("SELECT COUNT(*) FROM temas").fetchone()[0]
-        if count > 0:
-            return
+        self.conn.execute("DELETE FROM secciones")
+        self.conn.execute("DELETE FROM temas")
+        self.conn.commit()
         json_dir = Path(__file__).parent.parent
         json_files = (
             sorted(json_dir.glob("*_basico.json"))
@@ -447,10 +551,11 @@ class b2:
                             sec["id"],
                             sec["tipo"],
                             sec["titulo"],
-                            sec["cuerpo"],
+                            sec.get("cuerpo", ""),
                             sec.get("codigo"),
                         ),
                     )
+        self.conn.commit()
 
     def _seed_expert_user(self):
         expert_exists = self.conn.execute(
@@ -753,6 +858,218 @@ class b2:
             self.conn.execute(
                 "DELETE FROM expert_annotations WHERE id = ?",
                 (annotation_id,),
+            )
+            self.conn.commit()
+            return True
+        except Exception:
+            return False
+
+    # ============================================
+    # STI - Sistema Tutorial Inteligente
+    # ============================================
+
+    def _seed_sti_data(self):
+        pass
+
+    def get_user_ability(self, username: str, language: str):
+        row = self.conn.execute(
+            "SELECT elo_rating, total_exercises, correct_exercises, current_streak, longest_streak, last_practice, suggested_level, suggested_next_section, mastery_percentage FROM user_ability WHERE username = ? AND language = ?",
+            (username, language),
+        ).fetchone()
+        if row:
+            return {
+                "elo_rating": row[0],
+                "total_exercises": row[1],
+                "correct_exercises": row[2],
+                "current_streak": row[3],
+                "longest_streak": row[4],
+                "last_practice": row[5],
+                "suggested_level": row[6],
+                "suggested_next_section": row[7],
+                "mastery_percentage": row[8],
+            }
+        return None
+
+    def update_user_ability(self, username: str, language: str, correct: bool):
+        current = self.get_user_ability(username, language)
+        now = __import__('time').time()
+        
+        K_FACTOR = 32
+        INITIAL_ELO = 1200
+        
+        if current:
+            elo = current["elo_rating"]
+            expected = 1 / (1 + 10 ** ((1500 - elo) / 400))
+            new_elo = elo + K_FACTOR * (1 - expected if correct else 0 - expected)
+            
+            self.conn.execute(
+                "UPDATE user_ability SET elo_rating = ?, total_exercises = total_exercises + 1, correct_exercises = correct_exercises + ?, current_streak = ?, longest_streak = MAX(longest_streak, ?), last_practice = ? WHERE username = ? AND language = ?",
+                (int(new_elo), 1 if correct else 0, current["current_streak"] + (1 if correct else 0), current["current_streak"] + (1 if correct else 0), now, username, language),
+            )
+        else:
+            new_elo = INITIAL_ELO + (K_FACTOR * 0.5 if correct else 0)
+            self.conn.execute(
+                "INSERT INTO user_ability (username, language, elo_rating, total_exercises, correct_exercises, current_streak, longest_streak, last_practice, suggested_level) VALUES (?, ?, ?, 1, ?, ?, ?, ?)",
+                (username, language, int(new_elo), 1 if correct else 0, 1 if correct else 0, now, language.lower()),
+            )
+        self.conn.commit()
+
+    def get_section_progress(self, username: str, section_id: int):
+        row = self.conn.execute(
+            "SELECT completed, attempts, best_time_seconds, avg_time_seconds, first_attempt_score, last_attempt_score, hints_used FROM user_section_progress WHERE username = ? AND section_id = ?",
+            (username, section_id),
+        ).fetchone()
+        if row:
+            return {
+                "completed": bool(row[0]),
+                "attempts": row[1],
+                "best_time_seconds": row[2],
+                "avg_time_seconds": row[3],
+                "first_attempt_score": row[4],
+                "last_attempt_score": row[5],
+                "hints_used": row[6],
+            }
+        return None
+
+    def save_section_progress(self, username: str, section_id: int, completed: bool, time_seconds: int, hints_used: int = 0):
+        existing = self.get_section_progress(username, section_id)
+        
+        attempt_score = 1.0 if completed else 0.0
+        
+        if existing:
+            # Only set completed to true, never overwrite true with false
+            new_completed = completed or existing.get("completed", False)
+            self.conn.execute(
+                "UPDATE user_section_progress SET completed = ?, attempts = attempts + 1, best_time_seconds = CASE WHEN ? < best_time_seconds OR best_time_seconds IS NULL THEN ? ELSE best_time_seconds END, avg_time_seconds = (avg_time_seconds * attempts + ?) / (attempts + 1), last_attempt_score = ?, hints_used = hints_used + ?, updated_at = unixepoch() WHERE username = ? AND section_id = ?",
+                (new_completed, time_seconds, time_seconds, time_seconds, attempt_score, hints_used, username, section_id),
+            )
+        else:
+            self.conn.execute(
+                "INSERT INTO user_section_progress (username, section_id, completed, attempts, best_time_seconds, avg_time_seconds, first_attempt_score, last_attempt_score, hints_used) VALUES (?, ?, ?, 1, ?, ?, ?, ?, ?)",
+                (username, section_id, completed, time_seconds, time_seconds, attempt_score, attempt_score, hints_used),
+            )
+        self.conn.commit()
+
+    def get_review_schedule(self, username: str):
+        now = __import__('time').time()
+        rows = self.conn.execute(
+            "SELECT section_id, next_review, interval_days, repetitions, ease_factor FROM review_schedule WHERE username = ? AND next_review <= ? ORDER BY next_review ASC",
+            (username, now),
+        ).fetchall()
+        return [
+            {
+                "section_id": r[0],
+                "next_review": r[1],
+                "interval_days": r[2],
+                "repetitions": r[3],
+                "ease_factor": r[4],
+            }
+            for r in rows
+        ]
+
+    def update_review_schedule(self, username: str, section_id: int, quality: int):
+        now = __import__('time').time()
+        
+        row = self.conn.execute(
+            "SELECT interval_days, repetitions, ease_factor FROM review_schedule WHERE username = ? AND section_id = ?",
+            (username, section_id),
+        ).fetchone()
+        
+        if row:
+            interval, reps, ease = row
+        else:
+            interval, reps, ease = 1, 0, 2.5
+        
+        if quality >= 3:
+            if reps == 0:
+                new_interval = 1
+            elif reps == 1:
+                new_interval = 6
+            else:
+                new_interval = int(interval * ease)
+            
+            new_reps = reps + 1
+            new_ease = ease + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02))
+            new_ease = max(1.3, new_ease)
+        else:
+            new_interval = 1
+            new_reps = 0
+            new_ease = max(1.3, ease - 0.2)
+        
+        next_review = now + (new_interval * 86400)
+        
+        if row:
+            self.conn.execute(
+                "UPDATE review_schedule SET next_review = ?, interval_days = ?, repetitions = ?, ease_factor = ?, last_quality = ? WHERE username = ? AND section_id = ?",
+                (next_review, new_interval, new_reps, new_ease, quality, username, section_id),
+            )
+        else:
+            self.conn.execute(
+                "INSERT INTO review_schedule (username, section_id, next_review, interval_days, repetitions, ease_factor, last_quality) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (username, section_id, next_review, new_interval, new_reps, new_ease, quality),
+            )
+        self.conn.commit()
+
+    def get_student_stats(self, username: str):
+        progress_rows = self.conn.execute(
+            "SELECT COUNT(*) as total, SUM(completed) as done FROM user_section_progress WHERE username = ?",
+            (username,),
+        ).fetchone()
+        
+        ability_rows = self.conn.execute(
+            "SELECT language, elo_rating, mastery_percentage, current_streak FROM user_ability WHERE username = ?",
+            (username,),
+        ).fetchall()
+        
+        stats = {
+            "total_sections": progress_rows[0] or 0,
+            "completed_sections": progress_rows[1] or 0,
+            "languages": {},
+            "overall_mastery": 0,
+            "total_streak": 0,
+        }
+        
+        if ability_rows:
+            total_mastery = 0
+            for r in ability_rows:
+                lang, elo, mastery, streak = r
+                stats["languages"][lang] = {
+                    "elo_rating": elo,
+                    "mastery_percentage": mastery,
+                    "current_streak": streak,
+                }
+                total_mastery += mastery or 0
+                if lang in stats and (stats.get("total_streak", 0) == 0 or streak > stats.get("total_streak", 0)):
+                    stats["total_streak"] = streak
+            
+            if ability_rows:
+                stats["overall_mastery"] = total_mastery / len(ability_rows)
+        
+        return stats
+
+    def start_learning_session(self, username: str, language: str):
+        self.conn.execute(
+            "INSERT INTO learning_sessions (username, language) VALUES (?, ?)",
+            (username, language),
+        )
+        self.conn.commit()
+        return self.conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+
+    def end_learning_session(self, session_id: int, sections_completed: int, exercises_attempted: int, exercises_correct: int, total_time: int):
+        now = __import__('time').time()
+        avg_time = total_time / exercises_attempted if exercises_attempted > 0 else 0
+        
+        self.conn.execute(
+            "UPDATE learning_sessions SET end_time = ?, sections_completed = ?, exercises_attempted = ?, exercises_correct = ?, total_time_seconds = ?, avg_response_time_seconds = ? WHERE id = ?",
+            (now, sections_completed, exercises_attempted, exercises_correct, total_time, avg_time, session_id),
+        )
+        self.conn.commit()
+
+    def log_student_error(self, username: str, section_id: int, error_type: str, error_message: str, code_attempt: str):
+        try:
+            self.conn.execute(
+                "INSERT INTO student_errors (username, section_id, error_type, error_message, code_attempt) VALUES (?, ?, ?, ?, ?)",
+                (username, section_id, error_type, error_message, code_attempt),
             )
             self.conn.commit()
             return True

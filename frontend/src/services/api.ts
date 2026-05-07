@@ -262,4 +262,149 @@ export const expertApi = {
   },
 };
 
+// STI - Intelligent Tutoring System API
+export type StudentStats = {
+  total_sections: number;
+  completed_sections: number;
+  languages: Record<string, {
+    elo_rating: number;
+    mastery_percentage: number;
+    current_streak: number;
+  }>;
+  overall_mastery: number;
+  total_streak: number;
+};
+
+export type UserAbility = {
+  elo_rating: number;
+  total_exercises: number;
+  correct_exercises: number;
+  current_streak: number;
+  longest_streak: number;
+  mastery_percentage: number;
+};
+
+export type Recommendation = {
+  suggested_level: string;
+  mastery_percentage: number;
+  elo_rating: number;
+  current_streak: number;
+};
+
+export type SectionFull = {
+  id: number;
+  id_seccion: number;
+  titulo: string;
+  cuerpo: string;
+  codigo: string | null;
+  codigo_ejemplo: string | null;
+  explicacion_codigo: string | null;
+  consejos: string[];
+  dificultad: number;
+  tiempo_estimado: number;
+  kc_tags: string[];
+  language: string;
+  level: string;
+};
+
+export const stiApi = {
+  saveProgress: async (
+    username: string,
+    sectionId: number,
+    completed: boolean,
+    timeSeconds: number,
+    hintsUsed: number = 0
+  ) => {
+    const response = await api.post<ApiResponse<{ message: string }>>(
+      "/v1/sti/progress",
+      {
+        username,
+        section_id: sectionId,
+        completed,
+        time_seconds: timeSeconds,
+        hints_used: hintsUsed,
+      }
+    );
+    return response.data;
+  },
+
+  getProgress: async (username: string) => {
+    const response = await api.get<ApiResponse<StudentStats>>(
+      `/v1/sti/progress/${username}`
+    );
+    return response.data;
+  },
+
+  getCompletedSections: async (username: string) => {
+    const response = await api.get<ApiResponse<{ section_id: number; completed: boolean; best_time_seconds: number }[]>>(
+      `/v1/sti/progress/${username}/sections`
+    );
+    return response.data;
+  },
+
+  completeReview: async (
+    username: string,
+    sectionId: number,
+    quality: number
+  ) => {
+    const response = await api.post<ApiResponse<{ message: string }>>(
+      "/v1/sti/review",
+      {
+        username,
+        section_id: sectionId,
+        quality,
+      }
+    );
+    return response.data;
+  },
+
+  getDueReviews: async (username: string) => {
+    const response = await api.get<ApiResponse<any[]>>(
+      `/v1/sti/review/${username}`
+    );
+    return response.data;
+  },
+
+  getAbility: async (username: string, language: string) => {
+    const response = await api.get<ApiResponse<UserAbility>>(
+      `/v1/sti/ability/${username}/${language}`
+    );
+    return response.data;
+  },
+
+  logError: async (
+    username: string,
+    sectionId: number,
+    errorType: string,
+    errorMessage: string,
+    codeAttempt: string
+  ) => {
+    const response = await api.post<ApiResponse<{ message: string }>>(
+      "/v1/sti/error",
+      {
+        username,
+        section_id: sectionId,
+        error_type: errorType,
+        error_message: errorMessage,
+        code_attempt: codeAttempt,
+      }
+    );
+    return response.data;
+  },
+
+  getRecommendations: async (username: string) => {
+    const response = await api.get<ApiResponse<Recommendation>>(
+      `/v1/sti/recommendations/${username}`
+    );
+    return response.data;
+  },
+
+  getSectionFull: async (sectionId: number) => {
+    const response = await api.get<ApiResponse<SectionFull>>(
+      `/v1/sti/section/${sectionId}`
+    );
+    return response.data;
+  },
+};
+
 export default api;
