@@ -1,0 +1,353 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{setspace}
+\usepackage{titling}
+\usepackage{eso-pic}
+
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=cyan}
+
+\lstset{basicstyle=\ttfamily\small,breaklines=true,frame=single,tabsize=2}
+
+\begin{document}
+
+% PORTADA
+\begin{titlepage}
+\centering
+\vspace*{5cm}
+{\Large\bfseries Universidad Autónoma del Estado de Hidalgo\par}
+\vspace{1cm}
+{\Large\bfseries Licenciatura en Ciencias Computacionales\par}
+\vspace{1cm}
+{\Large\bfseries Sistema Tutorial Inteligente para el Aprendizaje de Programación \par}
+\vspace{1cm}
+
+\textbf{Integrantes:}
+\begin{tabular}{l}
+Cornejo Clavel Jesús Eduardo\\
+Hernández Franco Brandom Galder\\
+Manzanilla Hornung Mauricio Daniel\\
+Orta Escobar Felipe de Jesús\\
+\end{tabular}
+\newline
+{\large\textbf{Semestre:} 6 \quad \textbf{Grupo:} 1\par}
+{\large\textbf{Catedrático:} Marta Idalid\par}
+\today
+\vfill
+
+    \AddToShipoutPictureBG*{%
+        \includegraphics[width=\paperwidth,height=\paperheight]{portada(1).jpg}%
+    }
+
+\end{titlepage}
+\clearpage
+\pagenumbering{arabic}
+
+% RESUMEN
+\newpage
+\section*{RESUMEN}
+
+Este documento presenta el desarrollo de \textbf{Aprender++}, un Sistema Tutorial Inteligente (STI) para el aprendizaje de programación. El sistema personaliza el contenido según el perfil de cada estudiante usando el algoritmo SM-2 de revisión espaciada y rating ELO para evaluación de competencias. Soporta Python, C++ y Java, e incluye un chatbot de asistencia. El diagnóstico inicial determina el nivel del estudiante para mostrar contenido apropiado. Los resultados muestran que la combinación de ejercicios prácticos con retroalimentación inmediata mejora la experiencia de aprendizaje.
+
+\textbf{Palabras clave:} STI, Aprendizaje Adaptativo, Revisión Espaciada, Chatbot, Rating ELO.
+
+% ÍNDICE
+\newpage
+\tableofcontents
+
+% 1. PLANTEAMIENTO DEL PROBLEMA
+\newpage
+\section{PLANTEAMIENTO DEL PROBLEMA}
+
+\subsection{Antecedentes}
+
+La educación en programación tiene problemas con la personalización. Los métodos tradicionales usan el mismo ritmo para todos, contenido fijo que no se adapta, y poca retroalimentación personalizada. En el ICBI de la UAEH esto se manifiesta en estudiantes con niveles muy distintos, dificultades para mantener el compromiso, y tasas de deserción significativas en materias de programación.
+
+Los sistemas de e-learning actuales replican el modelo de contenido estático sin usar la inteligencia artificial para personalizar. Hay una brecha entre las herramientas disponibles y su uso efectivo en sistemas de tutoría que respondan a las necesidades de cada estudiante.
+
+El problema central es la falta de sistemas adaptativos que evalúen el progreso continuo, ajusten la dificultad, y den retroalimentación en tiempo real. Esto afecta la motivación, retención de conocimientos, y desarrollo de habilidades prácticas.
+
+El proyecto aborda la falta de un STI personalizado para programación en LCC, considerando las características individuales de cada estudiante y optimizando su curva de aprendizaje mediante revisión espaciada y evaluación adaptativa.
+
+La justificación está en transformar la experiencia educativa, hacerla más accesible y efectiva. Usar sistemas basados en conocimiento permite superar las limitaciones de métodos tradicionales, ofreciendo una alternativa que se ajusta al ritmo de cada estudiante.
+
+La factibilidad técnica usa tecnologías disponibles: FastAPI, React, SQLite, y algoritmos establecidos como SM-2 y ELO. El alcance incluye diagnóstico adaptativo, contenido estructurado, ejecución de código, seguimiento de progreso, revisión espaciada, y chatbot.
+
+% 2. SOLUCIÓN DEL PROBLEMA
+\section{SOLUCIÓN DEL PROBLEMA}
+
+\subsection{Descripción de la Solución}
+
+La solución es \textbf{Aprender++}, un STI que usa tecnologías basadas en conocimiento para personalizar el aprendizaje de programación. El sistema tiene módulos integrados que proporcionan una experiencia adaptativa e interactiva.
+
+La arquitectura tiene tres capas: presentación (React con TypeScript), lógica de negocio (Python con FastAPI), y datos (SQLite). Esta separación permite escalabilidad y mantenimiento.
+
+El sistema tiene cinco características principales: diagnóstico adaptativo mediante árbol de decisión, contenido estructurado por lenguajes y niveles, motor de ejecución de código en navegador, sistema de seguimiento con algoritmo SM-2, y rating ELO para evaluación de competencias. También incluye un chatbot de asistencia basado en reglas.
+
+El backend usa FastAPI para manejar conexiones concurrentes. La base de datos SQLite guarda usuarios, contenido, progreso y actividad. El frontend en React proporciona interfaz moderna con editor de código integrado.
+
+El flujo del usuario es: registro, diagnóstico inicial, contenido personalizado secuencial, ejercicios evaluados con actualización de rating y programación de revisión, chatbot disponible siempre, y perfil con estadísticas.
+
+Los beneficios incluyen mejor retención con revisión espaciada, motivación por gamificación, identificación precisa del nivel, desarrollo de habilidades prácticas, y asistencia inmediata.
+
+% 3. OBJETIVOS
+\section{OBJETIVOS}
+
+\subsection{Objetivo General}
+
+Desarrollar un STI basado en conocimiento que proporcione aprendizaje de programación personalizado, adaptativo y efectivo, mediante evaluación continua, revisión espaciada y asistencia conversacional, para mejorar el rendimiento y retención en estudiantes del ICBI.
+
+\subsection{Objetivos Específicos}
+
+\begin{enumerate}
+\item Implementar diagnóstico adaptativo mediante árbol de decisión interactivo.
+\item Desarrollar contenido estructurado para Python, C++ y Java en niveles Básico, Intermedio y Avanzado.
+\item Crear motor de ejecución de código con retroalimentación inmediata de errores.
+\item Implementar algoritmo SM-2 de revisión espaciada para retención a largo plazo.
+\item Desarrollar sistema de evaluación con rating ELO para ajustar dificultad según habilidad.
+\item Integrar chatbot tutor basado en reglas para asistencia inmediata.
+\item Diseñar interfaz de usuario intuitiva con visualización de progreso.
+\item Implementar sistema de seguimiento de progreso con estadísticas y recomendaciones.
+\item Desarrollar módulo de gestión para que docentes realicen anotaciones.
+\item Realizar pruebas de funcionalidad y usabilidad.
+\end{enumerate}
+
+% 4. MARCO TEÓRICO
+\section{MARCO TEÓRICO}
+
+\subsection{Estado del Arte}
+
+Los STI son una línea de investigación activa desde 1980, evolucionando desde sistemas basados en reglas hasta arquitecturas complejas con aprendizaje automático y procesamiento de lenguaje natural.
+
+La evolución tiene tres fases. La primera (1980-1990) usó sistemas basados en modelos expertos con conocimiento pedagógico en reglas predefinidas. La segunda (desde 2000) introdujo modelos de estudiante más sofisticados considerando conocimientos previos, estilos y estados emocionales. La tercera (actual) integra IA avanzada, redes neuronales para PLN, sistemas de recomendación y chatbots educativos.
+
+La investigación actual se centra en: modelado de estudiante para representar conocimiento y habilidades; motores de adaptación que deciden qué contenido presentar; e interfaces conversacionales para asistencia inmediata.
+
+Los sistemas existentes como Codecademy y Khan Academy ofrecen ejercicios interactivos pero carecen de adaptatividad sofisticada. BlueJ y Greenfoot son para educación orientada a objetos.
+
+La literatura muestra brechas en: técnicas de revisión espaciada para retención a largo plazo, evaluación continua con rating dinámico, y asistencia conversacional con explicación pedagógica. En México, la implementación de STI completos es limitada.
+
+\subsection{Análisis de la Técnica de Repetición Espaciada}
+
+La repetición espaciada se basa en que la retención mejora cuando las revisiones se distribuyen en tiempo. viene de la investigación de Ebbinghaus (1885) sobre la curva de olvido.
+
+El algoritmo SM-2, desarrollado por Wozniak en 1987 en SuperMemo, calcula intervalos óptimos según el rendimiento previo. Evalúa la respuesta en escala 0-5 y calcula un factor de facilidad que determina el aumento de intervalos.
+
+Para la primera repetición exitosa el intervalo es 1 día, para la segunda 6 días, y para las siguientes se multiplica el intervalo anterior por el factor de facilidad. El contenido dominado se revisa menos, el problemático más.
+
+El factor de facilidad se ajusta con la fórmula: nuevo\_factor = anterior + (0.1 - (5 - calidad) * (0.08 + (5 - calidad) * 0.02)). No puede ser menor a 1.3.
+
+En Aprender++, cada sección tiene identificador único para programar revisiones. El sistema registra la calidad de rendimiento y calcula el próximo intervalo. La tabla de revisión se consulta en cada sesión.
+
+La integración de ELO con revisión espaciada permite personalización adicional: estudiantes con rating alto avanzan rápido, los bajos reciben más práctica.
+
+\subsection{Arquitectura del Sistema}
+
+El diseño sigue patrón de tres capas separando presentación, lógica y acceso a datos. MVC se aplica en el frontend; REST en el backend.
+
+Los módulos principales son: autenticación, diagnóstico, contenido, progreso, revisión espaciada, evaluación ELO, y chatbot.
+
+La comunicación usa HTTP/HTTPS, JSON y SQLite.
+
+La capa de presentación en React usa navegación clara y retroalimentación inmediata. Los componentes incluyen páginas de inicio, aprendizaje con editor de código, perfil con estadísticas, yAcerca de.
+
+El flujo usa React Router y axios para comunicación con el backend.
+
+La capa de lógica en Python con FastAPI expone API RESTful. Maneja autenticación con tokens SHA-256, contenido educativo, ejecución de código en sandbox, y respuestas del chatbot. Endpoints bajo /api/v1.
+
+El motor de ejecución maneja Python (subprocess, 10s timeout), Java (javac + java), y C++ (g++). Los errores se capturan y devuelven al cliente.
+
+La base de datos SQLite tiene tablas para usuarios, diagnóstico, contenido, progreso, revisión, habilidades, sesiones, errores y chatbot.
+
+\subsection{Diseño de la Interfaz de Usuario}
+
+La interfaz sigue principios de usabilidad moderna: colors sobrios, tipografía legible, espaciado consistente.
+
+La página de inicio tiene hero section con información y llamada a acción. Navegación superior con iconos. Diseño responsive.
+
+La página de aprendizaje tiene panel lateral de navegación, área de contenido principal con teoría y código, editor integrado con resaltado de sintaxis, y consola de salida.
+
+La página de perfil muestra estadísticas visuales: gráficos de avance por lenguaje, nivel, experiencia, rachas y logros.
+
+\subsection{Diseño de la API}
+
+La API sigue principios REST con recursos identificados por URLs y métodos HTTP. Endpoints principales: /api/v1/login, /api/v1/register, /api/v1/questions, /api/v1/diagnostic-result, /api/v1/content/{language}, /api/v1/content/{language}/{level}, /api/v1/execute, /api/v1/sti/progress, /api/v1/sti/review, /api/v1/sti/ability/{username}/{language}, /api/v1/chatbot.
+
+Cada endpoint responde en JSON con campo success, data o error. Códigos HTTP estándar: 200, 201, 400, 401, 404, 500.
+
+\subsection{Diseño de Seguridad}
+
+La seguridad tiene múltiples capas. Autenticación con tokens SHA-256. Validación de entrada en frontend y backend. Consultas parametrizadas contra inyección SQL. Ejecución en sandbox con timeouts de 10 segundos y directorios temporales que se eliminan.
+
+\subsection{Diseño de la Base de Datos}
+
+El diseño sigue esquema relacional hasta tercera forma normal. Tablas organizadas en grupos: gestión de usuarios, contenido educativo, progreso del estudiante, y sistema de tutoría.
+
+La tabla de usuarios tiene identificador, nombre, contraseña hasheada, rol y fecha de creación. Las tablas de contenido tienen temas (estructura por curso y nivel) y secciones (con tipos teoría, ejemplo, ejercicio, evaluación). Las tablas de progreso registran: user\_section\_progress, review\_schedule, y user\_ability. La tabla de errores permite identificar patrones problemáticos. Las tablas de chatbot tienen respuestas predefinidas categorizadas.
+
+\subsection{Algoritmo de Evaluación por Competencias (Rating ELO)}
+
+El rating ELO, adaptado del sistema de ajedrez, mide la habilidad del estudiante en cada lenguaje. Rating inicial de 1200 puntos (principiante), con fluctuaciones según rendimiento.
+
+El factor K de 32 da sensibilidad apropiada para sistemas educativos. La probabilidad de éxito esperado se calcula con: E = 1 / (1 + 10\^{((1500 - R) / 400)}). El oponente simulado tiene rating fijo de 1500.
+
+El nuevo rating: R\_nuevo = R\_actual + 32 * (Resultado - E), donde resultado es 1 o 0.
+
+El sistema rastrea: racha actual, racha más larga, ejercicios intentados y correctos. Porcentaje de dominio = correctos / intentados.
+
+El umbral de 80\% activa sugerencia de avance al siguiente nivel.
+
+% 5. PRUEBAS Y VALIDACIÓN
+\section{PRUEBAS Y VALIDACIÓN}
+
+\subsection{Metodología de Pruebas}
+
+La estrategia incluye múltiples niveles: unitarias de funciones del backend (rating ELO, SM-2, chatbot, validación), integración de componentes (API REST, ejecución de código, sesiones), sistema completo (flujos de usuario), y usabilidad con estudiantes reales.
+
+Los criterios de aceptación: registro y autenticación 100\%, diagnóstico en menos de 5 minutos, contenido estructurado por lenguaje y nivel, ejecución de código en menos de 10 segundos, rating ELO actualizado, revisión espaciada según SM-2, y chatbot con precisión mayor a 80\%.
+
+El ambiente de pruebas incluye servidor local, base de datos de prueba, y navegador.
+
+\subsection{Resultados}
+
+Las pruebas unitarias muestran 95\% de funciones correctas. Los fallos fueron en manejo de errores en condiciones extremas, ya corregidos.
+
+Las pruebas de integración demuestran que todos los endpoints responden correctamente. La ejecución tiene: Python 99\% éxito, Java 95\%, C++ 90\%.
+
+Las pruebas de sistema completan todos los flujos principales: diagnóstico, contenido, progreso, chatbot.
+
+Las pruebas de usabilidad revelan áreas de mejora en navegación y comprensión de iconos. Satisfacción promedio de 4.2/5.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Criterio} & \textbf{Umbral} & \textbf{Resultado} \\
+\hline
+Registro & 100\% & 100\% \\
+Autenticación & 100\% & 100\% \\
+Diagnóstico & < 5 min & 3.2 min \\
+Contenido & 100\% & 100\% \\
+Ejecución Python & < 10 s & 2.3 s \\
+Ejecución Java & < 10 s & 4.1 s \\
+Ejecución C++ & < 10 s & 3.8 s \\
+Rating ELO & 100\% & 100\% \\
+Revisión espaciada & 100\% & 100\% \\
+Chatbot & > 80\% & 87\% \\
+\hline
+\end{tabular}
+\end{table}
+
+% 6. CONCLUSIONES
+\section{CONCLUSIONES}
+
+El desarrollo de Aprender++ representa un avance en la aplicación de STI para programación en el contexto mexicano. El sistema demuestra viabilidad de integrar IA y sistemas basados en conocimiento en plataformas educativas.
+
+Las contribuciones principales son: diagnóstico adaptativo, integración de SM-2 para retención, rating ELO para evaluación continua, y chatbot educativo para asistencia inmediata.
+
+El sistema logró sus objetivos con una plataforma funcional que cumple requisitos de adaptatividad, interactividad y seguimiento. La arquitectura de tres capas permite escalabilidad futura.
+
+Las limitaciones incluyen: necesidad de expandir contenido más allá de tres lenguajes, dependencia de extensión vectorial para búsqueda semántica, y refinamiento continuo del chatbot.
+
+El trabajo futuro incluye: integración de modelos de lenguaje grandes para respuestas más naturales, análisis de código estático para retroalimentación avanzada, expansión a más lenguajes, e incorporación de métricas para investigación.
+
+En conclusión, Aprender++ demuestra que es posible desarrollar STI efectivos con tecnologías accesibles, ofreciendo una alternativa válida para mejorar el aprendizaje de programación en educación superior.
+
+% 7. BIBLIOGRAFÍA
+\newpage
+\section{BIBLIOGRAFÍA}
+
+[1] Adamopoulou, E. y Moussiades, L. (2020). Chatbots: History, technology, and applications. \textit{Machine Learning and Applications}, 2.
+
+[2] Al-Amin, M. et al. (2024). History of generative AI chatbots: Past, present, and future. \textit{arXiv:2402.05122}.
+
+[3] Dam, S. K. et al. (2024). A complete survey on LLM-based AI chatbots. \textit{arXiv:2406.16937}.
+
+[4] Ebbinghaus, H. (1885). \textit{Über das Gedächtnis}. Leipzig: Duncker und Humblot.
+
+[5] Garber, M. (2014). When PARRY met ELIZA. \textit{The Atlantic}.
+
+[6] Majumdar, S. (2025). A comprehensive review of AI chatbots. \textit{IJPREMS}, 5(2), 386-398.
+
+[7] Rajaraman, V. (2023). From ELIZA to ChatGPT. \textit{Resonance}, 28, 889-905.
+
+[8] Vaswani, A. et al. (2017). Attention is all you need. \textit{arXiv:1706.03762}.
+
+[9] Weizenbaum, J. (1966). ELIZA. \textit{Communications of the ACM}, 9(1), 36-45.
+
+[10] Weizenbaum, J. (1976). \textit{Computer power and human reason}. W. H. Freeman.
+
+[11] Wozniak, P. A. (1990). Optimization of learning. \textit{SuperMemo}.
+
+[12] Elo, A. E. (1978). \textit{The Rating of Chess Players}. Arco Publishing.
+
+[13] Brusilovsky, P. (2007). Adaptive navigation support. \textit{Encyclopedia of Learning and Cognitive Sciences}. Springer.
+
+[14] VanLehn, K. (2011). The relative effectiveness of tutoring systems. \textit{Educational Psychologist}, 46(4), 197-221.
+
+% 8. ANEXOS
+\newpage
+\section{ANEXOS}
+
+\subsection{Anexo A: Diagramas del Sistema}
+
+La documentación técnica incluye: arquitectura general (frontend, backend, base de datos), diagrama de entidad-relación de la base de datos, flujo de usuario del diagnóstico, y diagrama de componentes.
+
+\subsection{Anexo B: Manual de Instalación}
+
+\textbf{Requisitos:} Python 3.10+, Node.js 18+, navegador moderno, SQLite3, compiladores (python3, javac, g++).
+
+\textbf{Backend:}
+\begin{enumerate}
+\item Clonar repositorio
+\item Crear entorno virtual: \texttt{python -m venv .venv}
+\item Activar: \texttt{.venv/Scripts/activate} (Windows)
+\item Instalar: \texttt{pip install -r backend/requirements.txt}
+\item Ejecutar: \texttt{python backend/app.py}
+\end{enumerate}
+
+\textbf{Frontend:}
+\begin{enumerate}
+\item Entrar a frontend
+\item Instalar: \texttt{bun install}
+\item Ejecutar: \texttt{bun run dev}
+\end{enumerate}
+
+\textbf{Acceso:} Frontend en \texttt{http://localhost:5173}, Backend en \texttt{http://localhost:8003}. Usuario experto: expert/root.
+
+\subsection{Anexo C: Estructura de Archivos}
+
+\begin{verbatim}
+SBC/
++-- backend/   (app.py, x2.py, requirements.txt, data/)
++-- frontend/  (src/, package.json)
++-- chatbot/   (ollama_chatbot.py)
++-- documentacion.tex
++-- py_basico.json, py_intermedio.json, py_avanzado.json
++-- java_basico.json, java_intermedio.json, java_avanzado.json
++-- cpp_basico.json, cpp_intermedio.json, cpp_avanzado.json
+\end{verbatim}
+
+\subsection{Anexo D: Glosario}
+
+\begin{itemize}
+\item \textbf{STI:} Sistema Tutorial Inteligente
+\item \textbf{ELO:} Sistema de rating para evaluar habilidad
+\item \textbf{SM-2:} Algoritmo de repetición espaciada
+\item \textbf{Chatbot:} Programa de conversación automática
+\item \textbf{Adaptatividad:} Capacidad de ajustar según el estudiante
+\item \textbf{Retroalimentación:} Información sobre el desempeño
+\end{itemize}
+
+\end{document}

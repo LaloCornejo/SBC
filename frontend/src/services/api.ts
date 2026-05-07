@@ -407,4 +407,32 @@ export const stiApi = {
   },
 };
 
+export type ChatbotResponse = {
+  response: string;
+  category: string;
+  confidence: number;
+};
+
+export const chatbotApi = {
+  sendMessage: async (
+    message: string,
+    language?: string,
+    level?: string,
+    sectionTitle?: string | null,
+    username?: string
+  ) => {
+    const response = await api.post<ApiResponse<ChatbotResponse>>(
+      "/v1/chatbot",
+      {
+        message,
+        language,
+        level,
+        section_title: sectionTitle,
+        username,
+      }
+    );
+    return response.data;
+  },
+};
+
 export default api;

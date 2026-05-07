@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { BookOpen, Play, ChevronRight, Terminal, Loader, Flame, Target, Zap, CheckCircle, Circle } from 'lucide-react'
 import { contentApi, exercisesApi, stiApi } from '../../services/api'
 import type { Tema, Seccion } from '../../types'
+import { Chatbot } from '../../components/Chatbot'
 import './styles.css'
 
 const LANGUAGE_LABELS: Record<string, string> = {
@@ -449,6 +450,13 @@ export function Learning() {
           </main>
         </div>
       </div>
+
+      <Chatbot
+        language={language}
+        level={level}
+        sectionTitle={selectedSection?.titulo || null}
+        username={username}
+      />
     </div>
   )
 }

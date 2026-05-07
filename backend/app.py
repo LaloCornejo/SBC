@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import hashlib
+import json
 import subprocess
 import tempfile
 from typing import Optional
@@ -628,3 +629,23 @@ async def get_section_full(section_id: int):
             "level": row[11],
         },
     }
+
+
+class ChatMessage(BaseModel):
+    message: str
+    language: Optional[str] = None
+    level: Optional[str] = None
+    section_title: Optional[str] = None
+    username: Optional[str] = None
+
+
+@app.post("/api/v1/chatbot", response_model=Response)
+async def chatbot_message(data: ChatMessage):
+    db = get_db()
+    result = db.get_chatbot_response(
+        message=data.message,
+        language=data.language,
+        level=data.level,
+        section_title=data.section_title,
+    )
+    return Response(success=True, data=result)

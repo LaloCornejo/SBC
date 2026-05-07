@@ -252,11 +252,92 @@ class b2:
             )
         """)
         
+        # ============================================
+        # CHATBOT TUTOR - Responses predefinidas
+        # ============================================
+        
+        self.conn.execute("""
+            CREATE TABLE IF NOT EXISTS chatbot_responses (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                category TEXT NOT NULL,
+                keywords TEXT NOT NULL,
+                question_pattern TEXT,
+                response TEXT NOT NULL,
+                language_filter TEXT,
+                level_filter TEXT,
+                priority INTEGER DEFAULT 0
+            )
+        """)
+        
+        self._seed_chatbot_responses()
+        
         self._seed_questions()
         self._seed_temas()
         self._seed_expert_user()
         self._seed_sti_data()
         self.conn.commit()
+
+    def _seed_chatbot_responses(self):
+        count = self.conn.execute("SELECT COUNT(*) FROM chatbot_responses").fetchone()[0]
+        if count > 0:
+            return
+        
+        responses = [
+            # FAQ General
+            ("faq", "ayuda|help|como|hacer|help me", None, "Estoy aquí para ayudarte. Puedes preguntarme sobre:\n- Errores en tu código\n- Conceptos de programación\n- Cómo resolver ejercicios\n- Tips de estudio", None, None, 10),
+            ("faq", "gracias|thank you", None, "¡De nada! Sigue adelante con tu aprendizaje. Si necesitas ayuda, aquí estaré.", None, None, 5),
+            ("faq", "hola|hi|hello|buenos dias|buenas", None, "¡Hola! Soy tu asistente de aprendizaje. Pregúntame sobre programación o pide ayuda con tus ejercicios.", None, None, 10),
+            ("faq", "adios|bye|nos vemos|exit", None, "¡Hasta luego! Recuerda practicar todos los días. ¡Nos vemos pronto!", None, None, 5),
+            
+            # Motivación
+            ("motivation", "es dificil|no puedo|no entiendo|dificil|hard", None, "No te preocupes, ¡todos empezamos desde cero! Los errores son parte del aprendizaje. Prueba dividir el problema en partes más pequeñas.", None, None, 15),
+            ("motivation", "frustrado|frustrated|confundido|confused", None, "La confusión es normal cuando estás aprendiendo algo nuevo. Tómate un descanso y vuelve con calma. Puedo ayudarte a desglosar el concepto.", None, None, 15),
+            ("motivation", "cansado|tired|aburrido|bored", None, "¡Cada pequeño progreso cuenta! Si necesitas un impulso, recuerda: estás aprendiendo una habilidad que te abrirá muchas puertas.", None, None, 10),
+            ("motivation", "progreso|avance|advance|progress", None, "¡Excelente! Celebra tus logros, por pequeños que sean. Cada línea de código que escribes te hace mejor programador.", None, None, 10),
+            ("motivation", "tiempo|tarda|mucho|tiempo", None, "La práctica hace al maestro. Al principio todo parece lento, pero con el tiempo tu código fluirá naturalmente. ¡Sigue así!", None, None, 10),
+            
+            # Conceptos básicos (Python)
+            ("concept", "variable|asignar|guardar|almacenar", None, "En Python, una variable es como una caja donde guardas un valor. Ejemplo: x = 5. El nombre va a la izquierda, el valor a la derecha.", "python", None, 20),
+            ("concept", "print|imprimir|mostrar|display", None, "print() muestra texto o variables en la pantalla. Ejemplo: print('Hola mundo') o print(x)", "python", None, 20),
+            ("concept", "if|condicion|si entonces", None, "if verifica una condición y ejecuta código si es verdadera. Ejemplo:\nif x > 10:\n    print('Mayor')", "python", None, 20),
+            ("concept", "for|loop|bucle|repetir", None, "for repite código varias veces. Ejemplo:\nfor i in range(5):\n    print(i)\nEsto imprime 0,1,2,3,4", "python", None, 20),
+            ("concept", "funcion|def|funcion|method", None, "Una función es un bloque de código reutilizable. Ejemplo:\ndef saludar(nombre):\n    return 'Hola ' + nombre", "python", None, 20),
+            ("concept", "lista|array|arreglo|list", None, "Una lista guarda múltiples valores. Ejemplo: numeros = [1, 2, 3]. Puedes acceder con numeros[0] para obtener el primer elemento.", "python", None, 25),
+            
+            # Conceptos C++
+            ("concept", "variable|int|float|declara", None, "En C++ debes declarar el tipo de variable. Ejemplo: int edad = 25; float precio = 19.99;", "cpp", None, 20),
+            ("concept", "cout|print|imprimir|cout", None, "cout muestra texto en pantalla. Incluye <iostream>. Ejemplo:\ncout << 'Hola mundo';", "cpp", None, 20),
+            ("concept", "cin|input|entrada|leer", None, "cin lee datos del teclado. Ejemplo:\nint edad;\ncin >> edad;", "cpp", None, 20),
+            ("concept", "for|while|loop|bucle", None, "C++ tiene for y while:\nfor(int i=0; i<10; i++) { }\nwhile(condicion) { }", "cpp", None, 20),
+            ("concept", "funcion|void|return", None, "En C++ las funciones pueden ser void (no retornan) o retornar un tipo. Ejemplo:\nvoid saludar() { cout << 'Hola'; }", "cpp", None, 20),
+            ("concept", "vector|array|lista", None, "vector es la lista dinámica de C++:\n#include <vector>\nvector<int> nums = {1, 2, 3};", "cpp", None, 25),
+            
+            # Conceptos Java
+            ("concept", "variable|int|String|declara", None, "En Java declaras el tipo. Ejemplo: int edad = 25; String nombre = 'Ana';", "java", None, 20),
+            ("concept", "println|print|system.out", None, "System.out.println() muestra texto. Ejemplo:\nSystem.out.println('Hola mundo');", "java", None, 20),
+            ("concept", "scanner|input|leer|entrada", None, "Scanner lee del teclado:\nScanner sc = new Scanner(System.in);\nint edad = sc.nextInt();", "java", None, 20),
+            ("concept", "for|while|loop|bucle", None, "Java tiene for y while:\nfor(int i=0; i<10; i++) { }\nwhile(condicion) { }", "java", None, 20),
+            ("concept", "clase|public|class|poo", None, "Todo en Java está en clases. Ejemplo:\npublic class Main {\n    public static void main(String[] args) { }\n}", "java", None, 25),
+            ("concept", "array|arraylist|lista", None, "Array de tamaño fijo:\nint[] numeros = {1, 2, 3};\nArrayList para listas dinámicas.", "java", None, 25),
+            
+            # Errores comunes
+            ("help", "error|error|syntax|indentation", None, "Los errores de sintaxis suelen ser por:\n- Olvidar dos puntos (:) después de if/for\n- Indentación incorrecta (Python requiere espacios)\n- Llaves faltantes ({}) en C++/Java\nRevisa la línea mencionada y las anteriores.", None, None, 30),
+            ("help", "null|none|nulo|puntero", None, "Error de null/nulo significa que intentas usar algo que no existe. Verifica:\n- ¿Inicializaste la variable?\n- ¿El objeto existe?\n- ¿La lista tiene elementos?", None, None, 25),
+            ("help", "indice|index|out of range|rango", None, "Error de índice: estás accediendo a una posición que no existe. Recuerda que las listas empiezan en 0. Usa len() para saber el tamaño.", None, None, 25),
+            ("help", "tipo|type|mismatch|的类型", None, "Error de tipo: estás mezclando tipos diferentes. Por ejemplo, sumar texto + número. Convierte los tipos o usa str() para texto.", None, None, 25),
+            ("help", "nombre|name|not defined|no existe", None, "Error de nombre no definido: esa variable o función no existe. Verifica:\n- ¿Está escrita igual?\n- ¿Se definió antes de usarse?\n- ¿Importaste el módulo correcto?", None, None, 25),
+            
+            # Tips de estudio
+            ("motivation", "tip|consejo|sugerencia|advice", None, "Tips de estudio:\n1. Lee el código despacio, línea por línea\n2. Prueba modificar algo pequeño y observa el resultado\n3. Escribe código todos los días, aunque sea poco\n4. Cuando Fallen, revisa la solución y entiende por qué funciona", None, None, 15),
+            ("motivation", "practicar|practice|ejercicio|exercise", None, "La mejor forma de aprender programación es practicando. Intenta resolver ejercicios sin mirar las soluciones primero. Si te atoras, pide hints.", None, None, 15),
+            ("motivation", "codigo|ejemplo|solucion|answer", None, "Para entender código de ejemplo:\n1. Lee los comentarios\n2. Ejecuta paso a paso\n3. Modifica algo y observa qué cambia\n4. Explica qué hace cada línea en voz alta", None, None, 15),
+        ]
+        
+        for resp in responses:
+            self.conn.execute(
+                "INSERT INTO chatbot_responses (category, keywords, question_pattern, response, language_filter, level_filter, priority) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                resp
+            )
 
     def _seed_questions(self):
         count = self.conn.execute("SELECT COUNT(*) FROM questions").fetchone()[0]
@@ -1075,6 +1156,51 @@ class b2:
             return True
         except Exception:
             return False
+
+    def get_chatbot_response(self, message: str, language: str | None = None, level: str | None = None, section_title: str | None = None):
+        normalized_msg = message.lower().strip()
+        words = set(normalized_msg.replace("?", "").replace("!", "").replace(".", "").split())
+        
+        rows = self.conn.execute(
+            """SELECT response, priority, language_filter, level_filter, keywords FROM chatbot_responses""").fetchall()
+        
+        best_response = None
+        best_score = 0
+        
+        for row in rows:
+            response, priority, lang_filter, level_filter, keywords = row
+            
+            if lang_filter and lang_filter != language and language:
+                continue
+            if level_filter and level_filter != level and level:
+                continue
+            
+            keyword_list = [k.strip() for k in keywords.split("|")]
+            matches = sum(1 for kw in keyword_list if kw in normalized_msg or kw in words)
+            
+            if matches > 0:
+                score = matches * 10 + priority
+                if score > best_score:
+                    best_score = score
+                    best_response = response
+        
+        if best_score < 10:
+            return {
+                "response": "No estoy seguro de entender tu pregunta. ¿Podrías reformularla?\n\nTambién puedes preguntarme sobre:\n- Conceptos de programación\n- Errores en tu código\n- Tips de estudio\n- Cómo resolver ejercicios",
+                "category": "fallback",
+                "confidence": 0,
+            }
+        
+        category_row = self.conn.execute(
+            "SELECT category FROM chatbot_responses WHERE response = ? LIMIT 1",
+            (best_response,),
+        ).fetchone()
+        
+        return {
+            "response": best_response,
+            "category": category_row[0] if category_row else "faq",
+            "confidence": min(best_score / 50, 1.0),
+        }
 
 
 _db_instance = None
