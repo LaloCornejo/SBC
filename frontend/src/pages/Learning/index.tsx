@@ -306,7 +306,7 @@ export function Learning() {
               <Flame size={20} className={recommendations.current_streak > 0 ? 'streak-active' : ''} />
               <div className="rec-content">
                 <span className="rec-label">Racha</span>
-                <span className="rec-value">{recommendations.current_streak} días</span>
+                <span className="rec-value">{recommendations.current_streak} lecciones</span>
               </div>
             </div>
           </div>

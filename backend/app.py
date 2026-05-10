@@ -470,7 +470,7 @@ async def save_section_progress(data: SectionProgressReq):
             (data.section_id,),
         ).fetchone()
         
-        if section and section[0] == "ejercicio":
+        if section:
             lang_row = db.conn.execute(
                 "SELECT t.curso FROM secciones s JOIN temas t ON s.tema_id = t.id WHERE s.id = ?",
                 (data.section_id,),

@@ -275,7 +275,7 @@ export function Profile() {
                     </div>
                     <div className="stat-info">
                       <span className="stat-value-profile">{stiAbility.current_streak}</span>
-                      <span className="stat-label-profile">Racha Actual</span>
+                      <span className="stat-label-profile">Racha de Lecciones</span>
                     </div>
                   </div>
                   <div className="stat-card-profile">

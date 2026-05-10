@@ -212,7 +212,10 @@ class b2:
                 correct_exercises INTEGER DEFAULT 0,
                 current_streak INTEGER DEFAULT 0,
                 longest_streak INTEGER DEFAULT 0,
+                daily_streak INTEGER DEFAULT 0,
+                longest_daily_streak INTEGER DEFAULT 0,
                 last_practice REAL,
+                last_practice_date TEXT,
                 suggested_level TEXT DEFAULT 'Básico',
                 suggested_next_section INTEGER,
                 mastery_percentage REAL DEFAULT 0,
@@ -983,15 +986,21 @@ class b2:
             expected = 1 / (1 + 10 ** ((1500 - elo) / 400))
             new_elo = elo + K_FACTOR * (1 - expected if correct else 0 - expected)
             
+            total = current["total_exercises"] + 1
+            correct_count = current["correct_exercises"] + (1 if correct else 0)
+            new_streak = current["current_streak"] + (1 if correct else 0)
+            new_mastery = min(100, (correct_count / max(total, 1)) * 100 + (total - correct_count) * 0.5)
+            
             self.conn.execute(
-                "UPDATE user_ability SET elo_rating = ?, total_exercises = total_exercises + 1, correct_exercises = correct_exercises + ?, current_streak = ?, longest_streak = MAX(longest_streak, ?), last_practice = ? WHERE username = ? AND language = ?",
-                (int(new_elo), 1 if correct else 0, current["current_streak"] + (1 if correct else 0), current["current_streak"] + (1 if correct else 0), now, username, language),
+                "UPDATE user_ability SET elo_rating = ?, total_exercises = total_exercises + 1, correct_exercises = correct_exercises + ?, current_streak = ?, longest_streak = MAX(longest_streak, ?), last_practice = ?, mastery_percentage = ? WHERE username = ? AND language = ?",
+                (int(new_elo), 1 if correct else 0, new_streak, new_streak, now, new_mastery, username, language),
             )
         else:
             new_elo = INITIAL_ELO + (K_FACTOR * 0.5 if correct else 0)
+            new_mastery = 50.0 if correct else 0.0
             self.conn.execute(
-                "INSERT INTO user_ability (username, language, elo_rating, total_exercises, correct_exercises, current_streak, longest_streak, last_practice, suggested_level) VALUES (?, ?, ?, 1, ?, ?, ?, ?)",
-                (username, language, int(new_elo), 1 if correct else 0, 1 if correct else 0, now, language.lower()),
+                "INSERT INTO user_ability (username, language, elo_rating, total_exercises, correct_exercises, current_streak, longest_streak, last_practice, suggested_level, mastery_percentage) VALUES (?, ?, ?, 1, ?, ?, ?, ?, ?, ?)",
+                (username, language, int(new_elo), 1 if correct else 0, 1 if correct else 0, 1 if correct else 0, now, language.lower(), new_mastery),
             )
         self.conn.commit()
 
