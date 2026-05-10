@@ -12,6 +12,8 @@ interface StiAbility {
   current_streak: number
   longest_streak: number
   mastery_percentage: number
+  daily_streak: number
+  longest_daily_streak: number
 }
 
 interface StiStats {
@@ -275,7 +277,16 @@ export function Profile() {
                     </div>
                     <div className="stat-info">
                       <span className="stat-value-profile">{stiAbility.current_streak}</span>
-                      <span className="stat-label-profile">Racha de Lecciones</span>
+                      <span className="stat-label-profile">Racha Lecciones</span>
+                    </div>
+                  </div>
+                  <div className="stat-card-profile">
+                    <div className="stat-icon-wrapper red">
+                      <Flame size={24} />
+                    </div>
+                    <div className="stat-info">
+                      <span className="stat-value-profile">{stiAbility.daily_streak}</span>
+                      <span className="stat-label-profile">Racha Días</span>
                     </div>
                   </div>
                   <div className="stat-card-profile">
