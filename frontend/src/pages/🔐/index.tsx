@@ -309,11 +309,14 @@ export function X9() {
 
       const v = await w.json()
 
-      if (v.success && v.token) {
-        localStorage.setItem('t', v.token)
-        localStorage.setItem('u', u)
-        if (v.data?.role) {
-          localStorage.setItem('role', v.data.role)
+      if (v.success) {
+        if (!r) {
+          // Login only: requires token
+          localStorage.setItem('t', v.token)
+          localStorage.setItem('u', u)
+          if (v.data?.role) {
+            localStorage.setItem('role', v.data.role)
+          }
         }
         n('/')
       } else {
